@@ -26,6 +26,18 @@ public:
 
 	void update(GPSPos& antennaPos, GPSPos& targetPos);
 
+	static double getLOSdistance(GPSPos* posA, GPSPos* posB);
+
+	static double getDistance(GPSPos* posA, GPSPos* posB);
+
+	static double getAzimuth(GPSPos* posA, GPSPos* posB);
+
+	static double getBearing(GPSPos* posA, GPSPos* posB);
+
+	static double deg2rad(double deg);
+
+	static double rad2deg(double rad);
+
 private:
 	float panOffset_, tiltOffset_;
 	float magneticDeclination_;
