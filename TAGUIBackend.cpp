@@ -5,6 +5,10 @@
  *      Author: thomas
  */
 
+#include <netdb.h>      // Needed for the socket functions
+#include <sys/poll.h>
+#include <sys/socket.h>
+
 #include "trackingsetup/TAGUIBackend.h"
 
 namespace tracking {

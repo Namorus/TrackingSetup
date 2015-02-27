@@ -10,6 +10,8 @@
 
 #include "trackingsetup/TAClass.h"
 #include "trackingsetup/TAGUIBackend.h"
+#include "trackingsetup/TSfindNorth.h"
+#include "trackingsetup/TSmavlinkMag.h"
 #include "trackingsetup/TSmavlinkRadioStatus.h"
 
 using namespace std;

@@ -8,8 +8,16 @@
 #ifndef TAGUIBACKEND_H_
 #define TAGUIBACKEND_H_
 
-#include "TSincludes.h"
-#include "TAClass.h"
+
+#include "trackingsetup/TAClass.h"
+#include "trackingsetup/TAConfig.h"
+#include "trackingsetup/TAGPSTracking.h"
+#include "trackingsetup/TALogger.h"
+#include "trackingsetup/TAmode.h"
+#include "trackingsetup/TAMotorControl.h"
+#include "trackingsetup/TARecorder.h"
+#include "trackingsetup/TAtypes.h"
+#include "trackingsetup/TSmavlinkGPS.h"
 
 namespace tracking {
 
