@@ -5,8 +5,11 @@
  *      Author: thomas
  */
 
-#include "includes/iniparser/ini.h"
-#include "TSincludes.h"
+#include <list>
+
+#include "iniparser/ini.h"
+#include "trackingsetup/TAClass.h"
+#include "trackingsetup/TALogger.h"
 
 namespace tracking {
 

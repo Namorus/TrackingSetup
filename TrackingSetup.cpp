@@ -5,8 +5,12 @@
 // Copyright   : GPL
 // Description : TrackingSetup
 //============================================================================
+#include <sstream>
+#include <unistd.h>
 
-#include "TSincludes.h"
+#include "trackingsetup/TAClass.h"
+#include "trackingsetup/TAGUIBackend.h"
+#include "trackingsetup/TSmavlinkRadioStatus.h"
 
 using namespace std;
 using namespace tracking;

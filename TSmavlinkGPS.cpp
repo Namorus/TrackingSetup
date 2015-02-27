@@ -5,8 +5,7 @@
  *      Author: asl
  */
 
-#include "TSmavlinkGPS.h"
-#include "TSPosInput.h"
+#include "trackingsetup/TSmavlinkGPS.h"
 
 namespace tracking {
 

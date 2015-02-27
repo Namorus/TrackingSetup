@@ -5,7 +5,7 @@
  *      Author: asl
  */
 
-#include "TSPosInput.h"
+#include "trackingsetup/TSPosInput.h"
 
 namespace tracking {
 void TSPosInput::setLabel(std::string label) {

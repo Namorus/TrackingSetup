@@ -5,7 +5,9 @@
  *      Author: thomas
  */
 
-#include "TSincludes.h"
+#include <sstream>
+
+#include "trackingsetup/TARecorder.h"
 
 namespace tracking {
 

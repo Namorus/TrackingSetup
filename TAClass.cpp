@@ -4,9 +4,11 @@
  *  Created on: Jun 15, 2013
  *      Author: thomas
  */
+#include <algorithm>
+#include <list>
 
-//#include "TAClass.h"
-#include "TSincludes.h"
+#include "trackingsetup/TAClass.h"
+
 
 namespace tracking {
 std::list<TALogMessage>* TAClass::getLog() {
@@ -43,8 +45,7 @@ void TAClass::addLogChild(TAClass* child) {
 }
 
 void TAClass::removeChild(TAClass* child) {
-	std::list<TAClass*>::iterator it = find(logChildren.begin(),
-			logChildren.end(), child);
+	std::list<TAClass*>::iterator it = find(logChildren.begin(),logChildren.end(), child);
 	logChildren.erase(it);
 }
 

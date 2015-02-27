@@ -5,7 +5,7 @@
  *      Author: thomas
  */
 
-#include "TAmode.h"
+#include "trackingsetup/TAmode.h"
 
 namespace tracking {
 

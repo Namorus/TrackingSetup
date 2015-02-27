@@ -6,8 +6,10 @@
  */
 #include <cmath>
 #include <sstream>
-#include "TSfindNorth.h"
+
 #include <GeographicLib/MagneticModel.hpp>
+
+#include "trackingsetup/TSfindNorth.h"
 
 namespace tracking {
 

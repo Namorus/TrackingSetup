@@ -5,8 +5,7 @@
  *      Author: thomas
  */
 
-//#include "TAGPSTracking.h"
-#include "TSincludes.h"
+#include "trackingsetup/TAGPSTracking.h"
 
 namespace tracking {
 

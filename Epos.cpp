@@ -2,10 +2,11 @@
  * Epos.cpp
  *
  *  Created on: May 23, 2013
- *      Author: thomas
+ *  Last change on: February 27, 2015
+ *      Author: Thomas Mantel
  */
 
-#include "TSincludes.h"
+#include "trackingsetup/Epos.h"
 
 namespace tracking {
 

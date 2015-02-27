@@ -5,12 +5,13 @@
  *      Author: asl
  */
 #include <fcntl.h>   // File control definitions
-#include <termios.h> // POSIX terminal control definitions
-#include <unistd.h>
 #include <string>
 #include <sstream>
 #include <sys/time.h>
-#include "TSmavlinkReader.h"
+#include <termios.h> // POSIX terminal control definitions
+#include <unistd.h>
+
+#include "trackingsetup/TSmavlinkReader.h"
 
 namespace tracking {
 

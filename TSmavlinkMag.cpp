@@ -5,7 +5,7 @@
  *      Author: asl
  */
 
-#include "TSmavlinkMag.h"
+#include "trackingsetup/TSmavlinkMag.h"
 
 namespace tracking {
 

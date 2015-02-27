@@ -5,8 +5,8 @@
  *      Author: asl
  */
 
-#include "TAtypes.h"
-#include "TSmavlinkRadioStatus.h"
+#include "trackingsetup/TAtypes.h"
+#include "trackingsetup/TSmavlinkRadioStatus.h"
 
 namespace tracking {
 

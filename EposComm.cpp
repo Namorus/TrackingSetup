@@ -1,12 +1,14 @@
 /*
- * Epos2lib.cpp
+ * EposComm.cpp
  *
  *  Created on: May 22, 2013
- *      Author: thomas
+ *  Last change on: February 27, 2015
+ *      Author: Thomas Mantel
  */
-#include "EposComm.h"
 
 #include <bitset>
+
+#include "trackingsetup/EposComm.h"
 
 using namespace std;
 
