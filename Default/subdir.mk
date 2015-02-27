@@ -11,7 +11,6 @@ CPP_SRCS += \
 ../TAGPSTracking.cpp \
 ../TAGUIBackend.cpp \
 ../TALogger.cpp \
-../TAMappingEstimation.cpp \
 ../TAMotorControl.cpp \
 ../TARecorder.cpp \
 ../TATrackingMode.cpp \
@@ -19,11 +18,10 @@ CPP_SRCS += \
 ../TAmode.cpp \
 ../TSPosInput.cpp \
 ../TSfindNorth.cpp \
-../TSmagneticDeclination.cpp \
 ../TSmavlinkGPS.cpp \
 ../TSmavlinkMag.cpp \
-../TSmavlinkReader.cpp \
 ../TSmavlinkRadioStatus.cpp \
+../TSmavlinkReader.cpp \
 ../TrackingSetup.cpp 
 
 OBJS += \
@@ -34,7 +32,6 @@ OBJS += \
 ./TAGPSTracking.o \
 ./TAGUIBackend.o \
 ./TALogger.o \
-./TAMappingEstimation.o \
 ./TAMotorControl.o \
 ./TARecorder.o \
 ./TATrackingMode.o \
@@ -42,11 +39,10 @@ OBJS += \
 ./TAmode.o \
 ./TSPosInput.o \
 ./TSfindNorth.o \
-./TSmagneticDeclination.o \
 ./TSmavlinkGPS.o \
 ./TSmavlinkMag.o \
-./TSmavlinkReader.o \
 ./TSmavlinkRadioStatus.o \
+./TSmavlinkReader.o \
 ./TrackingSetup.o 
 
 CPP_DEPS += \
@@ -57,7 +53,6 @@ CPP_DEPS += \
 ./TAGPSTracking.d \
 ./TAGUIBackend.d \
 ./TALogger.d \
-./TAMappingEstimation.d \
 ./TAMotorControl.d \
 ./TARecorder.d \
 ./TATrackingMode.d \
@@ -65,11 +60,10 @@ CPP_DEPS += \
 ./TAmode.d \
 ./TSPosInput.d \
 ./TSfindNorth.d \
-./TSmagneticDeclination.d \
 ./TSmavlinkGPS.d \
 ./TSmavlinkMag.d \
-./TSmavlinkReader.d \
 ./TSmavlinkRadioStatus.d \
+./TSmavlinkReader.d \
 ./TrackingSetup.d 
 
 
@@ -77,7 +71,7 @@ CPP_DEPS += \
 %.o: ../%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -I"/home/odroid/TrackingSetup/mavlink/include/mavlink/v1.0" -O2 -g -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	g++ -I"/home/asl/workspace/TrackingSetup/includes/mavlink/v1.0" -O2 -g -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
