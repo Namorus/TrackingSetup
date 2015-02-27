@@ -37,8 +37,8 @@ enum WLANFilter {
 
 struct commandLineOptions {
 	commandLineOptions() :
-			cfgFileName("TrackingAntenna.cfg"), logFileName(
-					"TrackingAntenna.log"), verbosity(vl_ERROR), noMotors(
+			cfgFileName("trackingsetup.cfg"), logFileName(
+					"trackingsetup.log"), verbosity(vl_ERROR), noMotors(
 					false), noLocalGPS(false), noRemoteGPS(false), noWLAN(
 					false), useTUI(false), useStdout(false) {
 	}
