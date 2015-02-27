@@ -39,7 +39,6 @@
 #include "TAMotorControl.h"
 #include "TATrackingMode.h"
 #include "TAmode.h"
-#include "TAMappingEstimation.h"
 #include "TAGPSTracking.h"
 #include "TAMotorControl.h"
 #include "TARecorder.h"

@@ -10,11 +10,24 @@
 namespace tracking {
 
 TAGUIBackend::TAGUIBackend() :
-		pCfg(NULL), pCLO(NULL), pLog(NULL), pLocalPos(NULL), pRemotePos(NULL), pLocalGps(
-				NULL), pRemoteGps(NULL), pCurMode(NULL), pGPStracking(NULL), pMapEst(
-				NULL), pMotorControl(NULL), pRecorder(NULL), pMotorSetpoints(
-				NULL), new_sd(-1), serverPort(6542), serverThread(0), connectionInitialized(
-				false), closeServer(false) {
+		pCfg(NULL),
+		pCLO(NULL),
+		pLog(NULL),
+		pLocalPos(NULL),
+		pRemotePos(NULL),
+		pLocalGps(NULL),
+		pRemoteGps(NULL),
+		pCurMode(NULL),
+		pGPStracking(NULL),
+//		pMapEst(NULL),
+		pMotorControl(NULL),
+		pRecorder(NULL),
+		pMotorSetpoints(NULL),
+		new_sd(-1),
+		serverPort(6542),
+		serverThread(0),
+		connectionInitialized(false),
+		closeServer(false) {
 
 	pDataMutex = new pthread_mutex_t;
 	pthread_mutex_init(pDataMutex, NULL);
@@ -286,7 +299,7 @@ void TAGUIBackend::sendData() {
 
 		sendBuffer << (*pMotorSetpoints);
 
-		sendBuffer << (*pMapEst);
+//		sendBuffer << (*pMapEst); //TODO: send FindNorth instead
 
 		sendBuffer << (*pLog);
 		pLog->clearCacheForGui();
@@ -356,10 +369,9 @@ void TAGUIBackend::readData(std::string data) {
 			} else if (type.compare("stoprecording") == 0) {
 				pRecorder->stop();
 			} else if (type.compare("doManualMapping") == 0) {
-				pMapEst->setMapping(pMotorControl->getPanAngle(),
-						pMotorControl->getTiltAngle());
-				pGPStracking->setMapping(pMapEst->getPanOffset(),
-						pMapEst->getTiltOffset());
+				//TODO: implement this again!
+//				pMapEst->setMapping(pMotorControl->getPanAngle(),pMotorControl->getTiltAngle());
+//				pGPStracking->setMapping(pMapEst->getPanOffset(),pMapEst->getTiltOffset());
 			} else if (type.compare("manualObjPos") == 0) {
                 dataStream >> *pRemotePos;
 //				GPSPos* pObjPos = new GPSPos;
@@ -446,10 +458,6 @@ void TAGUIBackend::setGpStracking(TAGPSTracking* gpStracking) {
 
 void TAGUIBackend::setLog(TALogger* log) {
 	pLog = log;
-}
-
-void TAGUIBackend::setMapEst(TAMappingEstimation* mapEst) {
-	pMapEst = mapEst;
 }
 
 void TAGUIBackend::setMotorControl(TAMotorControl* motorControl) {

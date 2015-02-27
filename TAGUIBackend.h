@@ -65,7 +65,6 @@ public:
 	void setCurMode(TAmode* curMode);
 	void setGpStracking(TAGPSTracking* gpStracking);
 	void setLog(TALogger* log);
-	void setMapEst(TAMappingEstimation* mapEst);
 	void setMotorControl(TAMotorControl* motorControl);
 	void setMotorSetpoints(setpoints* motorSetpoints);
 	void setRecorder(TARecorder* recorder);
@@ -84,7 +83,6 @@ private:
 	TSmavlinkGPS* pRemoteGps;
 	TAmode* pCurMode;
 	TAGPSTracking* pGPStracking;
-	TAMappingEstimation* pMapEst;
 	TAMotorControl* pMotorControl;
 	TARecorder* pRecorder;
 

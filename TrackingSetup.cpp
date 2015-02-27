@@ -116,11 +116,6 @@ int main(int argc, char** argv) {
 	TAlog.add(findNorth.getLog());
 	TAlog.registerInstance(&findNorth);
 
-	// Mapping Estimation
-	TAMappingEstimation mapEst;
-	TAlog.add(mapEst.getLog());
-	TAlog.registerInstance(&mapEst);
-
 	// Data Recorder
 	TARecorder recorder;
 	TAlog.add(recorder.getLog());
@@ -137,7 +132,6 @@ int main(int argc, char** argv) {
 	GUIBackend.setRemoteGps(&remoteGps);
 	GUIBackend.setCurMode(&curMode);
 	GUIBackend.setGpStracking(&GPStracking);
-	GUIBackend.setMapEst(&mapEst);
 	GUIBackend.setMotorControl(&motorControl);
 	GUIBackend.setMotorSetpoints(&motorSetpoints);
 	GUIBackend.setRecorder(&recorder);
