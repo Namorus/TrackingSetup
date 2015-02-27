@@ -13,7 +13,7 @@
 
 namespace tracking {
 
-TALogger::TALogger(std::string logFileName, verbosityLevel _verbosity,
+Logger::Logger(std::string logFileName, verbosityLevel _verbosity,
 		bool _useStdout) :
 		verbosity(_verbosity), useStdout(_useStdout), cacheLogForGui(false) {
 	// init mutex
@@ -29,12 +29,12 @@ TALogger::TALogger(std::string logFileName, verbosityLevel _verbosity,
 						+ "). Check permissions.");
 	}
 }
-void TALogger::log(verbosityLevel _vLvl, std::string _message) {
+void Logger::log(verbosityLevel _vLvl, std::string _message) {
 	time_t timestamp;
 	time(&timestamp);
 	log(timestamp, _vLvl, _message);
 }
-void TALogger::log(time_t timestamp, verbosityLevel _vLvl,
+void Logger::log(time_t timestamp, verbosityLevel _vLvl,
 		std::string _message) {
 	if ((int) _vLvl <= (int) verbosity) {
 		std::string errormesage = "[" + verbosityLevelName(_vLvl) + "] "
@@ -62,7 +62,7 @@ void TALogger::log(time_t timestamp, verbosityLevel _vLvl,
 
 }
 
-void TALogger::add(std::list<TALogMessage>* logList) {
+void Logger::add(std::list<TALogMessage>* logList) {
 	while (logList->size() > 0) {
 //		std::cout << logList->pop_front() << std::endl;
 		TALogMessage temp = logList->front();
@@ -72,7 +72,7 @@ void TALogger::add(std::list<TALogMessage>* logList) {
 
 }
 
-std::string TALogger::verbosityLevelName(verbosityLevel verbosityLvl) {
+std::string Logger::verbosityLevelName(verbosityLevel verbosityLvl) {
 	std::string name;
 	switch (verbosityLvl) {
 	case vl_ERROR:
@@ -91,28 +91,28 @@ std::string TALogger::verbosityLevelName(verbosityLevel verbosityLvl) {
 	return name;
 }
 
-void TALogger::registerInstance(TrackingSetup* instance) {
+void Logger::registerInstance(TrackingSetup* instance) {
 	loggingInstances.push_back(instance);
 }
 
-void TALogger::fetchLogs() {
+void Logger::fetchLogs() {
 	for (std::list<TrackingSetup*>::iterator it = loggingInstances.begin();
 			it != loggingInstances.end(); it++) {
 		add((*it)->getLog());
 	}
 }
 
-void TALogger::setCacheLogForGui(bool val) {
+void Logger::setCacheLogForGui(bool val) {
 	cacheLogForGui = val;
 }
 
-void TALogger::clearCacheForGui() {
+void Logger::clearCacheForGui() {
 	pthread_mutex_lock(pGuiBufferMutex);
 	GuiStreambuffer.str(std::string());
 	pthread_mutex_unlock(pGuiBufferMutex);
 }
 
-std::ostream& operator<<(std::ostream& out, const TALogger& log) {
+std::ostream& operator<<(std::ostream& out, const Logger& log) {
 	out << "$Log ";
 	pthread_mutex_lock(log.pGuiBufferMutex);
 	out << log.GuiStreambuffer.str();

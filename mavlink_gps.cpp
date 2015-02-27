@@ -9,12 +9,12 @@
 
 namespace tracking {
 
-TSmavlinkGPS::TSmavlinkGPS(MavlinkMessages* mavlinkMessages, std::string label) :
+MavlinkGps::MavlinkGps(MavlinkMessages* mavlinkMessages, std::string label) :
         mavlinkMessages_(mavlinkMessages), lastTimestamp_(0) {
 	this->setLabel(label);
 }
 
-bool TSmavlinkGPS::getPos(GPSPos* pos) {
+bool MavlinkGps::getPos(GPSPos* pos) {
     if (mavlinkMessages_->gps_raw_int.fix_type < 3) {
 //		pos->elev = -1;
 //		pos->lat = 99;
@@ -32,7 +32,7 @@ bool TSmavlinkGPS::getPos(GPSPos* pos) {
 	return false;
 }
 
-float TSmavlinkGPS::getPosAccuracy() {
+float MavlinkGps::getPosAccuracy() {
 	double posAccuracy = 100;
 
     if (mavlinkMessages_->gps_raw_int.fix_type == 3) {
@@ -46,11 +46,11 @@ float TSmavlinkGPS::getPosAccuracy() {
 	return posAccuracy;
 }
 
-int TSmavlinkGPS::getFixType() {
+int MavlinkGps::getFixType() {
     return mavlinkMessages_->gps_raw_int.fix_type;
 }
 
-std::ostream& operator<<(std::ostream& out, const TSmavlinkGPS& mavlinkGPS) {
+std::ostream& operator<<(std::ostream& out, const MavlinkGps& mavlinkGPS) {
     MavlinkMessages mavlinkMessages = *mavlinkGPS.mavlinkMessages_;
 
 	double posAccuracy = sqrt(
@@ -82,7 +82,7 @@ std::ostream& operator<<(std::ostream& out, const TSmavlinkGPS& mavlinkGPS) {
 	return out;
 }
 
-TSmavlinkGPS::~TSmavlinkGPS() {
+MavlinkGps::~MavlinkGps() {
 	// TODO Auto-generated destructor stub
 }
 

@@ -16,9 +16,9 @@
 
 namespace tracking {
 
-class TALogger {
+class Logger {
 public:
-	TALogger(std::string _logFileName, verbosityLevel _verbosity,
+	Logger(std::string _logFileName, verbosityLevel _verbosity,
 			bool _noStdout);
 
 	void log(verbosityLevel _vLvl, std::string message);
@@ -40,7 +40,7 @@ public:
 
 	void clearCacheForGui();
 
-	friend std::ostream& operator<<(std::ostream& out, const TALogger& log);
+	friend std::ostream& operator<<(std::ostream& out, const Logger& log);
 
 private:
 	verbosityLevel verbosity;

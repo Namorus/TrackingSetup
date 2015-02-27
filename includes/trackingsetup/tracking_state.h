@@ -17,15 +17,15 @@ public:
 
 	State();
 
-	trackingState get();
-	void set(trackingState newmode);
-	std::string getModeName(trackingState mode);
+	trackingSetupState get();
+	void set(trackingSetupState newmode);
+	std::string getModeName(trackingSetupState mode);
 
 	friend std::ostream& operator<<(std::ostream& out, const State& curMode);
 
 protected:
 
-	trackingState curmode;
+	trackingSetupState curmode;
 	pthread_mutex_t* pMutexCurmode;
 };
 

@@ -10,17 +10,19 @@
 
 #include <fcntl.h>   // File control definitions
 #include <termios.h> // POSIX terminal control definitions
+
 #include <common/mavlink.h>
-#include <trackingsetup/input.h>
-#include <trackingsetup/types.h>
+
+#include "trackingsetup/input.h"
+#include "trackingsetup/types.h"
 
 namespace tracking {
 
-class TSmavlinkReader: public Input {
+class MavlinkReader: public Input {
 public:
-	TSmavlinkReader();
-	TSmavlinkReader(std::string &port, int &baudrate);
-	virtual ~TSmavlinkReader();
+	MavlinkReader();
+	MavlinkReader(std::string &port, int &baudrate);
+	virtual ~MavlinkReader();
 
 	void init(std::string &port, int &baudrate);
 	bool start();

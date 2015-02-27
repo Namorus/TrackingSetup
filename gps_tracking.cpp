@@ -9,21 +9,21 @@
 
 namespace tracking {
 
-TAGPSTracking::TAGPSTracking() :
+GpsTrackingMode::GpsTrackingMode() :
 		panOffset_(0), tiltOffset_(0), magneticDeclination_(0) {
 
 }
 
-void TAGPSTracking::setMapping(float panOffset, float tiltOffset) {
+void GpsTrackingMode::setMapping(float panOffset, float tiltOffset) {
 	panOffset_ = panOffset;
 	tiltOffset_ = tiltOffset;
 }
 
-void TAGPSTracking::setMagneticDeclination(float magneticDeclination) {
+void GpsTrackingMode::setMagneticDeclination(float magneticDeclination) {
 	magneticDeclination_ = magneticDeclination;
 }
 
-void TAGPSTracking::update(GPSPos& antennaPos, GPSPos& targetPos) {
+void GpsTrackingMode::update(GPSPos& antennaPos, GPSPos& targetPos) {
 	double bearing = getBearing(&antennaPos, &targetPos);
 	double azimuth = getAzimuth(&antennaPos, &targetPos);
 
@@ -36,7 +36,7 @@ void TAGPSTracking::update(GPSPos& antennaPos, GPSPos& targetPos) {
 }
 
 
-double TAGPSTracking::getLOSdistance(GPSPos* posA, GPSPos* posB) {
+double GpsTrackingMode::getLOSdistance(GPSPos* posA, GPSPos* posB) {
 	//		timespec startTs, endTs;
 	//		clock_gettime(CLOCK_REALTIME,&startTs);
 	double LOSdistance;
@@ -66,7 +66,7 @@ double TAGPSTracking::getLOSdistance(GPSPos* posA, GPSPos* posB) {
 	return LOSdistance;
 }
 
-double TAGPSTracking::getDistance(GPSPos* posA, GPSPos* posB) {
+double GpsTrackingMode::getDistance(GPSPos* posA, GPSPos* posB) {
 	// assuming small distances and therefore
 	// using a equirectangular approximation
 
@@ -86,7 +86,7 @@ double TAGPSTracking::getDistance(GPSPos* posA, GPSPos* posB) {
 	return distance;
 }
 
-double TAGPSTracking::getAzimuth(GPSPos* posA, GPSPos* posB) {
+double GpsTrackingMode::getAzimuth(GPSPos* posA, GPSPos* posB) {
 	/*
 	 double LOSdistance = getLOSdistance(posA,posB);
 	 double dElev = posB->elev - posA->elev;
@@ -110,7 +110,7 @@ double TAGPSTracking::getAzimuth(GPSPos* posA, GPSPos* posB) {
 
 }
 
-double TAGPSTracking::getBearing(GPSPos* posA, GPSPos* posB) {
+double GpsTrackingMode::getBearing(GPSPos* posA, GPSPos* posB) {
 	// from http://www.movable-type.co.uk/scripts/latlong.html
 
 	double bearing = 0;
@@ -128,11 +128,11 @@ double TAGPSTracking::getBearing(GPSPos* posA, GPSPos* posB) {
 	return bearing;
 }
 
-double TAGPSTracking::deg2rad(double deg) {
+double GpsTrackingMode::deg2rad(double deg) {
 	return M_PI / 180.0 * deg;
 }
 
-double TAGPSTracking::rad2deg(double rad) {
+double GpsTrackingMode::rad2deg(double rad) {
 	return 180.0 / M_PI * rad;
 }
 

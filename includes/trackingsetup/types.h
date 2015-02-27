@@ -149,17 +149,17 @@ struct FindNorthConf {
 	float tiltAngle;
 };
 
-enum trackingState {
-	tm_ENDING = -1,
-	tm_INIT = 0,
-	tm_GPS_TRACKING = 1,
-	tm_LOCATE = 2,
-	tm_MAPPING_ESTIMATION = 8,
-	tm_READY = 9,
-	tm_STOP = 10
+enum trackingSetupState {
+	ts_ENDING = -1,
+	ts_INIT = 0,
+	ts_GPS_TRACKING = 1,
+	ts_LOCATE = 2,
+	ts_FIND_NORTH = 8,
+	ts_READY = 9,
+	ts_STOP = 10
 };
 
-enum TActrlType {
+enum motorControlType {
 	ct_undefined = -1,
 	ct_velocity = 1,
 	ct_abspos = 2,
@@ -216,9 +216,9 @@ struct setpoints {
 				<< (int) a.tiltCtrltype << " " << a.tiltValue;
 		return out;
 	}
-	TActrlType panCtrltype;
+	motorControlType panCtrltype;
 	double panValue;
-	TActrlType tiltCtrltype;
+	motorControlType tiltCtrltype;
 	double tiltValue;
 };
 

@@ -13,7 +13,7 @@
 
 namespace tracking {
 
-TSfindNorth::TSfindNorth() :
+FindNorth::FindNorth() :
 	curState_(fn_NOTREADY),
 	panSpeed_(0),
     tiltAngle_(0),
@@ -22,11 +22,11 @@ TSfindNorth::TSfindNorth() :
 
 }
 
-TSfindNorth::~TSfindNorth() {
+FindNorth::~FindNorth() {
 	// TODO Auto-generated destructor stub
 }
 
-void TSfindNorth::init(float panSpeed, float tiltAngle) {
+void FindNorth::init(float panSpeed, float tiltAngle) {
 	panSpeed_ = panSpeed;
 	tiltAngle_ = tiltAngle;
 
@@ -45,7 +45,7 @@ void TSfindNorth::init(float panSpeed, float tiltAngle) {
 	curState_ = fn_INITIALIZING;
 }
 
-void TSfindNorth::update(int curPanAngle, int curTiltAngle,
+void FindNorth::update(int curPanAngle, int curTiltAngle,
 		MagReading* magn,
 		bool panPositionReached, bool tiltPositionReached) {
 
@@ -108,22 +108,22 @@ void TSfindNorth::update(int curPanAngle, int curTiltAngle,
 
 }
 
-findNorthState TSfindNorth::getLocateState() {
+findNorthState FindNorth::getLocateState() {
 	return curState_;
 }
 
-void TSfindNorth::reset() {
+void FindNorth::reset() {
 	panAngles_.clear();
 	fctValues_.clear();
 	magX_.clear();
 	magY_.clear();
 }
 
-float TSfindNorth::northPanAngleFound() {
+float FindNorth::northPanAngleFound() {
 	return northFound_;
 }
 
-float TSfindNorth::magneticDeclination(GPSPos& localPos) {
+float FindNorth::magneticDeclination(GPSPos& localPos) {
 	GeographicLib::MagneticModel mag("wmm2015","/usr/share/geographiclib/magnetic");
 	double Bx, By, Bz;
 	mag(2015, localPos.lat, localPos.lon, localPos.elev, Bx, By, Bz); // TODO: use function for value of year

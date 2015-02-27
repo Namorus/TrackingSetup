@@ -342,17 +342,17 @@ void GuiBackend::readData(std::string data) {
 				addLogMessage(vl_DEBUG, "received new mode");
 				int newMode;
 				dataStream >> newMode;
-				pCurMode->set((trackingState) newMode);
+				pCurMode->set((trackingSetupState) newMode);
 			}
 			// Data received is a new setpoint
 			else if (type.compare("Setpoints") == 0) {
 				addLogMessage(vl_DEBUG, "received a new setpoint");
 				int temp;
 				dataStream >> temp;
-				remoteSetpoints.panCtrltype = (TActrlType) temp;
+				remoteSetpoints.panCtrltype = (motorControlType) temp;
 				dataStream >> remoteSetpoints.panValue;
 				dataStream >> temp;
-				remoteSetpoints.tiltCtrltype = (TActrlType) temp;
+				remoteSetpoints.tiltCtrltype = (motorControlType) temp;
 				dataStream >> remoteSetpoints.tiltValue;
 			}
 
@@ -429,11 +429,11 @@ void GuiBackend::setConnectionInitialized(bool setVal) {
 	pthread_mutex_unlock(pConnInitMutex);
 }
 
-void GuiBackend::setCfg(Config* cfg) {
+void GuiBackend::setConfig(Config* cfg) {
 	pCfg = cfg;
 }
 
-void GuiBackend::setClo(commandLineOptions* clo) {
+void GuiBackend::setCommandLineOptions(commandLineOptions* clo) {
 	pCLO = clo;
 }
 
@@ -449,18 +449,18 @@ void GuiBackend::setRemotePos(GPSPos* remotePos) {
 	pRemotePos = remotePos;
 }
 
-void GuiBackend::setLocalGps(TSmavlinkGPS* localGps) {
+void GuiBackend::setLocalGps(MavlinkGps* localGps) {
 	pLocalGps = localGps;
 }
 
-void GuiBackend::setRemoteGps(TSmavlinkGPS* remoteGps) {
+void GuiBackend::setRemoteGps(MavlinkGps* remoteGps) {
 	pRemoteGps = remoteGps;
 }
-void GuiBackend::setGpStracking(TAGPSTracking* gpStracking) {
+void GuiBackend::setGpStracking(GpsTrackingMode* gpStracking) {
 	pGPStracking = gpStracking;
 }
 
-void GuiBackend::setLog(TALogger* log) {
+void GuiBackend::setLog(Logger* log) {
 	pLog = log;
 }
 

@@ -12,9 +12,9 @@
 
 namespace tracking {
 
-class TAGPSTracking: public tracking::TrackingMode {
+class GpsTrackingMode: public tracking::TrackingMode {
 public:
-	TAGPSTracking();
+	GpsTrackingMode();
 
 	void setNorthOffset(float panAngleNorth);
 

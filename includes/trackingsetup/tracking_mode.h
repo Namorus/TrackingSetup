@@ -29,13 +29,13 @@ protected:
 
 	void setNewSetpoints(setpoints newSetpoints);
 
-	void setNewSetpoints(TActrlType type, double pan, double tilt);
+	void setNewSetpoints(motorControlType type, double pan, double tilt);
 
-	void setNewSetpoints(TActrlType panType, double panValue,
-			TActrlType tiltType, double tiltValue);
+	void setNewSetpoints(motorControlType panType, double panValue,
+			motorControlType tiltType, double tiltValue);
 
-	void setNewPanSetpoint(TActrlType type, double _value);
-	void setNewTiltSetpoint(TActrlType type, double _value);
+	void setNewPanSetpoint(motorControlType type, double _value);
+	void setNewTiltSetpoint(motorControlType type, double _value);
 };
 
 } /* namespace tracking */

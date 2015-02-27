@@ -10,13 +10,13 @@
 namespace tracking {
 
 State::State() :
-		curmode(tm_INIT) {
+		curmode(ts_INIT) {
 	pMutexCurmode = new pthread_mutex_t;
 	pthread_mutex_init(pMutexCurmode, NULL);
 }
 
-trackingState State::get() {
-	trackingState temp;
+trackingSetupState State::get() {
+	trackingSetupState temp;
 	pthread_mutex_lock(pMutexCurmode);
 	temp = curmode;
 	pthread_mutex_unlock(pMutexCurmode);
@@ -24,28 +24,28 @@ trackingState State::get() {
 	return temp;
 }
 
-void State::set(trackingState newmode) {
+void State::set(trackingSetupState newmode) {
 	pthread_mutex_lock(pMutexCurmode);
 	curmode = newmode;
 	pthread_mutex_unlock(pMutexCurmode);
 	addLogMessage(vl_INFO, "Changing to mode " + getModeName(newmode));
 }
 
-std::string State::getModeName(trackingState mode) {
+std::string State::getModeName(trackingSetupState mode) {
 	switch (mode) {
-	case tm_ENDING:
+	case ts_ENDING:
 		return std::string("ENDING");
-	case tm_INIT:
+	case ts_INIT:
 		return std::string("INIT");
-	case tm_GPS_TRACKING:
+	case ts_GPS_TRACKING:
 		return std::string("GPS TRACKING");
-	case tm_LOCATE:
+	case ts_LOCATE:
 		return std::string("LOCATE");
-	case tm_MAPPING_ESTIMATION:
+	case ts_FIND_NORTH:
 		return std::string("MAPPING ESTIMATION");
-	case tm_READY:
+	case ts_READY:
 		return std::string("READY");
-	case tm_STOP:
+	case ts_STOP:
 		return std::string("STOP");
 	}
 	return std::string("unknown");

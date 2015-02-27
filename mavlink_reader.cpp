@@ -5,17 +5,18 @@
  *      Author: asl
  */
 #include <fcntl.h>   // File control definitions
-#include <string>
 #include <sstream>
+#include <string>
 #include <sys/time.h>
 #include <termios.h> // POSIX terminal control definitions
-#include <trackingsetup/mavlink_reader.h>
 #include <unistd.h>
+
+#include <trackingsetup/mavlink_reader.h>
 
 
 namespace tracking {
 
-TSmavlinkReader::TSmavlinkReader() :
+MavlinkReader::MavlinkReader() :
 		keepReadingMavlink_(true), port_(""), baudrate_(0), isOpen_(false), fd_(
 				0), initialized_(false), readingStatus_(false), systemId_(0), autopilotId_(
 				0), componentId_(0), readThreadId_(0) {
@@ -26,7 +27,7 @@ TSmavlinkReader::TSmavlinkReader() :
 
 }
 
-TSmavlinkReader::TSmavlinkReader(std::string& port, int& baudrate) :
+MavlinkReader::MavlinkReader(std::string& port, int& baudrate) :
 		keepReadingMavlink_(true), port_(port), baudrate_(baudrate), isOpen_(
 				false), fd_(0), readingStatus_(false), systemId_(0), autopilotId_(
 				0), componentId_(0), readThreadId_(0) {
@@ -37,19 +38,19 @@ TSmavlinkReader::TSmavlinkReader(std::string& port, int& baudrate) :
 	initialized_ = true;
 }
 
-TSmavlinkReader::~TSmavlinkReader() {
+MavlinkReader::~MavlinkReader() {
 	pthread_mutex_destroy(&readLock_);
 	pthread_mutex_destroy(&messagesLock_);
 
 }
 
-void TSmavlinkReader::init(std::string& port, int& baudrate) {
+void MavlinkReader::init(std::string& port, int& baudrate) {
 	port_ = port;
 	baudrate_ = baudrate;
 	initialized_ = true;
 }
 
-int TSmavlinkReader::readMessage(mavlink_message_t& message) {
+int MavlinkReader::readMessage(mavlink_message_t& message) {
 	// method from github.com/mavlink/c_uart_interface_example -> serial_port.cpp
 
 	uint8_t cp;
@@ -97,7 +98,7 @@ int TSmavlinkReader::readMessage(mavlink_message_t& message) {
 
 }
 
-void TSmavlinkReader::readMessages() {
+void MavlinkReader::readMessages() {
 	// method from github.com/mavlink/c_uart_interface_example -> autopilot_interface.cpp
 	bool success = false;               // receive success flag
 	mavlink_message_t message;
@@ -197,7 +198,7 @@ void TSmavlinkReader::readMessages() {
 
 	return;
 }
-bool TSmavlinkReader::start() {
+bool MavlinkReader::start() {
 	if (initialized_ != true) {
 		addLogMessage(vl_ERROR, "mavlinkReader not properly initialized");
 		return false;
@@ -222,7 +223,7 @@ bool TSmavlinkReader::start() {
 
 }
 
-bool TSmavlinkReader::openSerial() {
+bool MavlinkReader::openSerial() {
 
 	fd_ = open(port_.c_str(), O_RDONLY | O_NOCTTY | O_NDELAY);
 
@@ -256,7 +257,7 @@ bool TSmavlinkReader::openSerial() {
 
 }
 
-bool TSmavlinkReader::closeSerial() {
+bool MavlinkReader::closeSerial() {
 
 	// TODO: add some logging
 	int result = close(fd_);
@@ -270,7 +271,7 @@ bool TSmavlinkReader::closeSerial() {
 	return true;
 }
 
-bool TSmavlinkReader::setupSerial() {
+bool MavlinkReader::setupSerial() {
 	if (!isatty(fd_)) {
 		// TODO: add some logging
 		return false;
@@ -338,20 +339,20 @@ bool TSmavlinkReader::setupSerial() {
 	return true;
 }
 
-void TSmavlinkReader::stopReading() {
+void MavlinkReader::stopReading() {
 	keepReadingMavlink_ = false;
 
 	pthread_join(readThreadId_, NULL);
 }
 
-void TSmavlinkReader::getMavlinkMessages(MavlinkMessages& messages) {
+void MavlinkReader::getMavlinkMessages(MavlinkMessages& messages) {
 	pthread_mutex_lock(&messagesLock_);
 	messages = currentMessages_;
 	pthread_mutex_unlock(&messagesLock_);
 }
 
-void* TSmavlinkReader::readThread(void* arg) {
-	TSmavlinkReader *mavlinkReader = (TSmavlinkReader *) arg;
+void* MavlinkReader::readThread(void* arg) {
+	MavlinkReader *mavlinkReader = (MavlinkReader *) arg;
 
 	/* variable to check whether MAVLINK reader is kept alive */
 	bool doKeepReading = mavlinkReader->keepReading();
@@ -372,11 +373,11 @@ void* TSmavlinkReader::readThread(void* arg) {
 
 }
 
-bool TSmavlinkReader::keepReading() {
+bool MavlinkReader::keepReading() {
 	return keepReadingMavlink_;
 }
 
-uint64_t TSmavlinkReader::get_usec() {
+uint64_t MavlinkReader::get_usec() {
     static struct timeval _time_stamp;
     gettimeofday(&_time_stamp, NULL);
     return _time_stamp.tv_sec*1000000 + _time_stamp.tv_usec;

@@ -13,19 +13,19 @@
 
 namespace tracking {
 
-class TSmavlinkGPS: public PositionInput {
+class MavlinkGps: public PositionInput {
 public:
-    TSmavlinkGPS(MavlinkMessages* mavlinkMessages, std::string label);
+    MavlinkGps(MavlinkMessages* mavlinkMessages, std::string label);
 	bool getPos(GPSPos* pos);
 
-	virtual ~TSmavlinkGPS();
+	virtual ~MavlinkGps();
 
 	float getPosAccuracy();
 
 	int getFixType();
 
 	friend std::ostream& operator<<(std::ostream& out,
-			const TSmavlinkGPS& mavlinkGPS);
+			const MavlinkGps& mavlinkGPS);
 
 private:
     MavlinkMessages* mavlinkMessages_;

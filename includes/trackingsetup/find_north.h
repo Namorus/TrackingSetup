@@ -12,10 +12,10 @@
 
 namespace tracking {
 
-class TSfindNorth: public TrackingMode {
+class FindNorth: public TrackingMode {
 public:
-	TSfindNorth();
-	virtual ~TSfindNorth();
+	FindNorth();
+	virtual ~FindNorth();
 
 	void init (float panSpeed, float tiltAngle);
 
@@ -29,7 +29,7 @@ public:
 
 	float magneticDeclination(GPSPos& localPos);
 
-	friend std::ostream& operator<<(std::ostream& out, const TSfindNorth& findNorth);
+	friend std::ostream& operator<<(std::ostream& out, const FindNorth& findNorth);
 
 private:
 	float evalFunction(float, float);

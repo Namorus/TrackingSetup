@@ -66,13 +66,13 @@ public:
 //			          GPSPos* _pAntPost);
 	void setLocalPos(GPSPos* localPos);
 	void setRemotePos(GPSPos* remotePos);
-	void setLocalGps(TSmavlinkGPS* localGPS);
-	void setRemoteGps(TSmavlinkGPS* remoteGPS);
-	void setCfg(Config* cfg);
-	void setClo(commandLineOptions* clo);
+	void setLocalGps(MavlinkGps* localGPS);
+	void setRemoteGps(MavlinkGps* remoteGPS);
+	void setConfig(Config* cfg);
+	void setCommandLineOptions(commandLineOptions* clo);
 	void setCurMode(State* curMode);
-	void setGpStracking(TAGPSTracking* gpStracking);
-	void setLog(TALogger* log);
+	void setGpStracking(GpsTrackingMode* gpStracking);
+	void setLog(Logger* log);
 	void setMotorControl(MotorControl* motorControl);
 	void setMotorSetpoints(setpoints* motorSetpoints);
 	void setRecorder(Recorder* recorder);
@@ -84,13 +84,13 @@ public:
 private:
 	Config* pCfg;
 	commandLineOptions* pCLO;
-	TALogger* pLog;
+	Logger* pLog;
 	GPSPos* pLocalPos;
 	GPSPos* pRemotePos;
-	TSmavlinkGPS* pLocalGps;
-	TSmavlinkGPS* pRemoteGps;
+	MavlinkGps* pLocalGps;
+	MavlinkGps* pRemoteGps;
 	State* pCurMode;
-	TAGPSTracking* pGPStracking;
+	GpsTrackingMode* pGPStracking;
 	MotorControl* pMotorControl;
 	Recorder* pRecorder;
 

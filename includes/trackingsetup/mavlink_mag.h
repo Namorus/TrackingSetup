@@ -20,7 +20,7 @@ public:
 	virtual ~MavlinkMagnetometer();
 
 	friend std::ostream& operator<<(std::ostream& out,
-				const TSmavlinkReader& mavlinkGPS);
+				const MavlinkReader& mavlinkGPS);
 
 private:
     MavlinkMessages* mavlinkMessages_;

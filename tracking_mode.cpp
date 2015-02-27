@@ -27,26 +27,26 @@ void TrackingMode::setNewSetpoints(setpoints _newSetpoints) {
 	newSetpoints = _newSetpoints;
 }
 
-void TrackingMode::setNewSetpoints(TActrlType type, double pan, double tilt) {
+void TrackingMode::setNewSetpoints(motorControlType type, double pan, double tilt) {
 	newSetpoints.panCtrltype = type;
 	newSetpoints.panValue = pan;
 	newSetpoints.tiltCtrltype = type;
 	newSetpoints.tiltValue = tilt;
 }
 
-void TrackingMode::setNewSetpoints(TActrlType panType, double panValue,
-		TActrlType tiltType, double tiltValue) {
+void TrackingMode::setNewSetpoints(motorControlType panType, double panValue,
+		motorControlType tiltType, double tiltValue) {
 	newSetpoints.panCtrltype = panType;
 	newSetpoints.panValue = panValue;
 	newSetpoints.tiltCtrltype = tiltType;
 	newSetpoints.tiltValue = tiltValue;
 }
 
-void TrackingMode::setNewPanSetpoint(TActrlType type, double _value) {
+void TrackingMode::setNewPanSetpoint(motorControlType type, double _value) {
 	newSetpoints.panCtrltype = type;
 	newSetpoints.panValue = _value;
 }
-void TrackingMode::setNewTiltSetpoint(TActrlType type, double _value) {
+void TrackingMode::setNewTiltSetpoint(motorControlType type, double _value) {
 	newSetpoints.tiltCtrltype = type;
 	newSetpoints.tiltValue = _value;
 }

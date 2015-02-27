@@ -65,130 +65,122 @@ void TrackingSetup::removeChild(TrackingSetup* child) {
 
 int main(int argc, char** argv) {
 	/* read command line input */
-	struct commandLineOptions cmdLineOpts = parseCommandLine(argc, argv);
+	struct commandLineOptions commandLineOptions = parseCommandLine(argc, argv);
 
 	/* enable logger */
-	TALogger TAlog(cmdLineOpts.logFileName, cmdLineOpts.verbosity,
-			cmdLineOpts.useStdout);
+	Logger trackingLog(commandLineOptions.logFileName, commandLineOptions.verbosity,
+			commandLineOptions.useStdout);
 
 	/* log start */
-	TAlog.log(vl_INFO, "TrackingSetup started");
+	trackingLog.log(vl_INFO, "TrackingSetup started");
 
 	/* read config file */
-	Config TAcfg;
-	TAcfg.readConfig(cmdLineOpts.cfgFileName);
-	TAlog.add(TAcfg.getLog());
-	if (cmdLineOpts.verbosity == vl_DEBUG) {
-		TAcfg.display();
+	Config trackingConfig;
+	trackingConfig.readConfig(commandLineOptions.cfgFileName);
+	trackingLog.add(trackingConfig.getLog());
+	if (commandLineOptions.verbosity == vl_DEBUG) {
+		trackingConfig.display();
 	}
-	TAlog.registerInstance(&TAcfg);
+	trackingLog.registerInstance(&trackingConfig);
 
 	/* ***************** *
 	 * initialize inputs *
 	 * ***************** * */
 
 	// MAVLink reader for local mavlink stream
-	TSmavlinkReader localMavlinkReader(TAcfg.GPS.localMavlinkPort,
-			TAcfg.GPS.localMavlinkBaudrate);
-	TAlog.add(localMavlinkReader.getLog());
-	TAlog.registerInstance(&localMavlinkReader);
+	MavlinkReader localMavlinkReader(trackingConfig.GPS.localMavlinkPort,
+			trackingConfig.GPS.localMavlinkBaudrate);
+	trackingLog.add(localMavlinkReader.getLog());
+	trackingLog.registerInstance(&localMavlinkReader);
     MavlinkMessages localMavlinkMessages;
 
-	if (!cmdLineOpts.noLocalGPS) {
+	if (!commandLineOptions.noLocalGPS) {
 		if (localMavlinkReader.start() != true)
-			cmdLineOpts.noLocalGPS = true; // reuse of variable
+			commandLineOptions.noLocalGPS = true; // reuse of variable
 	}
 
 	// local GPS
-    TSmavlinkGPS localGps(&localMavlinkMessages, "localGPS");
-	TAlog.add(localGps.getLog());
-	TAlog.registerInstance(&localGps);
-
-//	TSlocalGPS GPSSensor (&localMavlinkReader);
-
-//	TAlog.add(GPSSensor.getLog());
-//	TAlog.registerInstance(&GPSSensor);
+    MavlinkGps localGps(&localMavlinkMessages, "localGPS");
+	trackingLog.add(localGps.getLog());
+	trackingLog.registerInstance(&localGps);
 
 	GPSPos localPosition;
-    localPosition = TAcfg.GPS.AntennaPos;
+    localPosition = trackingConfig.GPS.AntennaPos;
 
-	// MAVLink reader for remote mavlink stream
-    TSmavlinkReader remoteMavlinkReader(TAcfg.GPS.remoteMavlinkPort,TAcfg.GPS.remoteMavlinkBaudrate);
-	TAlog.add(remoteMavlinkReader.getLog());
-	TAlog.registerInstance(&remoteMavlinkReader);
+	// MAVLink reader for remote MAVLink stream
+    MavlinkReader remoteMavlinkReader(trackingConfig.GPS.remoteMavlinkPort,trackingConfig.GPS.remoteMavlinkBaudrate);
+	trackingLog.add(remoteMavlinkReader.getLog());
+	trackingLog.registerInstance(&remoteMavlinkReader);
     MavlinkMessages remoteMavlinkMessages;
     MavlinkRadioStatus radioStatus(&remoteMavlinkMessages);
     RadioRSSI mavlinkRSSI;
 
-	if (!cmdLineOpts.noRemoteGPS) {
+	if (!commandLineOptions.noRemoteGPS) {
 		if (remoteMavlinkReader.start() != true)
-			cmdLineOpts.noRemoteGPS = true; // reuse of variable
+			commandLineOptions.noRemoteGPS = true; // reuse of variable
 	}
 
 	// remote GPS
 
-    TSmavlinkGPS remoteGps(&remoteMavlinkMessages, "remoteGPS");
-	TAlog.add(remoteGps.getLog());
-	TAlog.registerInstance(&remoteGps);
+    MavlinkGps remoteGps(&remoteMavlinkMessages, "remoteGPS");
+	trackingLog.add(remoteGps.getLog());
+	trackingLog.registerInstance(&remoteGps);
 
 	GPSPos remotePosition;
 
 	/* initialize motor control */
 	MotorControl motorControl;
-	if (!cmdLineOpts.noMotors) {
-//		TAlog.log(vl_DEBUG,"motorControl() successful");
-		motorControl.init(&TAcfg.Mot);
-//		TAlog.log(vl_DEBUG,"motorControl.init successful");
-		TAlog.registerInstance(&motorControl);
-//		TAlog.log(vl_DEBUG,"motorControl registered as a logging instance");
+	if (!commandLineOptions.noMotors) {
+		motorControl.init(&trackingConfig.Mot);
+		trackingLog.registerInstance(&motorControl);
 	}
 	setpoints motorSetpoints;
 
 	/* initialize tracking modes */
 	State currentState;
-	TAlog.add(currentState.getLog());
-	TAlog.registerInstance(&currentState);
+	trackingLog.add(currentState.getLog());
+	trackingLog.registerInstance(&currentState);
 
 	// GPS Tracking
-	TAGPSTracking GPStracking;
-	TAlog.add(GPStracking.getLog());
-	TAlog.registerInstance(&GPStracking);
+	GpsTrackingMode gpsTracking;
+	trackingLog.add(gpsTracking.getLog());
+	trackingLog.registerInstance(&gpsTracking);
 
 	// Magnetometer readings
     MavlinkMagnetometer mavlinkMagn(&localMavlinkMessages);
-	TAlog.add(mavlinkMagn.getLog());
-	TAlog.registerInstance(&mavlinkMagn);
+	trackingLog.add(mavlinkMagn.getLog());
+	trackingLog.registerInstance(&mavlinkMagn);
 
 	MagReading localMagn;
 
 	// Find North
-	TSfindNorth findNorth;
-	TAlog.add(findNorth.getLog());
-	TAlog.registerInstance(&findNorth);
+	FindNorth findNorth;
+	trackingLog.add(findNorth.getLog());
+	trackingLog.registerInstance(&findNorth);
 
 	// Data Recorder
 	Recorder recorder;
-	TAlog.add(recorder.getLog());
-	TAlog.registerInstance(&recorder);
+	trackingLog.add(recorder.getLog());
+	trackingLog.registerInstance(&recorder);
 
 	/* set up GUI socket */
-	GuiBackend GUIBackend;
-	GUIBackend.setCfg(&TAcfg);
-	GUIBackend.setClo(&cmdLineOpts);
-	GUIBackend.setLog(&TAlog);
-	GUIBackend.setLocalPos(&localPosition);
-	GUIBackend.setRemotePos(&remotePosition);
-	GUIBackend.setLocalGps(&localGps);
-	GUIBackend.setRemoteGps(&remoteGps);
-	GUIBackend.setCurMode(&currentState);
-	GUIBackend.setGpStracking(&GPStracking);
-	GUIBackend.setMotorControl(&motorControl);
-	GUIBackend.setMotorSetpoints(&motorSetpoints);
-	GUIBackend.setRecorder(&recorder);
+	GuiBackend guiBackend;
+	guiBackend.setConfig(&trackingConfig);
+	guiBackend.setCommandLineOptions(&commandLineOptions);
+	guiBackend.setLog(&trackingLog);
+	guiBackend.setLocalPos(&localPosition);
+	guiBackend.setRemotePos(&remotePosition);
+	guiBackend.setLocalGps(&localGps);
+	guiBackend.setRemoteGps(&remoteGps);
+	guiBackend.setCurMode(&currentState);
+	guiBackend.setGpStracking(&gpsTracking);
+	guiBackend.setMotorControl(&motorControl);
+	guiBackend.setMotorSetpoints(&motorSetpoints);
+	guiBackend.setRecorder(&recorder);
 
-	GUIBackend.startThread(6556);
-	TAlog.add(GUIBackend.getLog());
-	TAlog.registerInstance(&GUIBackend);
+	guiBackend.startThread(6556);
+	trackingLog.add(guiBackend.getLog());
+	trackingLog.registerInstance(&guiBackend);
 
 //	pthread_mutex_lock(GUIBackend.pControlMutex);
 
@@ -205,15 +197,15 @@ int main(int argc, char** argv) {
 	/* sanity check */
 	// last chance to stop before control loop is started
 	if (!motorControl.commOK()) {
-		TAlog.log(vl_ERROR,
+		trackingLog.log(vl_ERROR,
 				"Quitting because of communication problems with EPOS");
-		currentState.set(tm_ENDING);
+		currentState.set(ts_ENDING);
 	}
 
 	/* declare (& initialize) some variables needed in control loop */
 	timespec startTs, curTs;
 	int waitDuration;
-	int updatePeriod = 1e6 / TAcfg.Glbl.updateFreq;
+	int updatePeriod = 1e6 / trackingConfig.Glbl.updateFreq;
 
 	bool newTrackedPos = false;
 
@@ -221,28 +213,28 @@ int main(int argc, char** argv) {
 
 	float curPanAngle = 0, curTiltAngle = 0;
 
-	if (cmdLineOpts.noLocalGPS) {
-		localPosition = TAcfg.GPS.AntennaPos;
+	if (commandLineOptions.noLocalGPS) {
+		localPosition = trackingConfig.GPS.AntennaPos;
 //		GPStracking.setAntennaPos(antennaPosition);
-		TAlog.log(vl_INFO,
+		trackingLog.log(vl_INFO,
 				"Using GPS position from configuration as antenna position");
 	}
 
 	std::vector<float> RSSvalues;
 	std::vector<float> pktRates;
 
-	TAlog.log(vl_INFO, "Starting control loop...");
+	trackingLog.log(vl_INFO, "Starting control loop...");
 
-	while (currentState.get() != tm_ENDING) {
+	while (currentState.get() != ts_ENDING) {
 		// get time
 		clock_gettime(CLOCK_REALTIME, &startTs);
 //        motorControl.displayDigitalInputState();
 		/* get input and process it if necessary */
 		// check if new config is available and process it
-		configChanges cfgChanges = TAcfg.getConfigChanges();
+		configChanges cfgChanges = trackingConfig.getConfigChanges();
 		if (cfgChanges.anyChanges) {
 			if (cfgChanges.Glbl) {
-				updatePeriod = 1e6 / TAcfg.Glbl.updateFreq;
+				updatePeriod = 1e6 / trackingConfig.Glbl.updateFreq;
 			}
 			if (cfgChanges.GPS) {
 				// TODO: changed GPS settings
@@ -253,11 +245,11 @@ int main(int argc, char** argv) {
 			if (cfgChanges.locate) {
 				// nothing has to be done, configuration is passed on function call
 			}
-			GUIBackend.sendConfig();
+			guiBackend.sendConfig();
 		}
 
 		// read out current angles
-		if (!cmdLineOpts.noMotors) {
+		if (!commandLineOptions.noMotors) {
 //			TAlog.log(vl_DEBUG,"Fetching motor data");
 			motorControl.fetchData();
 //			TAlog.log(vl_DEBUG,"Motor data successfully fetched");
@@ -273,7 +265,7 @@ int main(int argc, char** argv) {
 //        printf("\n");
 
         // process local GPS
-		if(!cmdLineOpts.noLocalGPS) {
+		if(!commandLineOptions.noLocalGPS) {
 			localGps.getPos(&localPosition);
 		}
 
@@ -286,10 +278,10 @@ int main(int argc, char** argv) {
 			localGpsFixAcquired = true;
 			float magneticDeclination = findNorth.magneticDeclination(localPosition);
 			cout << localPosition << endl;
-			GPStracking.setMagneticDeclination(magneticDeclination);
+			gpsTracking.setMagneticDeclination(magneticDeclination);
 			stringstream logmessage;
 			logmessage << "Magnetic declination: " << magneticDeclination;
-			TAlog.log(vl_DEBUG,logmessage.str());
+			trackingLog.log(vl_DEBUG,logmessage.str());
 		}
 
 		// cout << "Remote Position: " << remotePosition.toString() << endl;
@@ -300,82 +292,82 @@ int main(int argc, char** argv) {
 		motorSetpoints.panCtrltype = ct_undefined;
 		motorSetpoints.tiltCtrltype = ct_undefined;
 		switch (currentState.get()) {
-		case tm_ENDING:
+		case ts_ENDING:
 			motorSetpoints.panCtrltype = ct_velocity;
 			motorSetpoints.panValue = 0;
 			motorSetpoints.tiltCtrltype = ct_velocity;
 			motorSetpoints.tiltValue = 0;
 			break;
-		case tm_INIT:
-			if (!cmdLineOpts.noMotors) {
+		case ts_INIT:
+			if (!commandLineOptions.noMotors) {
 				if (motorControl.isInitialized()) {
 					if (!motorControl.tiltMotorIsHoming()) {
 						motorControl.homeTiltMotor();
-						TAlog.log(vl_INFO, std::string("Homing tilt motor"));
+						trackingLog.log(vl_INFO, std::string("Homing tilt motor"));
 					} else if (motorControl.isTiltHomed()) {
-						TAlog.log(vl_INFO, std::string("Tilt motor homed"));
-                        currentState.set(tm_MAPPING_ESTIMATION);
+						trackingLog.log(vl_INFO, std::string("Tilt motor homed"));
+                        currentState.set(ts_FIND_NORTH);
 					}
 				}
 			} else
-				currentState.set(tm_MAPPING_ESTIMATION);
+				currentState.set(ts_FIND_NORTH);
 			break;
 
-		case tm_GPS_TRACKING:
+		case ts_GPS_TRACKING:
 			if (newTrackedPos) {
-				TAlog.log(vl_DEBUG,
+				trackingLog.log(vl_DEBUG,
 						"processing new position of tracked object.");
-				GPStracking.update(localPosition, remotePosition);
-				motorSetpoints = GPStracking.getNewSetpoints();
+				gpsTracking.update(localPosition, remotePosition);
+				motorSetpoints = gpsTracking.getNewSetpoints();
 			}
 			break;
 
-		case tm_MAPPING_ESTIMATION:
+		case ts_FIND_NORTH:
 			// process magnetometer reading
 			mavlinkMagn.getMag(&localMagn);
 
 			if (findNorth.getLocateState() == fn_NOTREADY) {
-				findNorth.init(TAcfg.findNorth.panSpeed,TAcfg.findNorth.tiltAngle);
+				findNorth.init(trackingConfig.findNorth.panSpeed,trackingConfig.findNorth.tiltAngle);
 			}
 			else if (findNorth.getLocateState() == fn_FINISHED) {
-				GPStracking.setMapping(findNorth.northPanAngleFound(),0);
-				currentState.set(tm_GPS_TRACKING);
+				gpsTracking.setMapping(findNorth.northPanAngleFound(),0);
+				currentState.set(ts_GPS_TRACKING);
 				findNorth.reset();
 			}
 			else {
-                bool panPosReached = (!cmdLineOpts.noMotors) ? motorControl.panPositionReached() : true;
-				bool tiltPosReached = (!cmdLineOpts.noMotors) ? motorControl.tiltPositionReached() : true;
+                bool panPosReached = (!commandLineOptions.noMotors) ? motorControl.panPositionReached() : true;
+				bool tiltPosReached = (!commandLineOptions.noMotors) ? motorControl.tiltPositionReached() : true;
 				findNorth.update(curPanAngle,curTiltAngle,&localMagn,panPosReached,tiltPosReached);
 			}
 			motorSetpoints = findNorth.getNewSetpoints();
 
 			break;
-		case tm_READY:
-			motorSetpoints = GUIBackend.getNewMotorSetpoints();
+		case ts_READY:
+			motorSetpoints = guiBackend.getNewMotorSetpoints();
 			break;
 
-        case tm_LOCATE:
+        case ts_LOCATE:
             break;
 
-		case tm_STOP:
+		case ts_STOP:
 			motorSetpoints.panCtrltype = ct_velocity;
 			motorSetpoints.panValue = 0;
 			motorSetpoints.tiltCtrltype = ct_velocity;
 			motorSetpoints.tiltValue = 0;
-			if (!cmdLineOpts.noMotors) {
+			if (!commandLineOptions.noMotors) {
 				if (motorControl.getTiltSpeed() == 0
 						&& motorControl.getPanSpeed() == 0) {
 					// Motors have come to a full stop, switch back to mode READY
 					motorControl.enablePan();
 					motorControl.enableTilt();
-					currentState.set(tm_READY);
+					currentState.set(ts_READY);
 				}
 			}
 			break;
 		}
 
 		// set output (motor control)
-		if (!cmdLineOpts.noMotors) {
+		if (!commandLineOptions.noMotors) {
 			// pan
 			switch (motorSetpoints.panCtrltype) {
 			case ct_abspos:
@@ -420,10 +412,10 @@ int main(int argc, char** argv) {
 				(int) currentState.get());
 
 		// get log messages
-		TAlog.fetchLogs();
+		trackingLog.fetchLogs();
 
 		// signal to backend to receive and send data
-		pthread_cond_signal(GUIBackend.pDataReadyCond);
+		pthread_cond_signal(guiBackend.pDataReadyCond);
 
 		clock_gettime(CLOCK_REALTIME, &curTs);
 		waitDuration = (int) (1e6 * (curTs.tv_sec - startTs.tv_sec)
@@ -435,16 +427,16 @@ int main(int argc, char** argv) {
 
 	}
 	/* end tracking antenna */
-	GUIBackend.killThread();
+	guiBackend.killThread();
 //	remoteGPS.closeGPSPosServer();
 //	GPSSensor.killThread();
 	localMavlinkReader.stopReading();
 	remoteMavlinkReader.stopReading();
-	if (!cmdLineOpts.noMotors) {
+	if (!commandLineOptions.noMotors) {
 		motorControl.stop();
 	}
-	TAlog.fetchLogs();
-	TAlog.log(vl_INFO, "Tracking Antenna closed");
+	trackingLog.fetchLogs();
+	trackingLog.log(vl_INFO, "Tracking Antenna closed");
 	return EXIT_SUCCESS;
 }
 
