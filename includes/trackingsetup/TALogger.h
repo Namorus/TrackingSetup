@@ -27,7 +27,7 @@ public:
 
 	std::string verbosityLevelName(verbosityLevel _vLvl);
 
-	void registerInstance(TAClass* instance);
+	void registerInstance(TrackingSetup* instance);
 
 	/*
 	 * get all logs from the instances registered with @registerLoggingInstance(TAclass*)
@@ -46,7 +46,7 @@ private:
 	bool useStdout;
 
 	// create a list with all classes writing to log
-	std::list<TAClass*> loggingInstances;
+	std::list<TrackingSetup*> loggingInstances;
 
 	//
 	bool cacheLogForGui;

@@ -9,9 +9,9 @@
 #include <cstdio>
 #include <iostream>
 #include <stdint.h>
+#include <trackingsetup/trackingsetup.h>
 
 #include "trackingsetup/EposComm.h"
-#include "trackingsetup/TAClass.h"
 #include "trackingsetup/TAtypes.h"
 
 
@@ -38,7 +38,7 @@ namespace tracking {
 #define E_BIT01        0x0002      ///< bit code: switched on
 #define E_BIT00        0x0001      ///< bit code: ready to switch on
 
-class Epos : public TAClass {
+class Epos : public TrackingSetup {
 private:
 	EposComm* pGateway;
 	uint8_t nodeId;

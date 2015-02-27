@@ -8,14 +8,13 @@
 #ifndef TACONFIG_H_
 #define TACONFIG_H_
 
+#include <trackingsetup/trackingsetup.h>
 #include "TAtypes.h"
-#include "TAClass.h"
-
 #include <map>
 
 namespace tracking {
 
-class TAConfig: public TAClass {
+class TAConfig: public TrackingSetup {
 public:
 
 	TAConfig();
@@ -35,18 +34,19 @@ public:
 
 	configChanges getConfigChanges();
 
+	friend std::ostream& operator<<(std::ostream& out, const TAConfig& cfg);
+	friend std::istream& operator>>(std::istream& in, TAConfig& cfg);
+
 	GlobalConf Glbl;
 	GPStrackingConf GPS;
 	MotorControlConf Mot;
 	LocateConf locate;
 	FindNorthConf findNorth;
 
-	friend std::ostream& operator<<(std::ostream& out, const TAConfig& cfg);
-	friend std::istream& operator>>(std::istream& in, TAConfig& cfg);
+
 
 private:
 	std::string configFile;
-
 	configChanges changelist;
 
 };

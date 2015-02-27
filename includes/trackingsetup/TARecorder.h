@@ -8,11 +8,11 @@
 #ifndef TARECORDER_H_
 #define TARECORDER_H_
 
-#include "TAClass.h"
+#include <trackingsetup/trackingsetup.h>
 
 namespace tracking {
 
-class TARecorder: public tracking::TAClass {
+class TARecorder: public tracking::TrackingSetup {
 public:
 	TARecorder();
 

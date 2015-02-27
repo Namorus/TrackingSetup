@@ -9,8 +9,8 @@
 #define TAGUIBACKEND_H_
 
 
-#include "trackingsetup/TAClass.h"
-#include "trackingsetup/TAConfig.h"
+#include <trackingsetup/config.h>
+#include <trackingsetup/trackingsetup.h>
 #include "trackingsetup/TAGPSTracking.h"
 #include "trackingsetup/TALogger.h"
 #include "trackingsetup/TAmode.h"
@@ -21,7 +21,7 @@
 
 namespace tracking {
 
-class TAGUIBackend: public tracking::TAClass {
+class TAGUIBackend: public tracking::TrackingSetup {
 public:
 	pthread_mutex_t* pDataMutex;
 	pthread_cond_t* pDataReadyCond;

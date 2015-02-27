@@ -8,12 +8,12 @@
 #ifndef TAMOTORCONTROL_H_
 #define TAMOTORCONTROL_H_
 
+#include <trackingsetup/trackingsetup.h>
 #include "trackingsetup/Epos.h"
-#include "trackingsetup/TAClass.h"
 
 namespace tracking {
 
-class TAMotorControl: public TAClass {
+class TAMotorControl: public TrackingSetup {
 public:
 	TAMotorControl();
 	~TAMotorControl();

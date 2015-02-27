@@ -6,8 +6,6 @@
 CPP_SRCS += \
 ../Epos.cpp \
 ../EposComm.cpp \
-../TAClass.cpp \
-../TAConfig.cpp \
 ../TAGPSTracking.cpp \
 ../TAGUIBackend.cpp \
 ../TALogger.cpp \
@@ -22,13 +20,12 @@ CPP_SRCS += \
 ../TSmavlinkMag.cpp \
 ../TSmavlinkRadioStatus.cpp \
 ../TSmavlinkReader.cpp \
-../TrackingSetup.cpp 
+../config.cpp \
+../trackingsetup.cpp 
 
 OBJS += \
 ./Epos.o \
 ./EposComm.o \
-./TAClass.o \
-./TAConfig.o \
 ./TAGPSTracking.o \
 ./TAGUIBackend.o \
 ./TALogger.o \
@@ -43,13 +40,12 @@ OBJS += \
 ./TSmavlinkMag.o \
 ./TSmavlinkRadioStatus.o \
 ./TSmavlinkReader.o \
-./TrackingSetup.o 
+./config.o \
+./trackingsetup.o 
 
 CPP_DEPS += \
 ./Epos.d \
 ./EposComm.d \
-./TAClass.d \
-./TAConfig.d \
 ./TAGPSTracking.d \
 ./TAGUIBackend.d \
 ./TALogger.d \
@@ -64,7 +60,8 @@ CPP_DEPS += \
 ./TSmavlinkMag.d \
 ./TSmavlinkRadioStatus.d \
 ./TSmavlinkReader.d \
-./TrackingSetup.d 
+./config.d \
+./trackingsetup.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

@@ -8,11 +8,11 @@
 #ifndef TAMODE_H_
 #define TAMODE_H_
 
-#include "TAClass.h"
+#include <trackingsetup/trackingsetup.h>
 
 namespace tracking {
 
-class TAmode: public tracking::TAClass {
+class TAmode: public tracking::TrackingSetup {
 public:
 
 	TAmode();

@@ -11,13 +11,13 @@
 #include <pthread.h>
 #include <stdint.h>
 
-#include "trackingsetup/TAClass.h"
+#include <trackingsetup/trackingsetup.h>
 
 #ifndef EPOSCOMM_H_
 #define EPOSCOMM_H_
 
 namespace tracking {
-	class EposComm : public TAClass {
+	class EposComm : public TrackingSetup {
 
 	private:
 		//! USB FTDI context

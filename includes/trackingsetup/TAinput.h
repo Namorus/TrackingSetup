@@ -8,11 +8,11 @@
 #ifndef TAINPUT_H_
 #define TAINPUT_H_
 
-#include "trackingsetup/TAClass.h"
+#include <trackingsetup/trackingsetup.h>
 
 namespace tracking {
 
-class TAinput: public TAClass {
+class TAinput: public TrackingSetup {
 public:
 
 private:

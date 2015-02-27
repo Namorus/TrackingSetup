@@ -5,10 +5,10 @@
  *      Author: thomas
  */
 
+#include <trackingsetup/trackingsetup.h>
 #include <list>
 
 #include "iniparser/ini.h"
-#include "trackingsetup/TAClass.h"
 #include "trackingsetup/TALogger.h"
 
 namespace tracking {
@@ -91,12 +91,12 @@ std::string TALogger::verbosityLevelName(verbosityLevel verbosityLvl) {
 	return name;
 }
 
-void TALogger::registerInstance(TAClass* instance) {
+void TALogger::registerInstance(TrackingSetup* instance) {
 	loggingInstances.push_back(instance);
 }
 
 void TALogger::fetchLogs() {
-	for (std::list<TAClass*>::iterator it = loggingInstances.begin();
+	for (std::list<TrackingSetup*>::iterator it = loggingInstances.begin();
 			it != loggingInstances.end(); it++) {
 		add((*it)->getLog());
 	}

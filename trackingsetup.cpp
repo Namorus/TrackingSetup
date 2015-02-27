@@ -5,19 +5,63 @@
 // Copyright   : GPL
 // Description : TrackingSetup
 //============================================================================
+#include <algorithm>
+#include <list>
 #include <sstream>
 #include <unistd.h>
 
-#include "trackingsetup/TAClass.h"
 #include "trackingsetup/TAGUIBackend.h"
 #include "trackingsetup/TSfindNorth.h"
 #include "trackingsetup/TSmavlinkMag.h"
 #include "trackingsetup/TSmavlinkRadioStatus.h"
+#include "trackingsetup/trackingsetup.h"
 
 using namespace std;
 using namespace tracking;
 
 commandLineOptions parseCommandLine(int argc, char** argv);
+
+namespace tracking {
+std::list<TALogMessage>* TrackingSetup::getLog() {
+//	std::list<TALogMessage> logCopy(logMessages);
+//	logMessages.clear();
+	if (!logChildren.empty()) {
+		for (std::list<TrackingSetup*>::iterator it = logChildren.begin();
+				it != logChildren.end(); it++) {
+			appendLog((*it)->getLog());
+		}
+	}
+	return &logMessages;
+}
+
+void TrackingSetup::appendLog(std::list<TALogMessage>* messages) {
+	for (std::list<TALogMessage>::iterator it = messages->begin();
+			it != messages->end(); it++) {
+		logMessages.push_back(*it);
+	}
+	messages->clear();
+}
+void TrackingSetup::addLogMessage(verbosityLevel _verbosityLevel,
+		std::string _message) {
+	TALogMessage temp;
+	time(&temp.timestamp);
+	temp.vLvl = _verbosityLevel;
+	temp.message = _message;
+
+	logMessages.push_back(temp);
+}
+
+void TrackingSetup::addLogChild(TrackingSetup* child) {
+	logChildren.push_back(child);
+}
+
+void TrackingSetup::removeChild(TrackingSetup* child) {
+	std::list<TrackingSetup*>::iterator it = find(logChildren.begin(),logChildren.end(), child);
+	logChildren.erase(it);
+}
+
+} /* namespace tracking */
+
 
 int main(int argc, char** argv) {
 	/* read command line input */

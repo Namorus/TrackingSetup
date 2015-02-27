@@ -5,12 +5,13 @@
  *      Author: thomas
  */
 
+#include <trackingsetup/config.h>
 #include "includes/iniparser/ini.h"
-#include "trackingsetup/TAConfig.h"
 
 namespace tracking {
 
-TAConfig::TAConfig() {
+TAConfig::TAConfig() :
+	configFile("") {
 
 }
 

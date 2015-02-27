@@ -8,12 +8,12 @@
 #ifndef TATRACKINGMODE_H_
 #define TATRACKINGMODE_H_
 
-#include "trackingsetup/TAClass.h"
-#include "trackingsetup/TAConfig.h"
+#include <trackingsetup/config.h>
+#include <trackingsetup/trackingsetup.h>
 
 namespace tracking {
 
-class TATrackingMode: public tracking::TAClass {
+class TATrackingMode: public tracking::TrackingSetup {
 public:
 	void setConfig(TAConfig* pcfg);
 //	setpoint getNewSetpoint();
