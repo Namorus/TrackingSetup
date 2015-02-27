@@ -13,10 +13,10 @@
 
 namespace tracking {
 
-class TAMotorControl: public TrackingSetup {
+class MotorControl: public TrackingSetup {
 public:
-	TAMotorControl();
-	~TAMotorControl();
+	MotorControl();
+	~MotorControl();
 
 	void init(MotorControlConf* pcfg);
 
@@ -129,7 +129,7 @@ public:
 	bool commOK();
 
 	friend std::ostream& operator<<(std::ostream& out,
-			const TAMotorControl& motorControl);
+			const MotorControl& motorControl);
 
 private:
 	EposComm* pEposPan;

@@ -149,7 +149,7 @@ struct FindNorthConf {
 	float tiltAngle;
 };
 
-enum trackingMode {
+enum trackingState {
 	tm_ENDING = -1,
 	tm_INIT = 0,
 	tm_GPS_TRACKING = 1,

@@ -13,15 +13,15 @@
 
 namespace tracking {
 
-class TATrackingMode: public tracking::TrackingSetup {
+class TrackingMode: public tracking::TrackingSetup {
 public:
-	void setConfig(TAConfig* pcfg);
+	void setConfig(Config* pcfg);
 //	setpoint getNewSetpoint();
 
 	setpoints getNewSetpoints();
 
 protected:
-	TAConfig cfg;
+	Config cfg;
 
 //	setpoint newSetpoint;
 

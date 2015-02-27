@@ -10,12 +10,12 @@
 
 namespace tracking {
 
-TAConfig::TAConfig() :
+Config::Config() :
 	configFile("") {
 
 }
 
-int TAConfig::readConfig(std::string filename) {
+int Config::readConfig(std::string filename) {
 	configFile = filename;
 	if (configFile.size() > 0) {
 		if (ini_parse(configFile.c_str(), handler, (void*) this) < 0) {
@@ -32,9 +32,9 @@ int TAConfig::readConfig(std::string filename) {
 	return 1;
 }
 
-int TAConfig::handler(void* user, const char* section, const char* name,
+int Config::handler(void* user, const char* section, const char* name,
 		const char* value) {
-	TAConfig* pconfig = (TAConfig*) user;
+	Config* pconfig = (Config*) user;
 
 #define MATCH(s, n) strcmp(section, s) == 0 && strcmp(name, n) == 0
 
@@ -101,12 +101,12 @@ int TAConfig::handler(void* user, const char* section, const char* name,
 	return 1;
 }
 
-bool TAConfig::tob(const char* value) {
+bool Config::tob(const char* value) {
 	return (strcmp(value, "1") == 0 || strcmp(value, "true") == 0
 			|| strcmp(value, "yes") == 0);
 }
 
-void TAConfig::display(TAConfig* pconfig) {
+void Config::display(Config* pconfig) {
 	using namespace std;
 
 	cout << "TrackingAntenna Configuration" << endl
@@ -147,11 +147,11 @@ void TAConfig::display(TAConfig* pconfig) {
 			<< endl << endl << endl;
 }
 
-void TAConfig::display() {
+void Config::display() {
 	display(this);
 }
 
-std::ostream& operator<<(std::ostream& out, const TAConfig& cfg) {
+std::ostream& operator<<(std::ostream& out, const Config& cfg) {
 	out << "$Config ";
 
 	/* GlobalConf */
@@ -174,7 +174,7 @@ std::ostream& operator<<(std::ostream& out, const TAConfig& cfg) {
 
 }
 
-void TAConfig::setNewConfig(TAConfig* pNewCfg) {
+void Config::setNewConfig(Config* pNewCfg) {
 
 	//TODO: go through new config and check what has changed to signal the new changes to the classes
 	if (pNewCfg->Glbl != Glbl) {
@@ -201,7 +201,7 @@ void TAConfig::setNewConfig(TAConfig* pNewCfg) {
 	}
 }
 
-std::istream& operator>>(std::istream& in, TAConfig& cfg) {
+std::istream& operator>>(std::istream& in, Config& cfg) {
 
 	/* GlobalConf */
 	in >> cfg.Glbl.verbose;
@@ -314,7 +314,7 @@ bool operator!=(const LocateConf& a, const LocateConf& b) {
 	return true;
 }
 
-configChanges TAConfig::getConfigChanges() {
+configChanges Config::getConfigChanges() {
 	configChanges temp = changelist;
 	changelist = configChanges();
 	return temp;

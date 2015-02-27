@@ -59,6 +59,7 @@ public:
 	 */
 	void removeChild(TrackingSetup* child);
 
+
 protected:
 	std::list<TALogMessage> logMessages;
 	std::list<TrackingSetup*> logChildren;

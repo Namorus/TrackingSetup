@@ -13,15 +13,15 @@
 #include <trackingsetup/gps_tracking.h>
 #include <trackingsetup/logger.h>
 #include <trackingsetup/mavlink_gps.h>
-#include <trackingsetup/mode.h>
 #include <trackingsetup/motor_control.h>
 #include <trackingsetup/recorder.h>
+#include <trackingsetup/tracking_state.h>
 #include <trackingsetup/trackingsetup.h>
 #include <trackingsetup/types.h>
 
 namespace tracking {
 
-class TAGUIBackend: public tracking::TrackingSetup {
+class GuiBackend: public tracking::TrackingSetup {
 public:
 	pthread_mutex_t* pDataMutex;
 	pthread_cond_t* pDataReadyCond;
@@ -29,7 +29,7 @@ public:
 	pthread_mutex_t* pControlMutex;
 	pthread_cond_t* pControlCond;
 
-	TAGUIBackend();
+	GuiBackend();
 
 	static void* GuiBackendThread(void* arg);
 
@@ -68,31 +68,31 @@ public:
 	void setRemotePos(GPSPos* remotePos);
 	void setLocalGps(TSmavlinkGPS* localGPS);
 	void setRemoteGps(TSmavlinkGPS* remoteGPS);
-	void setCfg(TAConfig* cfg);
+	void setCfg(Config* cfg);
 	void setClo(commandLineOptions* clo);
-	void setCurMode(TAmode* curMode);
+	void setCurMode(State* curMode);
 	void setGpStracking(TAGPSTracking* gpStracking);
 	void setLog(TALogger* log);
-	void setMotorControl(TAMotorControl* motorControl);
+	void setMotorControl(MotorControl* motorControl);
 	void setMotorSetpoints(setpoints* motorSetpoints);
-	void setRecorder(TARecorder* recorder);
+	void setRecorder(Recorder* recorder);
 
 	template<class T> void addToData(T* ptr) {
 		sendBuffer << *ptr;
 	}
 
 private:
-	TAConfig* pCfg;
+	Config* pCfg;
 	commandLineOptions* pCLO;
 	TALogger* pLog;
 	GPSPos* pLocalPos;
 	GPSPos* pRemotePos;
 	TSmavlinkGPS* pLocalGps;
 	TSmavlinkGPS* pRemoteGps;
-	TAmode* pCurMode;
+	State* pCurMode;
 	TAGPSTracking* pGPStracking;
-	TAMotorControl* pMotorControl;
-	TARecorder* pRecorder;
+	MotorControl* pMotorControl;
+	Recorder* pRecorder;
 
 	setpoints* pMotorSetpoints;
 

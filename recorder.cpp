@@ -11,13 +11,13 @@
 
 namespace tracking {
 
-TARecorder::TARecorder() :
+Recorder::Recorder() :
 		recording(false) {
 	pRecordMutex = new pthread_mutex_t;
 	pthread_mutex_init(pRecordMutex, NULL);
 }
 
-int TARecorder::start(recorderSettings &_settings) {
+int Recorder::start(recorderSettings &_settings) {
 	if (!isRecording()) {
 		settings = _settings;
 		std::stringstream filename;
@@ -43,7 +43,7 @@ int TARecorder::start(recorderSettings &_settings) {
 	return -2;
 }
 
-void TARecorder::stop() {
+void Recorder::stop() {
 	pthread_mutex_lock(pRecordMutex);
 	fileHandle.close();
 	recording = false;
@@ -54,7 +54,7 @@ void TARecorder::stop() {
 	}
 }
 
-bool TARecorder::isRecording() {
+bool Recorder::isRecording() {
 	pthread_mutex_lock(pRecordMutex);
 	bool temp = recording;
 	pthread_mutex_unlock(pRecordMutex);
@@ -62,7 +62,7 @@ bool TARecorder::isRecording() {
 	return temp;
 }
 
-void TARecorder::record(timespec* const Ts, std::vector<float>* const RSSvalues,
+void Recorder::record(timespec* const Ts, std::vector<float>* const RSSvalues,
 		int panPosition, int tiltPosition, GPSPos* const localGPS,
 		GPSPos* const remoteGPS, int curMode) {
 	if (isRecording()) {
@@ -113,7 +113,7 @@ void TARecorder::record(timespec* const Ts, std::vector<float>* const RSSvalues,
 
 }
 
-void TARecorder::writeHeader() {
+void Recorder::writeHeader() {
 	std::stringstream headerLine;
 	if (settings.recordTimestamp) {
 		headerLine << "timestamp ";

@@ -14,10 +14,10 @@
 
 namespace tracking {
 
-class TAConfig: public TrackingSetup {
+class Config: public TrackingSetup {
 public:
 
-	TAConfig();
+	Config();
 
 	int readConfig(std::string filename);
 
@@ -26,16 +26,16 @@ public:
 
 	static bool tob(const char* value);
 
-	static void display(TAConfig* pconfig);
+	static void display(Config* pconfig);
 
 	void display();
 
-	void setNewConfig(TAConfig* pNewCfg);
+	void setNewConfig(Config* pNewCfg);
 
 	configChanges getConfigChanges();
 
-	friend std::ostream& operator<<(std::ostream& out, const TAConfig& cfg);
-	friend std::istream& operator>>(std::istream& in, TAConfig& cfg);
+	friend std::ostream& operator<<(std::ostream& out, const Config& cfg);
+	friend std::istream& operator>>(std::istream& in, Config& cfg);
 
 	GlobalConf Glbl;
 	GPStrackingConf GPS;

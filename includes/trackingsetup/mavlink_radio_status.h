@@ -14,12 +14,12 @@
 
 namespace tracking {
 
-class TSmavlinkRadioStatus: public TAinput {
+class MavlinkRadioStatus: public Input {
 public:
-    TSmavlinkRadioStatus(MavlinkMessages* mavlinkMessages);
+    MavlinkRadioStatus(MavlinkMessages* mavlinkMessages);
     bool getRSSI(RadioRSSI* radioRSSI);
 
-    virtual ~TSmavlinkRadioStatus();
+    virtual ~MavlinkRadioStatus();
 
 //	friend std::ostream& operator<<(std::ostream& out,	const TSmavlinkReader& mavlinkGPS);
 

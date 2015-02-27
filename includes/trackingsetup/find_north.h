@@ -12,7 +12,7 @@
 
 namespace tracking {
 
-class TSfindNorth: public TATrackingMode {
+class TSfindNorth: public TrackingMode {
 public:
 	TSfindNorth();
 	virtual ~TSfindNorth();

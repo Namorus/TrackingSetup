@@ -9,13 +9,13 @@
 
 namespace tracking {
 
-TSmavlinkMag::TSmavlinkMag(MavlinkMessages* mavlinkMessages) :
+MavlinkMagnetometer::MavlinkMagnetometer(MavlinkMessages* mavlinkMessages) :
     mavlinkMessages_(mavlinkMessages),
 	lastTimestamp_(0) {
 
 }
 
-bool TSmavlinkMag::getMag(MagReading* mag) {
+bool MavlinkMagnetometer::getMag(MagReading* mag) {
     if (mavlinkMessages_->lastHighresImu > lastTimestamp_) {
         mag->magX = mavlinkMessages_->highres_imu.xmag;
         mag->magY = mavlinkMessages_->highres_imu.ymag;
@@ -27,7 +27,7 @@ bool TSmavlinkMag::getMag(MagReading* mag) {
 	}
 }
 
-TSmavlinkMag::~TSmavlinkMag() {
+MavlinkMagnetometer::~MavlinkMagnetometer() {
 	// TODO Auto-generated destructor stub
 }
 

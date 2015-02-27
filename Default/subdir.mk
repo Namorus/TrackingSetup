@@ -16,11 +16,11 @@ CPP_SRCS += \
 ../mavlink_mag.cpp \
 ../mavlink_radio_status.cpp \
 ../mavlink_reader.cpp \
-../mode.cpp \
 ../motor_control.cpp \
 ../position_input.cpp \
 ../recorder.cpp \
 ../tracking_mode.cpp \
+../tracking_state.cpp \
 ../trackingsetup.cpp 
 
 OBJS += \
@@ -36,11 +36,11 @@ OBJS += \
 ./mavlink_mag.o \
 ./mavlink_radio_status.o \
 ./mavlink_reader.o \
-./mode.o \
 ./motor_control.o \
 ./position_input.o \
 ./recorder.o \
 ./tracking_mode.o \
+./tracking_state.o \
 ./trackingsetup.o 
 
 CPP_DEPS += \
@@ -56,11 +56,11 @@ CPP_DEPS += \
 ./mavlink_mag.d \
 ./mavlink_radio_status.d \
 ./mavlink_reader.d \
-./mode.d \
 ./motor_control.d \
 ./position_input.d \
 ./recorder.d \
 ./tracking_mode.d \
+./tracking_state.d \
 ./trackingsetup.d 
 
 

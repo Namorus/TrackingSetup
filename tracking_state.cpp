@@ -5,18 +5,18 @@
  *      Author: thomas
  */
 
-#include <trackingsetup/mode.h>
+#include <trackingsetup/tracking_state.h>
 
 namespace tracking {
 
-TAmode::TAmode() :
+State::State() :
 		curmode(tm_INIT) {
 	pMutexCurmode = new pthread_mutex_t;
 	pthread_mutex_init(pMutexCurmode, NULL);
 }
 
-trackingMode TAmode::get() {
-	trackingMode temp;
+trackingState State::get() {
+	trackingState temp;
 	pthread_mutex_lock(pMutexCurmode);
 	temp = curmode;
 	pthread_mutex_unlock(pMutexCurmode);
@@ -24,14 +24,14 @@ trackingMode TAmode::get() {
 	return temp;
 }
 
-void TAmode::set(trackingMode newmode) {
+void State::set(trackingState newmode) {
 	pthread_mutex_lock(pMutexCurmode);
 	curmode = newmode;
 	pthread_mutex_unlock(pMutexCurmode);
 	addLogMessage(vl_INFO, "Changing to mode " + getModeName(newmode));
 }
 
-std::string TAmode::getModeName(trackingMode mode) {
+std::string State::getModeName(trackingState mode) {
 	switch (mode) {
 	case tm_ENDING:
 		return std::string("ENDING");
@@ -51,7 +51,7 @@ std::string TAmode::getModeName(trackingMode mode) {
 	return std::string("unknown");
 }
 
-std::ostream& operator<<(std::ostream& out, const TAmode& curMode) {
+std::ostream& operator<<(std::ostream& out, const State& curMode) {
 	out << "$CurMode ";
 	out << curMode.curmode;
 

@@ -13,7 +13,7 @@
 
 namespace tracking {
 
-class TSmavlinkGPS: public TSPosInput {
+class TSmavlinkGPS: public PositionInput {
 public:
     TSmavlinkGPS(MavlinkMessages* mavlinkMessages, std::string label);
 	bool getPos(GPSPos* pos);

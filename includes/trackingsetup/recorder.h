@@ -12,9 +12,9 @@
 
 namespace tracking {
 
-class TARecorder: public tracking::TrackingSetup {
+class Recorder: public tracking::TrackingSetup {
 public:
-	TARecorder();
+	Recorder();
 
 	int start(recorderSettings& settings);
 	void stop();

@@ -12,10 +12,14 @@
 
 namespace tracking {
 
-class TAinput: public TrackingSetup {
-public:
 
-private:
+/**
+ * some base class, not really needed at the moment, therefore defined inline
+ */
+class Input: public TrackingSetup {
+	public:
+
+	private:
 
 };
 

@@ -12,12 +12,12 @@
 
 namespace tracking {
 
-class TSmavlinkMag: public TAinput {
+class MavlinkMagnetometer: public Input {
 public:
-    TSmavlinkMag(MavlinkMessages* mavlinkMessages_);
+    MavlinkMagnetometer(MavlinkMessages* mavlinkMessages_);
 	bool getMag(MagReading* mag);
 
-	virtual ~TSmavlinkMag();
+	virtual ~MavlinkMagnetometer();
 
 	friend std::ostream& operator<<(std::ostream& out,
 				const TSmavlinkReader& mavlinkGPS);

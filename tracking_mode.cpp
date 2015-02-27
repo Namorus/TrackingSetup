@@ -9,12 +9,12 @@
 
 namespace tracking {
 
-void TATrackingMode::setConfig(TAConfig* pcfg) {
+void TrackingMode::setConfig(Config* pcfg) {
 	cfg = *pcfg;
 
 }
 
-setpoints TATrackingMode::getNewSetpoints() {
+setpoints TrackingMode::getNewSetpoints() {
 	setpoints temp = newSetpoints;
 	newSetpoints.panCtrltype = ct_undefined;
 	newSetpoints.panValue = 0;
@@ -23,18 +23,18 @@ setpoints TATrackingMode::getNewSetpoints() {
 	return temp;
 }
 
-void TATrackingMode::setNewSetpoints(setpoints _newSetpoints) {
+void TrackingMode::setNewSetpoints(setpoints _newSetpoints) {
 	newSetpoints = _newSetpoints;
 }
 
-void TATrackingMode::setNewSetpoints(TActrlType type, double pan, double tilt) {
+void TrackingMode::setNewSetpoints(TActrlType type, double pan, double tilt) {
 	newSetpoints.panCtrltype = type;
 	newSetpoints.panValue = pan;
 	newSetpoints.tiltCtrltype = type;
 	newSetpoints.tiltValue = tilt;
 }
 
-void TATrackingMode::setNewSetpoints(TActrlType panType, double panValue,
+void TrackingMode::setNewSetpoints(TActrlType panType, double panValue,
 		TActrlType tiltType, double tiltValue) {
 	newSetpoints.panCtrltype = panType;
 	newSetpoints.panValue = panValue;
@@ -42,11 +42,11 @@ void TATrackingMode::setNewSetpoints(TActrlType panType, double panValue,
 	newSetpoints.tiltValue = tiltValue;
 }
 
-void TATrackingMode::setNewPanSetpoint(TActrlType type, double _value) {
+void TrackingMode::setNewPanSetpoint(TActrlType type, double _value) {
 	newSetpoints.panCtrltype = type;
 	newSetpoints.panValue = _value;
 }
-void TATrackingMode::setNewTiltSetpoint(TActrlType type, double _value) {
+void TrackingMode::setNewTiltSetpoint(TActrlType type, double _value) {
 	newSetpoints.tiltCtrltype = type;
 	newSetpoints.tiltValue = _value;
 }

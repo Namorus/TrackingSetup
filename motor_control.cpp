@@ -8,7 +8,7 @@
 #include <trackingsetup/motor_control.h>
 
 namespace tracking {
-TAMotorControl::TAMotorControl() :
+MotorControl::MotorControl() :
 		pEposPan(NULL), pEposTilt(NULL), panController(NULL), tiltController(
 				NULL), tiltVelocityMust(0.0), panVelocityMust(0.0), initialized(
 				false),
@@ -18,12 +18,12 @@ TAMotorControl::TAMotorControl() :
 //	tiltController->setVerbose(true);
 }
 
-TAMotorControl::~TAMotorControl() {
+MotorControl::~MotorControl() {
 	pEposPan->close();
 	pEposTilt->close();
 }
 
-void TAMotorControl::init(MotorControlConf* arg) {
+void MotorControl::init(MotorControlConf* arg) {
 	if (arg != NULL) {
 		pconfig = arg;
 		// using devices serialnumber for identification (pan / tilt)
@@ -95,23 +95,23 @@ void TAMotorControl::init(MotorControlConf* arg) {
 
 }
 
-void TAMotorControl::enablePan() {
+void MotorControl::enablePan() {
 	panController->enable();
 }
 
-void TAMotorControl::enableTilt() {
+void MotorControl::enableTilt() {
 	tiltController->enable();
 }
 
-bool TAMotorControl::tiltMotorIsHoming() {
+bool MotorControl::tiltMotorIsHoming() {
 	return tiltIsHoming;
 }
 
-bool TAMotorControl::commOK() {
+bool MotorControl::commOK() {
 	return (bool) (commOpenRes == 0);
 }
 
-int TAMotorControl::stop() {
+int MotorControl::stop() {
 
 	panController->setState(Epos::DISABLE_OPERATION);
 	tiltController->setState(Epos::DISABLE_OPERATION);
@@ -119,7 +119,7 @@ int TAMotorControl::stop() {
 	return 0;
 }
 
-void TAMotorControl::setTiltVelocity(float newTiltSpeed) {
+void MotorControl::setTiltVelocity(float newTiltSpeed) {
 
 //	tiltController->enable();
 	tiltController->setOperationMode(Epos::OMD_PROFILE_VELOCITY_MODE);
@@ -130,33 +130,33 @@ void TAMotorControl::setTiltVelocity(float newTiltSpeed) {
 
 }
 
-float TAMotorControl::getTiltVelocityMust() {
+float MotorControl::getTiltVelocityMust() {
 	return tiltVelocityMust;
 }
 
-bool TAMotorControl::isInitialized() {
+bool MotorControl::isInitialized() {
 	return initialized;
 }
 
-void TAMotorControl::quickstop() {
+void MotorControl::quickstop() {
 	tiltController->quickStop();
 	panController->quickStop();
 	this->tiltVelocityMust = 0;
 	this->panVelocityMust = 0;
 }
 
-float TAMotorControl::getTiltSpeed() {
+float MotorControl::getTiltSpeed() {
 //	return tiltController->getActualVelocity();
 	return curData.tiltVelocity;
 
 }
 
-float TAMotorControl::getPanSpeed() {
+float MotorControl::getPanSpeed() {
 //	return panController->getActualVelocity();
 	return curData.panVelocity;
 }
 
-void TAMotorControl::setPanVelocity(float newPanSpeed) {
+void MotorControl::setPanVelocity(float newPanSpeed) {
 //	panController->enable();
 	panController->setOperationMode(Epos::OMD_PROFILE_VELOCITY_MODE);
 	panController->setMotionProfileType(1);
@@ -165,18 +165,18 @@ void TAMotorControl::setPanVelocity(float newPanSpeed) {
 	panController->startProfileVelocity();
 }
 
-float TAMotorControl::getPanVelocityMust() {
+float MotorControl::getPanVelocityMust() {
 	return panVelocityMust;
 }
 
-void TAMotorControl::setRelativePanAngle(double relPanAngleMust) {
+void MotorControl::setRelativePanAngle(double relPanAngleMust) {
 	panController->setOperationMode(Epos::OMD_PROFILE_POSITION_MODE);
 	panController->setMotionProfileType(1);
 	panController->setTargetPosition(deg2epos(relPanAngleMust));
 	panController->startRelativeMotion();
 }
 
-void TAMotorControl::setPanAngle(double panAngleMust) {
+void MotorControl::setPanAngle(double panAngleMust) {
 	// read out current operation mode for later resetting.
 //	Epos::operational_mode_t curOpMode = panController->getActualOperationMode();
 
@@ -213,7 +213,7 @@ void TAMotorControl::setPanAngle(double panAngleMust) {
 //	panController->setOperationMode(curOpMode);
 }
 
-void TAMotorControl::setPanPosition(int panPosMust) {
+void MotorControl::setPanPosition(int panPosMust) {
 	// read out current operation mode for later resetting.
 //	Epos::operational_mode_t curOpMode = panController->getActualOperationMode();
 
@@ -226,7 +226,7 @@ void TAMotorControl::setPanPosition(int panPosMust) {
 //	panController->setOperationMode(curOpMode);
 }
 
-void TAMotorControl::setTiltAngle(double tiltAngleMust) {
+void MotorControl::setTiltAngle(double tiltAngleMust) {
 	// read out current operation mode for later resetting.
 //	Epos::operational_mode_t curOpMode = tiltController->getActualOperationMode();
 
@@ -239,7 +239,7 @@ void TAMotorControl::setTiltAngle(double tiltAngleMust) {
 //	tiltController->setOperationMode(curOpMode);
 }
 
-void TAMotorControl::setTiltPosition(int tiltPosMust) {
+void MotorControl::setTiltPosition(int tiltPosMust) {
 	// read out current operation mode for later resetting.
 //	Epos::operational_mode_t curOpMode = tiltController->getActualOperationMode();
 
@@ -251,27 +251,27 @@ void TAMotorControl::setTiltPosition(int tiltPosMust) {
 	// set previous operation mode
 //	tiltController->setOperationMode(curOpMode);
 }
-void TAMotorControl::setRelativeTiltAngle(double relTiltAngleMust) {
+void MotorControl::setRelativeTiltAngle(double relTiltAngleMust) {
 	tiltController->setOperationMode(Epos::OMD_PROFILE_POSITION_MODE);
 	tiltController->setMotionProfileType(1);
 	tiltController->setTargetPosition(deg2epos(relTiltAngleMust));
 	tiltController->startRelativeMotion();
 }
-bool TAMotorControl::isTiltHomed() {
+bool MotorControl::isTiltHomed() {
 	return tiltController->isHomingAttained();
 }
 
-int TAMotorControl::getTiltPosition() {
+int MotorControl::getTiltPosition() {
 //	return tiltController->getActualPosition();
 	return curData.tiltPosition;
 }
 
-double TAMotorControl::getTiltAngle() {
+double MotorControl::getTiltAngle() {
 //	return epos2deg(tiltController->getActualPosition());
 	return curData.tiltAngle;
 }
 
-int TAMotorControl::homeTiltMotor() {
+int MotorControl::homeTiltMotor() {
 
 	// set operation mode to homing mode
 	tiltController->setOperationMode(Epos::OMD_HOMING_MODE);
@@ -286,20 +286,20 @@ int TAMotorControl::homeTiltMotor() {
 	return 0;
 }
 
-bool TAMotorControl::panPositionReached() {
+bool MotorControl::panPositionReached() {
 	return (bool) panController->isTargetReached();
 }
 
-bool TAMotorControl::tiltPositionReached() {
+bool MotorControl::tiltPositionReached() {
 	return (bool) tiltController->isTargetReached();
 }
 
-int TAMotorControl::getPanPosition() {
+int MotorControl::getPanPosition() {
 //	return panController->getActualPosition();
 	return curData.panPosition;
 }
 
-double TAMotorControl::getPanAngle() {
+double MotorControl::getPanAngle() {
 //	double curPanAngle = fmod(epos2deg(getPanPosition()),360.0);
 //	if (curPanAngle < 0)
 //		curPanAngle += 360.0;
@@ -308,22 +308,22 @@ double TAMotorControl::getPanAngle() {
 	return curData.panAngle;
 }
 
-void TAMotorControl::displayDigitalInputState() {
+void MotorControl::displayDigitalInputState() {
     std::cout << "Pan: " << panController->getCurrentDigitalInputState() << "\t";
     std::cout << "Tilt: " << tiltController->getCurrentDigitalInputState() << std::endl;
 }
 
-int TAMotorControl::deg2epos(double deg) {
+int MotorControl::deg2epos(double deg) {
 	return (int) deg * gearRatio * 2000.0 / 360 + 0.5;
 }
 
-int TAMotorControl::deg_s2epos(double deg_s) {
+int MotorControl::deg_s2epos(double deg_s) {
 
 	// velocity = rev/min = deg/s * 60s/min * 1rev/360deg * gearRatio
 	return (int) (deg_s / 6.0 * gearRatio + 0.5);
 }
 
-float TAMotorControl::epos2deg_s(int epos) {
+float MotorControl::epos2deg_s(int epos) {
 
 	if (gearRatio != 0) {
 		return 6.0 * epos / gearRatio;
@@ -332,7 +332,7 @@ float TAMotorControl::epos2deg_s(int epos) {
 	return 0;
 }
 
-float TAMotorControl::epos2deg(int qc) {
+float MotorControl::epos2deg(int qc) {
 
 	if (gearRatio != 0) {
 		return (float) qc / gearRatio * 360.0 / 2000.0;
@@ -341,7 +341,7 @@ float TAMotorControl::epos2deg(int qc) {
 	return 0;
 }
 
-void TAMotorControl::fetchData() {
+void MotorControl::fetchData() {
 	curData.panPosition = panController->getActualPosition();
 	curData.tiltPosition = tiltController->getActualPosition();
 
@@ -357,16 +357,16 @@ void TAMotorControl::fetchData() {
 
 
 std::ostream& operator<<(std::ostream& out,
-		const TAMotorControl& motorControl) {
+		const MotorControl& motorControl) {
 	out << "$MotorData ";
 	out.precision(6);
 	out << motorControl.curData.panPosition << " "
 			<< motorControl.curData.tiltPosition << " "
 			<< motorControl.curData.panAngle << " "
 			<< motorControl.curData.tiltAngle << " "
-			<< TAMotorControl::epos2deg_s(motorControl.curData.panVelocity)
+			<< MotorControl::epos2deg_s(motorControl.curData.panVelocity)
 			<< " "
-			<< TAMotorControl::epos2deg_s(motorControl.curData.tiltVelocity);
+			<< MotorControl::epos2deg_s(motorControl.curData.tiltVelocity);
 	return out;
 }
 

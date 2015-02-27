@@ -75,7 +75,7 @@ int main(int argc, char** argv) {
 	TAlog.log(vl_INFO, "TrackingSetup started");
 
 	/* read config file */
-	TAConfig TAcfg;
+	Config TAcfg;
 	TAcfg.readConfig(cmdLineOpts.cfgFileName);
 	TAlog.add(TAcfg.getLog());
 	if (cmdLineOpts.verbosity == vl_DEBUG) {
@@ -117,7 +117,7 @@ int main(int argc, char** argv) {
 	TAlog.add(remoteMavlinkReader.getLog());
 	TAlog.registerInstance(&remoteMavlinkReader);
     MavlinkMessages remoteMavlinkMessages;
-    TSmavlinkRadioStatus radioStatus(&remoteMavlinkMessages);
+    MavlinkRadioStatus radioStatus(&remoteMavlinkMessages);
     RadioRSSI mavlinkRSSI;
 
 	if (!cmdLineOpts.noRemoteGPS) {
@@ -134,7 +134,7 @@ int main(int argc, char** argv) {
 	GPSPos remotePosition;
 
 	/* initialize motor control */
-	TAMotorControl motorControl;
+	MotorControl motorControl;
 	if (!cmdLineOpts.noMotors) {
 //		TAlog.log(vl_DEBUG,"motorControl() successful");
 		motorControl.init(&TAcfg.Mot);
@@ -145,7 +145,7 @@ int main(int argc, char** argv) {
 	setpoints motorSetpoints;
 
 	/* initialize tracking modes */
-	TAmode curMode;
+	State curMode;
 	TAlog.add(curMode.getLog());
 	TAlog.registerInstance(&curMode);
 
@@ -155,7 +155,7 @@ int main(int argc, char** argv) {
 	TAlog.registerInstance(&GPStracking);
 
 	// Magnetometer readings
-    TSmavlinkMag mavlinkMagn(&localMavlinkMessages);
+    MavlinkMagnetometer mavlinkMagn(&localMavlinkMessages);
 	TAlog.add(mavlinkMagn.getLog());
 	TAlog.registerInstance(&mavlinkMagn);
 
@@ -167,12 +167,12 @@ int main(int argc, char** argv) {
 	TAlog.registerInstance(&findNorth);
 
 	// Data Recorder
-	TARecorder recorder;
+	Recorder recorder;
 	TAlog.add(recorder.getLog());
 	TAlog.registerInstance(&recorder);
 
 	/* set up GUI socket */
-	TAGUIBackend GUIBackend;
+	GuiBackend GUIBackend;
 	GUIBackend.setCfg(&TAcfg);
 	GUIBackend.setClo(&cmdLineOpts);
 	GUIBackend.setLog(&TAlog);

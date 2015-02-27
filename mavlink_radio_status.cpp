@@ -10,13 +10,13 @@
 
 namespace tracking {
 
-TSmavlinkRadioStatus::TSmavlinkRadioStatus(MavlinkMessages* mavlinkMessages) :
+MavlinkRadioStatus::MavlinkRadioStatus(MavlinkMessages* mavlinkMessages) :
     mavlinkMessages_(mavlinkMessages),
     lastTimestamp_(0) {
 
 }
 
-bool TSmavlinkRadioStatus::getRSSI(RadioRSSI* radioRSSI) {
+bool MavlinkRadioStatus::getRSSI(RadioRSSI* radioRSSI) {
     if(mavlinkMessages_->lastRadioStatus > lastTimestamp_) {
         radioRSSI->rssi = mavlinkMessages_->radio_status.rssi;
         radioRSSI->remRssi = mavlinkMessages_->radio_status.remrssi;
@@ -33,7 +33,7 @@ bool TSmavlinkRadioStatus::getRSSI(RadioRSSI* radioRSSI) {
 
 }
 
-TSmavlinkRadioStatus::~TSmavlinkRadioStatus() {
+MavlinkRadioStatus::~MavlinkRadioStatus() {
 	// TODO Auto-generated destructor stub
 }
 

@@ -16,7 +16,7 @@
 
 namespace tracking {
 
-class TSmavlinkReader: public TAinput {
+class TSmavlinkReader: public Input {
 public:
 	TSmavlinkReader();
 	TSmavlinkReader(std::string &port, int &baudrate);

@@ -14,12 +14,12 @@
 
 namespace tracking {
 
-class TSPosInput: public TAinput {
+class PositionInput: public Input {
 public:
 	void getPos(GPSPos* pos);
 
 	friend std::ostream& operator<<(std::ostream& out,
-			const TSPosInput& posInput);
+			const PositionInput& posInput);
 
 protected:
 	std::string label_;

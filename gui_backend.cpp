@@ -13,7 +13,7 @@
 
 namespace tracking {
 
-TAGUIBackend::TAGUIBackend() :
+GuiBackend::GuiBackend() :
 		pCfg(NULL),
 		pCLO(NULL),
 		pLog(NULL),
@@ -50,8 +50,8 @@ TAGUIBackend::TAGUIBackend() :
 	pthread_mutex_init(pConnInitMutex, NULL);
 }
 
-void* TAGUIBackend::GuiBackendThread(void* arg) {
-	TAGUIBackend* self = (TAGUIBackend*) arg;
+void* GuiBackend::GuiBackendThread(void* arg) {
+	GuiBackend* self = (GuiBackend*) arg;
 
 	/******************
 	 *  open socket   *
@@ -229,7 +229,7 @@ void* TAGUIBackend::GuiBackendThread(void* arg) {
 
 }
 
-int TAGUIBackend::startThread(int _serverPort) {
+int GuiBackend::startThread(int _serverPort) {
 	serverPort = _serverPort;
 	char portNo[6];
 	sprintf(portNo, "%d", serverPort);
@@ -238,7 +238,7 @@ int TAGUIBackend::startThread(int _serverPort) {
 	return pthread_create(&serverThread, NULL, GuiBackendThread, (void*) this);
 }
 
-void TAGUIBackend::killThread() {
+void GuiBackend::killThread() {
 	pthread_cond_signal(pDataReadyCond);
 	pthread_mutex_lock(pCloseServerMutex);
 	closeServer = true;
@@ -256,7 +256,7 @@ void TAGUIBackend::killThread() {
 //	return temp;
 //}
 
-setpoints TAGUIBackend::getNewMotorSetpoints() {
+setpoints GuiBackend::getNewMotorSetpoints() {
 	setpoints temp = remoteSetpoints;
 	remoteSetpoints.panCtrltype = ct_undefined;
 	remoteSetpoints.panValue = 0;
@@ -265,7 +265,7 @@ setpoints TAGUIBackend::getNewMotorSetpoints() {
 	return temp;
 }
 
-void TAGUIBackend::sendConfig() {
+void GuiBackend::sendConfig() {
 	int n = 0;
 	std::string data;
 	if (pCfg != NULL) {
@@ -282,7 +282,7 @@ void TAGUIBackend::sendConfig() {
 		addLogMessage(vl_DEBUG, logmsg.str());
 	}
 }
-void TAGUIBackend::sendData() {
+void GuiBackend::sendData() {
 	if (pCLO != NULL) {
 		sendBuffer.str("");
 		// parse data
@@ -317,7 +317,7 @@ void TAGUIBackend::sendData() {
 
 }
 
-void TAGUIBackend::readData(std::string data) {
+void GuiBackend::readData(std::string data) {
 	std::istringstream dataStream;
 	dataStream.str(data);
 
@@ -332,7 +332,7 @@ void TAGUIBackend::readData(std::string data) {
 			// Data received is a new configuration
 			if (type.compare("Config") == 0) {
 				addLogMessage(vl_INFO, "received new config");
-				TAConfig* pNewCfg = new TAConfig;
+				Config* pNewCfg = new Config;
 				dataStream >> *pNewCfg;
 				// newCfg->display();
 				pCfg->setNewConfig(pNewCfg);
@@ -342,7 +342,7 @@ void TAGUIBackend::readData(std::string data) {
 				addLogMessage(vl_DEBUG, "received new mode");
 				int newMode;
 				dataStream >> newMode;
-				pCurMode->set((trackingMode) newMode);
+				pCurMode->set((trackingState) newMode);
 			}
 			// Data received is a new setpoint
 			else if (type.compare("Setpoints") == 0) {
@@ -404,7 +404,7 @@ void TAGUIBackend::readData(std::string data) {
 
 }
 
-bool TAGUIBackend::isServerClosing() {
+bool GuiBackend::isServerClosing() {
 	bool temp;
 	pthread_mutex_lock(pCloseServerMutex);
 	temp = closeServer;
@@ -414,7 +414,7 @@ bool TAGUIBackend::isServerClosing() {
 
 }
 
-bool TAGUIBackend::isConnectionInitialized() {
+bool GuiBackend::isConnectionInitialized() {
 	bool temp;
 	pthread_mutex_lock(pConnInitMutex);
 	temp = connectionInitialized;
@@ -423,56 +423,56 @@ bool TAGUIBackend::isConnectionInitialized() {
 	return temp;
 }
 
-void TAGUIBackend::setConnectionInitialized(bool setVal) {
+void GuiBackend::setConnectionInitialized(bool setVal) {
 	pthread_mutex_lock(pConnInitMutex);
 	connectionInitialized = setVal;
 	pthread_mutex_unlock(pConnInitMutex);
 }
 
-void TAGUIBackend::setCfg(TAConfig* cfg) {
+void GuiBackend::setCfg(Config* cfg) {
 	pCfg = cfg;
 }
 
-void TAGUIBackend::setClo(commandLineOptions* clo) {
+void GuiBackend::setClo(commandLineOptions* clo) {
 	pCLO = clo;
 }
 
-void TAGUIBackend::setCurMode(TAmode* curMode) {
+void GuiBackend::setCurMode(State* curMode) {
 	pCurMode = curMode;
 }
 
-void TAGUIBackend::setLocalPos(GPSPos* localPos) {
+void GuiBackend::setLocalPos(GPSPos* localPos) {
 	pLocalPos = localPos;
 }
 
-void TAGUIBackend::setRemotePos(GPSPos* remotePos) {
+void GuiBackend::setRemotePos(GPSPos* remotePos) {
 	pRemotePos = remotePos;
 }
 
-void TAGUIBackend::setLocalGps(TSmavlinkGPS* localGps) {
+void GuiBackend::setLocalGps(TSmavlinkGPS* localGps) {
 	pLocalGps = localGps;
 }
 
-void TAGUIBackend::setRemoteGps(TSmavlinkGPS* remoteGps) {
+void GuiBackend::setRemoteGps(TSmavlinkGPS* remoteGps) {
 	pRemoteGps = remoteGps;
 }
-void TAGUIBackend::setGpStracking(TAGPSTracking* gpStracking) {
+void GuiBackend::setGpStracking(TAGPSTracking* gpStracking) {
 	pGPStracking = gpStracking;
 }
 
-void TAGUIBackend::setLog(TALogger* log) {
+void GuiBackend::setLog(TALogger* log) {
 	pLog = log;
 }
 
-void TAGUIBackend::setMotorControl(TAMotorControl* motorControl) {
+void GuiBackend::setMotorControl(MotorControl* motorControl) {
 	pMotorControl = motorControl;
 }
 
-void TAGUIBackend::setMotorSetpoints(setpoints* motorSetpoints) {
+void GuiBackend::setMotorSetpoints(setpoints* motorSetpoints) {
 	pMotorSetpoints = motorSetpoints;
 }
 
-void TAGUIBackend::setRecorder(TARecorder* recorder) {
+void GuiBackend::setRecorder(Recorder* recorder) {
 	pRecorder = recorder;
 }
 

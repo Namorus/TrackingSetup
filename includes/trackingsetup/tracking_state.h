@@ -12,20 +12,20 @@
 
 namespace tracking {
 
-class TAmode: public tracking::TrackingSetup {
+class State: public tracking::TrackingSetup {
 public:
 
-	TAmode();
+	State();
 
-	trackingMode get();
-	void set(trackingMode newmode);
-	std::string getModeName(trackingMode mode);
+	trackingState get();
+	void set(trackingState newmode);
+	std::string getModeName(trackingState mode);
 
-	friend std::ostream& operator<<(std::ostream& out, const TAmode& curMode);
+	friend std::ostream& operator<<(std::ostream& out, const State& curMode);
 
 protected:
 
-	trackingMode curmode;
+	trackingState curmode;
 	pthread_mutex_t* pMutexCurmode;
 };
 

@@ -12,7 +12,7 @@
 
 namespace tracking {
 
-class TAGPSTracking: public tracking::TATrackingMode {
+class TAGPSTracking: public tracking::TrackingMode {
 public:
 	TAGPSTracking();
 
