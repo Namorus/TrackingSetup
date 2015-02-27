@@ -145,9 +145,9 @@ int main(int argc, char** argv) {
 	setpoints motorSetpoints;
 
 	/* initialize tracking modes */
-	State curMode;
-	TAlog.add(curMode.getLog());
-	TAlog.registerInstance(&curMode);
+	State currentState;
+	TAlog.add(currentState.getLog());
+	TAlog.registerInstance(&currentState);
 
 	// GPS Tracking
 	TAGPSTracking GPStracking;
@@ -180,7 +180,7 @@ int main(int argc, char** argv) {
 	GUIBackend.setRemotePos(&remotePosition);
 	GUIBackend.setLocalGps(&localGps);
 	GUIBackend.setRemoteGps(&remoteGps);
-	GUIBackend.setCurMode(&curMode);
+	GUIBackend.setCurMode(&currentState);
 	GUIBackend.setGpStracking(&GPStracking);
 	GUIBackend.setMotorControl(&motorControl);
 	GUIBackend.setMotorSetpoints(&motorSetpoints);
@@ -207,7 +207,7 @@ int main(int argc, char** argv) {
 	if (!motorControl.commOK()) {
 		TAlog.log(vl_ERROR,
 				"Quitting because of communication problems with EPOS");
-		curMode.set(tm_ENDING);
+		currentState.set(tm_ENDING);
 	}
 
 	/* declare (& initialize) some variables needed in control loop */
@@ -233,7 +233,7 @@ int main(int argc, char** argv) {
 
 	TAlog.log(vl_INFO, "Starting control loop...");
 
-	while (curMode.get() != tm_ENDING) {
+	while (currentState.get() != tm_ENDING) {
 		// get time
 		clock_gettime(CLOCK_REALTIME, &startTs);
 //        motorControl.displayDigitalInputState();
@@ -295,11 +295,11 @@ int main(int argc, char** argv) {
 		// cout << "Remote Position: " << remotePosition.toString() << endl;
 
 		/*
-		 * call routine of current mode
+		 * call routine of current state
 		 */
 		motorSetpoints.panCtrltype = ct_undefined;
 		motorSetpoints.tiltCtrltype = ct_undefined;
-		switch (curMode.get()) {
+		switch (currentState.get()) {
 		case tm_ENDING:
 			motorSetpoints.panCtrltype = ct_velocity;
 			motorSetpoints.panValue = 0;
@@ -314,11 +314,11 @@ int main(int argc, char** argv) {
 						TAlog.log(vl_INFO, std::string("Homing tilt motor"));
 					} else if (motorControl.isTiltHomed()) {
 						TAlog.log(vl_INFO, std::string("Tilt motor homed"));
-                        curMode.set(tm_MAPPING_ESTIMATION);
+                        currentState.set(tm_MAPPING_ESTIMATION);
 					}
 				}
 			} else
-				curMode.set(tm_MAPPING_ESTIMATION);
+				currentState.set(tm_MAPPING_ESTIMATION);
 			break;
 
 		case tm_GPS_TRACKING:
@@ -339,7 +339,7 @@ int main(int argc, char** argv) {
 			}
 			else if (findNorth.getLocateState() == fn_FINISHED) {
 				GPStracking.setMapping(findNorth.northPanAngleFound(),0);
-				curMode.set(tm_GPS_TRACKING);
+				currentState.set(tm_GPS_TRACKING);
 				findNorth.reset();
 			}
 			else {
@@ -368,7 +368,7 @@ int main(int argc, char** argv) {
 					// Motors have come to a full stop, switch back to mode READY
 					motorControl.enablePan();
 					motorControl.enableTilt();
-					curMode.set(tm_READY);
+					currentState.set(tm_READY);
 				}
 			}
 			break;
@@ -417,7 +417,7 @@ int main(int argc, char** argv) {
 		// record
 		recorder.record(&startTs, &RSSvalues, motorControl.getPanPosition(),
 				motorControl.getTiltPosition(), &localPosition, &remotePosition,
-				(int) curMode.get());
+				(int) currentState.get());
 
 		// get log messages
 		TAlog.fetchLogs();
