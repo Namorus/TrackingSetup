@@ -8,8 +8,7 @@
 #ifndef TSMAVLINKMAG_H_
 #define TSMAVLINKMAG_H_
 
-#include "TSmavlinkReader.h"
-#include "TAinput.h"
+#include "trackingsetup/TSmavlinkReader.h"
 
 namespace tracking {
 

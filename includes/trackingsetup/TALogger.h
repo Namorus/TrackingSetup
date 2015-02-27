@@ -8,8 +8,9 @@
 #ifndef TALOGGER_H_
 #define TALOGGER_H_
 
+#include <sstream>
+
 #include "TAtypes.h"
-#include "TSincludes.h"
 
 namespace tracking {
 

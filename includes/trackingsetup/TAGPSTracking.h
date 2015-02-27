@@ -8,7 +8,7 @@
 #ifndef TAGPSTRACKING_H_
 #define TAGPSTRACKING_H_
 
-#include "TATrackingMode.h"
+#include "trackingsetup/TATrackingMode.h"
 
 namespace tracking {
 

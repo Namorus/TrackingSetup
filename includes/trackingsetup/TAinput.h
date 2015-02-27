@@ -8,7 +8,7 @@
 #ifndef TAINPUT_H_
 #define TAINPUT_H_
 
-#include "TAClass.h"
+#include "trackingsetup/TAClass.h"
 
 namespace tracking {
 

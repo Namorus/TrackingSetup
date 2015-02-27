@@ -8,8 +8,8 @@
 #ifndef TATRACKINGMODE_H_
 #define TATRACKINGMODE_H_
 
-#include "TAClass.h"
-#include "TAConfig.h"
+#include "trackingsetup/TAClass.h"
+#include "trackingsetup/TAConfig.h"
 
 namespace tracking {
 

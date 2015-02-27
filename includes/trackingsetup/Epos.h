@@ -2,10 +2,18 @@
  * Epos.h
  *
  *  Created on: May 23, 2013
- *      Author: thomas
+ *  Last change on: February 27, 2015
+ *      Author: Thomas Mantel
  */
 
-#include "TSincludes.h"
+#include <cstdio>
+#include <iostream>
+#include <stdint.h>
+
+#include "trackingsetup/EposComm.h"
+#include "trackingsetup/TAClass.h"
+#include "trackingsetup/TAtypes.h"
+
 
 namespace tracking {
 

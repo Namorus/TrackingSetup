@@ -1,13 +1,17 @@
 /*
- * Epos2lib.h
+ * EposComm.h
  *
  *  Created on: May 22, 2013
- *      Author: thomas
+ *  Last change on: February 27, 2015
+ *      Author: Thomas Mantel
  */
+#include <cstdio>
 #include <ftdi.h>
+#include <iostream>
 #include <pthread.h>
+#include <stdint.h>
 
-#include "TSincludes.h"
+#include "trackingsetup/TAClass.h"
 
 #ifndef EPOSCOMM_H_
 #define EPOSCOMM_H_
