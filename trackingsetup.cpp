@@ -5,15 +5,15 @@
 // Copyright   : GPL
 // Description : TrackingSetup
 //============================================================================
+#include <trackingsetup/find_north.h>
+#include <trackingsetup/gui_backend.h>
+#include <trackingsetup/mavlink_mag.h>
+#include <trackingsetup/mavlink_radio_status.h>
 #include <algorithm>
 #include <list>
 #include <sstream>
 #include <unistd.h>
 
-#include "trackingsetup/TAGUIBackend.h"
-#include "trackingsetup/TSfindNorth.h"
-#include "trackingsetup/TSmavlinkMag.h"
-#include "trackingsetup/TSmavlinkRadioStatus.h"
 #include "trackingsetup/trackingsetup.h"
 
 using namespace std;

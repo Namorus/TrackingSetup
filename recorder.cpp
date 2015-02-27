@@ -5,9 +5,9 @@
  *      Author: thomas
  */
 
+#include <trackingsetup/recorder.h>
 #include <sstream>
 
-#include "trackingsetup/TARecorder.h"
 
 namespace tracking {
 

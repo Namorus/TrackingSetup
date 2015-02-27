@@ -10,14 +10,14 @@
 
 
 #include <trackingsetup/config.h>
+#include <trackingsetup/gps_tracking.h>
+#include <trackingsetup/logger.h>
+#include <trackingsetup/mavlink_gps.h>
+#include <trackingsetup/mode.h>
+#include <trackingsetup/motor_control.h>
+#include <trackingsetup/recorder.h>
 #include <trackingsetup/trackingsetup.h>
-#include "trackingsetup/TAGPSTracking.h"
-#include "trackingsetup/TALogger.h"
-#include "trackingsetup/TAmode.h"
-#include "trackingsetup/TAMotorControl.h"
-#include "trackingsetup/TARecorder.h"
-#include "trackingsetup/TAtypes.h"
-#include "trackingsetup/TSmavlinkGPS.h"
+#include <trackingsetup/types.h>
 
 namespace tracking {
 

@@ -10,7 +10,9 @@
 
 #include <sstream>
 
-#include "TAtypes.h"
+#include "trackingsetup/trackingsetup.h"
+#include "trackingsetup/types.h"
+
 
 namespace tracking {
 

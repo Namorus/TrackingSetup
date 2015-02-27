@@ -4,63 +4,63 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../Epos.cpp \
-../EposComm.cpp \
-../TAGPSTracking.cpp \
-../TAGUIBackend.cpp \
-../TALogger.cpp \
-../TAMotorControl.cpp \
-../TARecorder.cpp \
-../TATrackingMode.cpp \
-../TAinput.cpp \
-../TAmode.cpp \
-../TSPosInput.cpp \
-../TSfindNorth.cpp \
-../TSmavlinkGPS.cpp \
-../TSmavlinkMag.cpp \
-../TSmavlinkRadioStatus.cpp \
-../TSmavlinkReader.cpp \
 ../config.cpp \
+../epos.cpp \
+../epos_comm.cpp \
+../find_north.cpp \
+../gps_tracking.cpp \
+../gui_backend.cpp \
+../input.cpp \
+../logger.cpp \
+../mavlink_gps.cpp \
+../mavlink_mag.cpp \
+../mavlink_radio_status.cpp \
+../mavlink_reader.cpp \
+../mode.cpp \
+../motor_control.cpp \
+../position_input.cpp \
+../recorder.cpp \
+../tracking_mode.cpp \
 ../trackingsetup.cpp 
 
 OBJS += \
-./Epos.o \
-./EposComm.o \
-./TAGPSTracking.o \
-./TAGUIBackend.o \
-./TALogger.o \
-./TAMotorControl.o \
-./TARecorder.o \
-./TATrackingMode.o \
-./TAinput.o \
-./TAmode.o \
-./TSPosInput.o \
-./TSfindNorth.o \
-./TSmavlinkGPS.o \
-./TSmavlinkMag.o \
-./TSmavlinkRadioStatus.o \
-./TSmavlinkReader.o \
 ./config.o \
+./epos.o \
+./epos_comm.o \
+./find_north.o \
+./gps_tracking.o \
+./gui_backend.o \
+./input.o \
+./logger.o \
+./mavlink_gps.o \
+./mavlink_mag.o \
+./mavlink_radio_status.o \
+./mavlink_reader.o \
+./mode.o \
+./motor_control.o \
+./position_input.o \
+./recorder.o \
+./tracking_mode.o \
 ./trackingsetup.o 
 
 CPP_DEPS += \
-./Epos.d \
-./EposComm.d \
-./TAGPSTracking.d \
-./TAGUIBackend.d \
-./TALogger.d \
-./TAMotorControl.d \
-./TARecorder.d \
-./TATrackingMode.d \
-./TAinput.d \
-./TAmode.d \
-./TSPosInput.d \
-./TSfindNorth.d \
-./TSmavlinkGPS.d \
-./TSmavlinkMag.d \
-./TSmavlinkRadioStatus.d \
-./TSmavlinkReader.d \
 ./config.d \
+./epos.d \
+./epos_comm.d \
+./find_north.d \
+./gps_tracking.d \
+./gui_backend.d \
+./input.d \
+./logger.d \
+./mavlink_gps.d \
+./mavlink_mag.d \
+./mavlink_radio_status.d \
+./mavlink_reader.d \
+./mode.d \
+./motor_control.d \
+./position_input.d \
+./recorder.d \
+./tracking_mode.d \
 ./trackingsetup.d 
 
 

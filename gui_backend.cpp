@@ -9,7 +9,7 @@
 #include <sys/poll.h>
 #include <sys/socket.h>
 
-#include "trackingsetup/TAGUIBackend.h"
+#include <trackingsetup/gui_backend.h>
 
 namespace tracking {
 

@@ -9,9 +9,9 @@
 #include <sstream>
 #include <sys/time.h>
 #include <termios.h> // POSIX terminal control definitions
+#include <trackingsetup/mavlink_reader.h>
 #include <unistd.h>
 
-#include "trackingsetup/TSmavlinkReader.h"
 
 namespace tracking {
 

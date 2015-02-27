@@ -8,8 +8,8 @@
 #ifndef TSMAVLINKGPS_H_
 #define TSMAVLINKGPS_H_
 
-#include "TSPosInput.h"
-#include "TSmavlinkReader.h"
+#include <trackingsetup/mavlink_reader.h>
+#include <trackingsetup/position_input.h>
 
 namespace tracking {
 

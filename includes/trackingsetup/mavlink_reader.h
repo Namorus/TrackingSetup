@@ -8,11 +8,11 @@
 #ifndef TSMAVLINKREADER_H_
 #define TSMAVLINKREADER_H_
 
-#include "TAinput.h"
-#include "TAtypes.h"
 #include <fcntl.h>   // File control definitions
 #include <termios.h> // POSIX terminal control definitions
 #include <common/mavlink.h>
+#include <trackingsetup/input.h>
+#include <trackingsetup/types.h>
 
 namespace tracking {
 

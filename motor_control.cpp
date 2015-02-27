@@ -5,7 +5,7 @@
  *      Author: thomas
  */
 
-#include "trackingsetup/TAMotorControl.h"
+#include <trackingsetup/motor_control.h>
 
 namespace tracking {
 TAMotorControl::TAMotorControl() :

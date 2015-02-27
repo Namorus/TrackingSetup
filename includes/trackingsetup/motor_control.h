@@ -8,8 +8,8 @@
 #ifndef TAMOTORCONTROL_H_
 #define TAMOTORCONTROL_H_
 
+#include <trackingsetup/epos.h>
 #include <trackingsetup/trackingsetup.h>
-#include "trackingsetup/Epos.h"
 
 namespace tracking {
 

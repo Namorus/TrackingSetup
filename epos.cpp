@@ -6,7 +6,7 @@
  *      Author: Thomas Mantel
  */
 
-#include "trackingsetup/Epos.h"
+#include <trackingsetup/epos.h>
 
 namespace tracking {
 

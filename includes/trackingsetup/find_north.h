@@ -8,7 +8,7 @@
 #ifndef TSFINDNORTH_H_
 #define TSFINDNORTH_H_
 
-#include "TATrackingMode.h"
+#include <trackingsetup/tracking_mode.h>
 
 namespace tracking {
 

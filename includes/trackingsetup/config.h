@@ -9,7 +9,7 @@
 #define TACONFIG_H_
 
 #include <trackingsetup/trackingsetup.h>
-#include "TAtypes.h"
+#include <trackingsetup/types.h>
 #include <map>
 
 namespace tracking {

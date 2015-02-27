@@ -6,9 +6,9 @@
  *      Author: Thomas Mantel
  */
 
+#include <trackingsetup/epos_comm.h>
 #include <bitset>
 
-#include "trackingsetup/EposComm.h"
 
 using namespace std;
 

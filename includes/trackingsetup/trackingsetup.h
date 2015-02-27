@@ -9,9 +9,9 @@
 #ifndef TACLASS_H_
 #define TACLASS_H_
 
+#include <trackingsetup/types.h>
 #include <list>
 
-#include "trackingsetup/TAtypes.h"
 
 
 namespace tracking {

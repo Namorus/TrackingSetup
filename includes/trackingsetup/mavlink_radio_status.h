@@ -8,9 +8,9 @@
 #ifndef TSMAVLINKRADIO_H_
 #define TSMAVLINKRADIO_H_
 
-#include "TSmavlinkReader.h"
-#include "TAinput.h"
-#include "TAtypes.h"
+#include <trackingsetup/input.h>
+#include <trackingsetup/mavlink_reader.h>
+#include <trackingsetup/types.h>
 
 namespace tracking {
 

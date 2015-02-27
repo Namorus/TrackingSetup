@@ -8,9 +8,9 @@
 #ifndef TSPOSINPUT_H_
 #define TSPOSINPUT_H_
 
-#include "TAinput.h"
-#include "TAtypes.h"
-#include "TSmavlinkReader.h"
+#include <trackingsetup/input.h>
+#include <trackingsetup/mavlink_reader.h>
+#include <trackingsetup/types.h>
 
 namespace tracking {
 

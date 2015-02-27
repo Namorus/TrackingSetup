@@ -5,7 +5,7 @@
  *      Author: thomas
  */
 
-#include "trackingsetup/TATrackingMode.h"
+#include <trackingsetup/tracking_mode.h>
 
 namespace tracking {
 

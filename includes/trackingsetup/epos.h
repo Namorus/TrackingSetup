@@ -9,10 +9,10 @@
 #include <cstdio>
 #include <iostream>
 #include <stdint.h>
+#include <trackingsetup/epos_comm.h>
 #include <trackingsetup/trackingsetup.h>
 
-#include "trackingsetup/EposComm.h"
-#include "trackingsetup/TAtypes.h"
+#include <trackingsetup/types.h>
 
 
 namespace tracking {

@@ -5,7 +5,7 @@
  *      Author: thomas
  */
 
-#include "trackingsetup/TAinput.h"
+#include <trackingsetup/input.h>
 
 namespace tracking {
 

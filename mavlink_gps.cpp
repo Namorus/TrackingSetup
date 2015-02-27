@@ -5,7 +5,7 @@
  *      Author: asl
  */
 
-#include "trackingsetup/TSmavlinkGPS.h"
+#include <trackingsetup/mavlink_gps.h>
 
 namespace tracking {
 

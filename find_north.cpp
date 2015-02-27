@@ -9,7 +9,7 @@
 
 #include <GeographicLib/MagneticModel.hpp>
 
-#include "trackingsetup/TSfindNorth.h"
+#include <trackingsetup/find_north.h>
 
 namespace tracking {
 
