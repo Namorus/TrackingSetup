@@ -310,9 +310,9 @@ void GuiBackend::sendData() {
 
 		std::string data = sendBuffer.str();
 		int n = write(new_sd, data.c_str(), data.size());
-//		std::stringstream logmsg;
-//		logmsg << n << " bytes sent to GUI client: " << data;
-//		addLogMessage(vl_DEBUG,logmsg.str());
+//      std::stringstream logmsg;
+//      logmsg << n << " bytes sent to GUI client: " << data;
+//      addLogMessage(vl_DEBUG,logmsg.str());
 	}
 
 }
@@ -339,7 +339,7 @@ void GuiBackend::readData(std::string data) {
 			}
 			// Data received is a new mode
 			else if (type.compare("Mode") == 0) {
-				addLogMessage(vl_DEBUG, "received new mode");
+                addLogMessage(vl_INFO, "received new mode from GUI");
 				int newMode;
 				dataStream >> newMode;
 				pCurMode->set((trackingSetupState) newMode);
