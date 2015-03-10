@@ -72,16 +72,17 @@ std::ostream& operator<<(std::ostream& out, const MavlinkGps& mavlinkGPS) {
 
 	std::string label;
 	label = mavlinkGPS.label_;
-
-    if (mavlinkMessages.lastGpsStatus > 0) {
+	if (mavlinkMessages.lastRawGpsPosition > 0) {
         out << "$" << label << "Status ";
         out.precision(15);
         out << 0 << " " << ((int) mavlinkMessages.gps_raw_int.fix_type) << " ";
         out << posAccuracy << " ";
+	}
+    if (mavlinkMessages.lastGpsStatus > 0) {
         out << numberOfSatellitesInUse << " "
                 << ((int) mavlinkMessages.gps_raw_int.satellites_visible);
     } else {
-        // nothing to do...
+        out << 0 << " " << 0;
     }
 	return out;
 }
