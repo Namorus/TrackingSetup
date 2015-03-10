@@ -143,7 +143,6 @@ void MavlinkReader::readMessages() {
 
 			case MAVLINK_MSG_ID_GPS_RAW_INT: {
                 addLogMessage(vl_DEBUG,port_ + ": received GPS message");
-//					std::cout << port_ << ": MAVLINK MSG ID GPS RAW INT" << std::endl;
 				//printf("MAVLINK_MSG_ID_GPS_RAW_INT\n");
                 mavlink_msg_gps_raw_int_decode(&message,&(currentMessages_.gps_raw_int));
                 currentMessages_.lastRawGpsPosition = get_usec();
@@ -341,7 +340,7 @@ bool MavlinkReader::setupSerial() {
 
 void MavlinkReader::stopReading() {
 	keepReadingMavlink_ = false;
-
+	usleep(100000);
 	pthread_join(readThreadId_, NULL);
 }
 
