@@ -426,7 +426,7 @@ void Epos::setDigitialIn1ToDeviceEnable() {
         addLogMessage(vl_WARNING,"Could not change digital input functionalities execution mask");
         return;
     }
-    std::cout << "Current Execution Mask: " << ReadObjectValue(0x2071,0x04) << std::endl;
+//    std::cout << "Current Execution Mask: " << ReadObjectValue(0x2071,0x04) << std::endl;
 
     // Read the current "Digital Input Functionalities Mask" and add Device Enable
     uint16_t difm = ReadObjectValue(0x2071,0x02);
@@ -459,7 +459,7 @@ void Epos::setDigitialIn4ToHomeSwitch() {
         addLogMessage(vl_WARNING,"Could not change \"Digital Input Functionalities Mask\"");
         return;
     }
-    std::cout << "Digital Input Functionalities Mask: " << ReadObjectValue(0x2071,0x02) << " (should be: " << difm_new << ")" << std::endl;
+//    std::cout << "Digital Input Functionalities Mask: " << ReadObjectValue(0x2071,0x02) << " (should be: " << difm_new << ")" << std::endl;
 
 }
 
