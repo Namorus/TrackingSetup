@@ -11,7 +11,7 @@
 #include <termios.h> // POSIX terminal control definitions
 #include <unistd.h>
 
-#include <trackingsetup/mavlink_reader.h>
+#include "trackingsetup/mavlink_reader.h"
 
 
 namespace tracking {
@@ -136,6 +136,7 @@ void MavlinkReader::readMessages() {
 //                printf("MAVLINK_MSG_ID_GLOBAL_POSITION_INT\n");
                 mavlink_msg_global_position_int_decode(&message,&(currentMessages_.global_position_int));
                 currentMessages_.lastGlobalPosition = get_usec();
+                addLogMessage(vl_DEBUG,port_ + ": received GPOS message");
 //					current_messages.time_stamps.global_position_int = get_time_usec();
 //					this_timestamps.global_position_int = current_messages.time_stamps.global_position_int;
 				break;

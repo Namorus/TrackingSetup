@@ -277,7 +277,6 @@ int main(int argc, char** argv) {
 		if (!localGpsFixAcquired && localGps.getFixType() == 3) {
 			localGpsFixAcquired = true;
 			float magneticDeclination = findNorth.magneticDeclination(localPosition);
-			cout << localPosition << endl;
 			gpsTracking.setMagneticDeclination(magneticDeclination);
 			stringstream logmessage;
 			logmessage << "Magnetic declination: " << magneticDeclination;
@@ -319,6 +318,9 @@ int main(int argc, char** argv) {
 						"processing new position of tracked object.");
 				gpsTracking.update(localPosition, remotePosition);
 				motorSetpoints = gpsTracking.getNewSetpoints();
+			} else {
+				trackingLog.log(vl_DEBUG,
+						"GPS_Tracking: no new position of tracked object");
 			}
 			break;
 
