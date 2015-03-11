@@ -1,12 +1,12 @@
 /*
- * TSMavlinkGPS.h
+ * mavlink_gpos.h
  *
- *  Created on: Feb 3, 2015
- *      Author: asl
+ *  Created on: March 11, 2015
+ *      Author: Thomas Mantel
  */
 
-#ifndef TSMAVLINKGPS_H_
-#define TSMAVLINKGPS_H_
+#ifndef MAVLINKGPOS_H_
+#define MAVLINKGPOS_H_
 
 #include <trackingsetup/mavlink_reader.h>
 #include <trackingsetup/position_input.h>
@@ -15,12 +15,12 @@ namespace tracking {
 
 class MavlinkGpos: public PositionInput {
 public:
-    MavlinkGpos(MavlinkMessages* mavlinkMessages, std::string label);
+    MavlinkGpos(MavlinkMessages* mavlinkMessages);
 	bool getPos(GPSPos* gpos);
+	bool getVel(GPSPos* vel);
+	bool getGpos(GlobalPos* gpos);
 
 	virtual ~MavlinkGpos();
-
-	float getPosAccuracy();
 
 	friend std::ostream& operator<<(std::ostream& out,
 			const MavlinkGpos& mavlinkGPOS);
@@ -28,10 +28,11 @@ public:
 private:
     MavlinkMessages* mavlinkMessages_;
 
-	uint64_t lastTimestamp_;
+	uint64_t lastPosTimestamp_;
+	uint64_t lastVelTimestamp_;
 
 };
 
 } /* namespace tracking */
 
-#endif /* TSMAVLINKGPS_H_ */
+#endif /* MAVLINKGPOS_H_ */

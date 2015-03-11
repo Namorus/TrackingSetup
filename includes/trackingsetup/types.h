@@ -352,5 +352,19 @@ struct RadioRSSI {
 //	}
 };
 
+struct GlobalPos {
+	GlobalPos() :
+		timestamp(0), localTimestamp(0) {
+		speed.lat = 0;
+		speed.lon = 0;
+		speed.elev = 0;
+	}
+	GPSPos position;
+	GPSPos speed;
+
+	uint32_t timestamp;
+	uint64_t localTimestamp;
+};
+
 }
 #endif /* TRACKINGANTENNA_H_ */

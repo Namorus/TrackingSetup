@@ -8,6 +8,9 @@
 #ifndef TAGPSTRACKING_H_
 #define TAGPSTRACKING_H_
 
+#include <GeographicLib/Geocentric.hpp>
+#include <GeographicLib/LocalCartesian.hpp>
+
 #include <trackingsetup/tracking_mode.h>
 
 namespace tracking {
@@ -22,9 +25,13 @@ public:
 
 	void setMapping(float panOffset, float tiltOffset);
 
-//	void setAntennaPos(GPSPos antennaPOS);
+	void setAntennaPos(GPSPos antennaPOS);
 
-	void update(GPSPos& antennaPos, GPSPos& targetPos);
+	void updateGPS(GPSPos& targetPos);
+
+	void updateGPOS(GlobalPos& targetGlobalPos);
+
+	void updateEstimated();
 
 	static double getLOSdistance(GPSPos* posA, GPSPos* posB);
 
@@ -42,7 +49,15 @@ private:
 	float panOffset_, tiltOffset_;
 	float magneticDeclination_;
 
-	// GPSPos antennaPOS;
+	GPSPos antennaPos_;
+	GlobalPos targetGlobalPos_;
+	GPSPos estimatedPos_;
+	double estimatedPosLocal_[3];
+
+	GeographicLib::LocalCartesian antennaLocalCartesian_;
+
+	GeographicLib::Geocentric earth_;
+
 };
 
 } /* namespace tracking */

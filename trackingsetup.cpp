@@ -5,16 +5,18 @@
 // Copyright   : GPL
 // Description : TrackingSetup
 //============================================================================
-#include <trackingsetup/find_north.h>
-#include <trackingsetup/gui_backend.h>
-#include <trackingsetup/mavlink_mag.h>
-#include <trackingsetup/mavlink_radio_status.h>
 #include <algorithm>
 #include <list>
 #include <sstream>
 #include <unistd.h>
 
-#include "trackingsetup/trackingsetup.h"
+#include <trackingsetup/trackingsetup.h>
+
+#include <trackingsetup/find_north.h>
+#include <trackingsetup/gui_backend.h>
+#include <trackingsetup/mavlink_mag.h>
+#include <trackingsetup/mavlink_radio_status.h>
+#include <trackingsetup/mavlink_gpos.h>
 
 using namespace std;
 using namespace tracking;
@@ -121,12 +123,18 @@ int main(int argc, char** argv) {
 	}
 
 	// remote GPS
-
     MavlinkGps remoteGps(&remoteMavlinkMessages, "remoteGPS");
 	trackingLog.add(remoteGps.getLog());
 	trackingLog.registerInstance(&remoteGps);
 
 	GPSPos remotePosition;
+
+	// remote Global Position
+	MavlinkGpos remoteGpos(&remoteMavlinkMessages);
+	trackingLog.add(remoteGpos.getLog());
+	trackingLog.registerInstance(&remoteGpos);
+
+	GlobalPos remoteGlobalPosition;
 
 	/* initialize motor control */
 	MotorControl motorControl;
@@ -207,6 +215,7 @@ int main(int argc, char** argv) {
 	int waitDuration;
 	int updatePeriod = 1e6 / trackingConfig.Glbl.updateFreq;
 
+	bool newAntennaPos = false;
 	bool newTrackedPos = false;
 
 	bool localGpsFixAcquired = false;
@@ -266,11 +275,17 @@ int main(int argc, char** argv) {
 
         // process local GPS
 		if(!commandLineOptions.noLocalGPS) {
-			localGps.getPos(&localPosition);
+			newAntennaPos = localGps.getPos(&localPosition);
+		} else {
+			localGpsFixAcquired = true;
+			gpsTracking.setAntennaPos(localPosition);
 		}
 
 		// process remote GPS
-		newTrackedPos = remoteGps.getPos(&remotePosition);
+		remoteGps.getPos(&remotePosition);
+
+		// process remote GPOS
+		newTrackedPos = remoteGpos.getGpos(&remoteGlobalPosition);
 
 		// check whether local GPS fix is acquired
 		// once it is, calculate magnetic declination for current location
@@ -313,14 +328,20 @@ int main(int argc, char** argv) {
 			break;
 
 		case ts_GPS_TRACKING:
+			if (newAntennaPos) {
+				gpsTracking.setAntennaPos(localPosition);
+			}
 			if (newTrackedPos) {
 				trackingLog.log(vl_DEBUG,
 						"processing new position of tracked object.");
-				gpsTracking.update(localPosition, remotePosition);
+				gpsTracking.updateGPOS(remoteGlobalPosition);
+				motorSetpoints = gpsTracking.getNewSetpoints();
+			} else if (localGpsFixAcquired || commandLineOptions.noLocalGPS) {
+				gpsTracking.updateEstimated();
 				motorSetpoints = gpsTracking.getNewSetpoints();
 			} else {
 				trackingLog.log(vl_DEBUG,
-						"GPS_Tracking: no new position of tracked object");
+						"GPS_Tracking: could not update remotePosition");
 			}
 			break;
 

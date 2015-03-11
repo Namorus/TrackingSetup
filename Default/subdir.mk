@@ -12,6 +12,7 @@ CPP_SRCS += \
 ../gui_backend.cpp \
 ../input.cpp \
 ../logger.cpp \
+../mavlink_gpos.cpp \
 ../mavlink_gps.cpp \
 ../mavlink_mag.cpp \
 ../mavlink_radio_status.cpp \
@@ -32,6 +33,7 @@ OBJS += \
 ./gui_backend.o \
 ./input.o \
 ./logger.o \
+./mavlink_gpos.o \
 ./mavlink_gps.o \
 ./mavlink_mag.o \
 ./mavlink_radio_status.o \
@@ -52,6 +54,7 @@ CPP_DEPS += \
 ./gui_backend.d \
 ./input.d \
 ./logger.d \
+./mavlink_gpos.d \
 ./mavlink_gps.d \
 ./mavlink_mag.d \
 ./mavlink_radio_status.d \
