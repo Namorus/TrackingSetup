@@ -373,9 +373,9 @@ void GuiBackend::readData(std::string data) {
 			} else if (type.compare("stoprecording") == 0) {
 				pRecorder->stop();
 			} else if (type.compare("doManualMapping") == 0) {
-				//TODO: implement this again!
+				//TODO: implement this again! Check if this works properly
 //				pMapEst->setMapping(pMotorControl->getPanAngle(),pMotorControl->getTiltAngle());
-//				pGPStracking->setMapping(pMapEst->getPanOffset(),pMapEst->getTiltOffset());
+				pGPStracking->setMapping(pMotorControl->getPanAngle(),0);
 			} else if (type.compare("manualObjPos") == 0) {
                 dataStream >> *pRemotePos;
 //				GPSPos* pObjPos = new GPSPos;
