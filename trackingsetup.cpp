@@ -431,9 +431,7 @@ int main(int argc, char** argv) {
 			}
 		}
 		// record
-		recorder.record(&startTs, &RSSvalues, motorControl.getPanPosition(),
-				motorControl.getTiltPosition(), &localPosition, &remotePosition,
-				(int) currentState.get());
+		recorder.record(&startTs, &RSSvalues, motorControl.getPanPosition(), motorControl.getTiltPosition(), &localPosition, &remotePosition, &gpsTracking, (int) currentState.get());
 
 		// get log messages
 		trackingLog.fetchLogs();

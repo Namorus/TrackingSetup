@@ -246,11 +246,16 @@ struct recorderSettings {
 	bool recordLocalGPS;
 	bool recordRemoteGPS;
 	bool recordCurMode;
-	std::vector<std::string> wlanDevNames;
+	bool recordGPSTracking;
 
 	recorderSettings() :
-			recordTimestamp(false), recordRSSI(false), recordMotData(false), recordLocalGPS(
-					false), recordRemoteGPS(false), recordCurMode(false) {
+			recordTimestamp(false),
+			recordRSSI(false),
+			recordMotData(false),
+			recordLocalGPS(false),
+			recordRemoteGPS(false),
+			recordCurMode(false),
+			recordGPSTracking(true) {
 	} // initializer
 
 	friend std::istream& operator>>(std::istream& in, recorderSettings& a) {
@@ -261,6 +266,7 @@ struct recorderSettings {
 		in >> a.recordLocalGPS;
 		in >> a.recordRemoteGPS;
 		in >> a.recordCurMode;
+		in >> a.recordGPSTracking;
 		return in;
 	}
 };
@@ -269,6 +275,8 @@ struct recorderSettings {
 // and other data about system
 struct MavlinkMessages {
     MavlinkMessages() :
+    	sysid(0),
+		compid(0),
         lastHeartbeat(0),
         lastGlobalPosition(0),
         lastRawGpsPosition(0),

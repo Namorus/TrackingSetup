@@ -188,5 +188,17 @@ double GpsTrackingMode::rad2deg(double rad) {
 	return 180.0 / M_PI * rad;
 }
 
+std::ostream& operator<<(std::ostream& out,
+		const GpsTrackingMode& gpsTracking) {
+	out.precision(6);
+	out << gpsTracking.targetPosLocal_[0] << " "
+		<< gpsTracking.targetPosLocal_[1] << " "
+		<< gpsTracking.targetPosLocal_[2] << " "
+		<< gpsTracking.targetEstimatedPosLocal_[0] << " "
+		<< gpsTracking.targetEstimatedPosLocal_[1] << " "
+		<< gpsTracking.targetEstimatedPosLocal_[2] << " "
+		<< gpsTracking.targetEstimatedPos_;
+	return out;
+}
 
 } /* namespace tracking */

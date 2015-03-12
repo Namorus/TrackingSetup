@@ -45,6 +45,7 @@ public:
 
 	static double rad2deg(double rad);
 
+	friend std::ostream& operator<<(std::ostream& out, const GpsTrackingMode& gpsTracking);
 private:
 	float panOffset_, tiltOffset_;
 	float magneticDeclination_;

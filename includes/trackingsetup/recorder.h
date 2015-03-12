@@ -23,7 +23,7 @@ public:
 
 	void record(timespec* const Ts, std::vector<float>* const RSSvalues,
 			int panPosition, int tiltPosition, GPSPos* const localGPS,
-			GPSPos* const remoteGPS, int curMode);
+			GPSPos* const remoteGPS, GpsTrackingMode* const gpsTracking, int curMode);
 
 private:
 
