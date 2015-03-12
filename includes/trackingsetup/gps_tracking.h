@@ -51,8 +51,10 @@ private:
 
 	GPSPos antennaPos_;
 	GlobalPos targetGlobalPos_;
-	GPSPos estimatedPos_;
-	double estimatedPosLocal_[3];
+	double targetPosLocal_[3];
+
+	GPSPos targetEstimatedPos_;
+	double targetEstimatedPosLocal_[3];
 
 	GeographicLib::LocalCartesian antennaLocalCartesian_;
 

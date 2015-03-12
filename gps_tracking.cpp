@@ -4,7 +4,7 @@
  *  Created on: Jun 18, 2013
  *      Author: thomas
  */
-#include <time.h>
+#include <sys/time.h>
 
 #include <trackingsetup/gps_tracking.h>
 
@@ -14,9 +14,13 @@ GpsTrackingMode::GpsTrackingMode() :
 		panOffset_(0), tiltOffset_(0), magneticDeclination_(0) {
 	earth_ = GeographicLib::Geocentric::WGS84;
 	antennaLocalCartesian_ = GeographicLib::LocalCartesian(earth_);
-	estimatedPosLocal_[0] = 0;
-	estimatedPosLocal_[1] = 0;
-	estimatedPosLocal_[2] = 0;
+	targetEstimatedPosLocal_[0] = 0;
+	targetEstimatedPosLocal_[1] = 0;
+	targetEstimatedPosLocal_[2] = 0;
+
+	targetPosLocal_[0] = 0;
+	targetPosLocal_[1] = 0;
+	targetPosLocal_[2] = 0;
 }
 
 void GpsTrackingMode::setMapping(float panOffset, float tiltOffset) {
@@ -44,32 +48,41 @@ void GpsTrackingMode::updateGPS(GPSPos& targetPos) {
 
 void GpsTrackingMode::updateGPOS(GlobalPos& targetGlobalPos) {
 	targetGlobalPos_ = targetGlobalPos;
-	estimatedPos_ = targetGlobalPos.position;
 
-	double bearing = getBearing(&antennaPos_, &estimatedPos_);
-	double azimuth = getAzimuth(&antennaPos_, &estimatedPos_);
+	// calculate target position in local frame
+	antennaLocalCartesian_.Forward(targetGlobalPos_.position.lat,targetGlobalPos_.position.lon,targetGlobalPos_.position.elev,targetPosLocal_[0],targetPosLocal_[1],targetPosLocal_[2]);
+
+	// received position is used as estimate
+	//TODO: maybe add some look ahead hear
+	targetEstimatedPos_ = targetGlobalPos.position;
+
+	double bearing = getBearing(&antennaPos_, &targetEstimatedPos_);
+	double azimuth = getAzimuth(&antennaPos_, &targetEstimatedPos_);
 
 	setNewSetpoints(ct_abspos, bearing - panOffset_ - magneticDeclination_, azimuth);
 }
 
 void GpsTrackingMode::updateEstimated() {
-	antennaLocalCartesian_.Forward(targetGlobalPos_.position.lat,targetGlobalPos_.position.lon,targetGlobalPos_.position.elev,estimatedPosLocal_[0],estimatedPosLocal_[1],estimatedPosLocal_[2]);
-	antennaLocalCartesian_.Reverse(estimatedPosLocal_[0],estimatedPosLocal_[1],estimatedPosLocal_[2],estimatedPos_.lat,estimatedPos_.lon,estimatedPos_.elev);
+//	antennaLocalCartesian_.Forward(targetGlobalPos_.position.lat,targetGlobalPos_.position.lon,targetGlobalPos_.position.elev,targetEstimatedPosLocal_[0],targetEstimatedPosLocal_[1],targetEstimatedPosLocal_[2]);
 
 	// calculate time since last GPOS update
 	timeval now;
+	gettimeofday(&now,NULL);
 	uint64_t currentTimestamp = now.tv_sec*1e6 + now.tv_usec;
 	uint32_t dT = currentTimestamp - targetGlobalPos_.localTimestamp;
 
 	// update based on ground speed
-	estimatedPosLocal_[0] += targetGlobalPos_.speed.lat*dT*1e-6;
-	estimatedPosLocal_[1] += targetGlobalPos_.speed.lon*dT*1e-6;
-	estimatedPosLocal_[2] += targetGlobalPos_.speed.elev*dT*1e-6;
+	targetEstimatedPosLocal_[0] = targetPosLocal_[0] + targetGlobalPos_.speed.lat*dT*1e-6;
+	targetEstimatedPosLocal_[1] = targetPosLocal_[1] + targetGlobalPos_.speed.lon*dT*1e-6;
+	targetEstimatedPosLocal_[2] = targetPosLocal_[2] + targetGlobalPos_.speed.elev*dT*1e-6;
 
-	std::cout << "Target in local frame coordinates: (" << estimatedPosLocal_[0] << ", " << estimatedPosLocal_[1] << ", " << estimatedPosLocal_[2] << ")" << std::endl;
+	// std::cout << "Target in local frame coordinates: (" << targetEstimatedPosLocal_[0] << ", " << targetEstimatedPosLocal_[1] << ", " << targetEstimatedPosLocal_[2] << "), dT since last GPOS: " << dT << std::endl;
 
-	double bearing = getBearing(&antennaPos_, &estimatedPos_);
-	double azimuth = getAzimuth(&antennaPos_, &estimatedPos_);
+	// convert back to WGS84
+	antennaLocalCartesian_.Reverse(targetEstimatedPosLocal_[0],targetEstimatedPosLocal_[1],targetEstimatedPosLocal_[2],targetEstimatedPos_.lat,targetEstimatedPos_.lon,targetEstimatedPos_.elev);
+
+	double bearing = getBearing(&antennaPos_, &targetEstimatedPos_);
+	double azimuth = getAzimuth(&antennaPos_, &targetEstimatedPos_);
 
 	setNewSetpoints(ct_abspos, bearing - panOffset_ - magneticDeclination_, azimuth);
 }

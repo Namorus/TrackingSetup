@@ -337,6 +337,7 @@ int main(int argc, char** argv) {
 				gpsTracking.updateGPOS(remoteGlobalPosition);
 				motorSetpoints = gpsTracking.getNewSetpoints();
 			} else if (localGpsFixAcquired || commandLineOptions.noLocalGPS) {
+				//TODO: only do that for some time. stop if GPOS message is getting old.
 				gpsTracking.updateEstimated();
 				motorSetpoints = gpsTracking.getNewSetpoints();
 			} else {
