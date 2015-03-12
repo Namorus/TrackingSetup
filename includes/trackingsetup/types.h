@@ -265,8 +265,8 @@ struct recorderSettings {
 		in >> a.recordMotData;
 		in >> a.recordLocalGPS;
 		in >> a.recordRemoteGPS;
-		in >> a.recordCurMode;
 		in >> a.recordGPSTracking;
+		in >> a.recordCurMode;
 		return in;
 	}
 };
