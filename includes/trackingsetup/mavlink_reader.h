@@ -1,17 +1,16 @@
 /*
- * TSmavlinkReader.h
+ * mavlinkReader.h
  *
  *  Created on: Jan 29, 2015
- *      Author: asl
+ *      Author: Thomas Mantel
+ *  Last Change on: Mar 13, 2015
  */
 
-#ifndef TSMAVLINKREADER_H_
-#define TSMAVLINKREADER_H_
-
-#include <fcntl.h>   // File control definitions
-#include <termios.h> // POSIX terminal control definitions
+#ifndef MAVLINKREADER_H_
+#define MAVLINKREADER_H_
 
 #include <common/mavlink.h>
+#include <ftdi.hpp>
 
 #include "trackingsetup/input.h"
 #include "trackingsetup/types.h"
@@ -21,36 +20,41 @@ namespace tracking {
 class MavlinkReader: public Input {
 public:
 	MavlinkReader();
-	MavlinkReader(std::string &port, int &baudrate);
+	MavlinkReader(int vid, int pid, int interface, int baudrate, const std::string label);
 	virtual ~MavlinkReader();
 
-	void init(std::string &port, int &baudrate);
+	void init(int vid, int pid, int interface, int baudrate, const std::string label);
 	bool start();
-
-	int readMessage(mavlink_message_t &message);
-	void readMessages();
 
 	bool openSerial();
 	bool closeSerial();
 
+	static void* readThread(void* arg);
+
+	void readMessages();
+	void messageHandler(mavlink_message_t& message);
+
+	bool keepReading();
 	void stopReading();
 
 	void getMavlinkMessages(MavlinkMessages &messages);
-
-	static void* readThread(void* arg);
-
-	bool keepReading();
+    int getRxDropCount();
+    int getRxSuccessCount();
 
     static uint64_t get_usec();
 
 private:
 	bool keepReadingMavlink_;
 
-	std::string port_;
+	int vid_;
+	int pid_;
+	int interface_;
+	std::string label_;
+
 	int baudrate_;
 	bool isOpen_;
 
-	int fd_;
+	Ftdi::Context context_;
 
 	bool initialized_;
 	bool readingStatus_;
@@ -72,10 +76,8 @@ private:
 
 	mavlink_status_t lastStatus_;
 
-	bool setupSerial();
-
 };
 
 } /* namespace tracking */
 
-#endif /* TSMAVLINKREADER_H_ */
+#endif /* MAVLINKREADER_H_ */

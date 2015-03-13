@@ -57,12 +57,20 @@ int Config::handler(void* user, const char* section, const char* name,
 		pconfig->GPS.AntennaPos.lon = atof(value);
 	} else if (MATCH("GPS", "Antenna.elev")) {
 		pconfig->GPS.AntennaPos.elev = atof(value);
-	} else if (MATCH("GPS", "localMavlinkPort")) {
-		pconfig->GPS.localMavlinkPort = value;
+	} else if (MATCH("GPS", "localMavlinkVid")) {
+		pconfig->GPS.localMavlinkVid = atoi(value);
+	} else if (MATCH("GPS", "localMavlinkPid")) {
+		pconfig->GPS.localMavlinkPid = atoi(value);
+	} else if (MATCH("GPS", "localMavlinkInterface")) {
+		pconfig->GPS.localMavlinkInterface = atoi(value);
 	} else if (MATCH("GPS", "localMavlinkBaudrate")) {
 		pconfig->GPS.localMavlinkBaudrate = atoi(value);
-	} else if (MATCH("GPS", "remoteMavlinkPort")) {
-		pconfig->GPS.remoteMavlinkPort = value;
+	} else if (MATCH("GPS", "remoteMavlinkVid")) {
+		pconfig->GPS.remoteMavlinkVid = atoi(value);
+	} else if (MATCH("GPS", "remoteMavlinkPid")) {
+		pconfig->GPS.remoteMavlinkPid = atoi(value);
+	} else if (MATCH("GPS", "remoteMavlinkInterface")) {
+		pconfig->GPS.remoteMavlinkInterface = atoi(value);
 	} else if (MATCH("GPS", "remoteMavlinkBaudrate")) {
 		pconfig->GPS.remoteMavlinkBaudrate = atoi(value);
 	}
@@ -121,12 +129,11 @@ void Config::display(Config* pconfig) {
 			<< pconfig->GPS.AntennaPos.lat << "N, "
 			<< pconfig->GPS.AntennaPos.lon << "E @ "
 			<< pconfig->GPS.AntennaPos.elev << "m " << endl
-			<< "PX4 Mavlink port: \t\t" << pconfig->GPS.localMavlinkPort << endl
-			<< "PX4 Mavlink baudrate: \t\t" << pconfig->GPS.localMavlinkBaudrate
-			<< endl << "3DR radio Mavlink port: \t"
-			<< pconfig->GPS.remoteMavlinkPort << endl
-			<< "3DR radio Mavlink baudrate: \t"
-			<< pconfig->GPS.remoteMavlinkBaudrate << endl << endl;
+			<< "PX4 Mavlink device: \t\tvid=0x" << std::hex << pconfig->GPS.localMavlinkVid << ", pid=0x" << pconfig->GPS.localMavlinkPid << ", interface=" << std::dec << pconfig->GPS.localMavlinkInterface << "" << endl
+			<< "PX4 Mavlink baudrate: \t\t" << pconfig->GPS.localMavlinkBaudrate << endl
+			<< "3DR radio Mavlink device: \tvid=0x" << std::hex << pconfig->GPS.remoteMavlinkVid << ", pid=0x" << pconfig->GPS.remoteMavlinkPid << ", interface=" << std::dec << pconfig->GPS.remoteMavlinkInterface << "" << endl
+			<< "3DR radio Mavlink baudrate: \t"	<< pconfig->GPS.remoteMavlinkBaudrate << endl
+			<< endl;
 
 //	cout << "[RSSlocate config]" << endl << "Pan speed: \t\t\t"
 //			<< pconfig->locate.panSpeed << endl << "Starting tilt angle: \t\t"
@@ -158,9 +165,15 @@ std::ostream& operator<<(std::ostream& out, const Config& cfg) {
 	out << cfg.Glbl.verbose << " " << cfg.Glbl.updateFreq << " ";
 
 	/* GPStrackingConf */
-	out << cfg.GPS.AntennaPos << " " << cfg.GPS.localMavlinkPort << " "
-			<< cfg.GPS.localMavlinkBaudrate << " " << cfg.GPS.remoteMavlinkPort
-			<< " " << cfg.GPS.remoteMavlinkBaudrate << " ";
+	out << cfg.GPS.AntennaPos << " "
+		<< cfg.GPS.localMavlinkVid << " "
+		<< cfg.GPS.localMavlinkPid << " "
+		<< cfg.GPS.localMavlinkInterface << " "
+		<< cfg.GPS.localMavlinkBaudrate << " "
+		<< cfg.GPS.remoteMavlinkVid << " "
+		<< cfg.GPS.remoteMavlinkPid << " "
+		<< cfg.GPS.remoteMavlinkInterface << " "
+		<< cfg.GPS.remoteMavlinkBaudrate << " ";
 
 	/* MotorControlConf */
 	out << cfg.Mot.panEposNo << " " << cfg.Mot.tiltEposNo << " "
@@ -211,9 +224,13 @@ std::istream& operator>>(std::istream& in, Config& cfg) {
 	in >> cfg.GPS.AntennaPos.lat;
 	in >> cfg.GPS.AntennaPos.lon;
 	in >> cfg.GPS.AntennaPos.elev;
-	in >> cfg.GPS.localMavlinkPort;
+	in >> cfg.GPS.localMavlinkVid;
+	in >> cfg.GPS.localMavlinkPid;
+	in >> cfg.GPS.localMavlinkInterface;
 	in >> cfg.GPS.localMavlinkBaudrate;
-	in >> cfg.GPS.remoteMavlinkPort;
+	in >> cfg.GPS.remoteMavlinkVid;
+	in >> cfg.GPS.remoteMavlinkPid;
+	in >> cfg.GPS.remoteMavlinkInterface;
 	in >> cfg.GPS.remoteMavlinkBaudrate;
 
 	/* MotorControlConf */
@@ -252,17 +269,31 @@ bool operator==(const GPStrackingConf& a, const GPStrackingConf& b) {
 	if (a.AntennaPos != b.AntennaPos)
 		return false;
 
-	if (a.localMavlinkPort != b.localMavlinkPort)
+	if (a.localMavlinkVid != b.localMavlinkVid)
+		return false;
+
+	if (a.localMavlinkPid != b.localMavlinkPid)
+		return false;
+
+	if (a.localMavlinkInterface != b.localMavlinkInterface)
 		return false;
 
 	if (a.localMavlinkBaudrate != b.localMavlinkBaudrate)
 		return false;
 
-	if (a.remoteMavlinkPort != b.remoteMavlinkPort)
+	if (a.remoteMavlinkVid != b.remoteMavlinkVid)
+		return false;
+
+	if (a.remoteMavlinkPid != b.remoteMavlinkPid)
+		return false;
+
+	if (a.remoteMavlinkInterface != b.remoteMavlinkInterface)
 		return false;
 
 	if (a.remoteMavlinkBaudrate != b.remoteMavlinkBaudrate)
 		return false;
+
+
 
 	return true;
 }

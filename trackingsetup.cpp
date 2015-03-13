@@ -89,9 +89,8 @@ int main(int argc, char** argv) {
 	 * initialize inputs *
 	 * ***************** * */
 
-	// MAVLink reader for local mavlink stream
-	MavlinkReader localMavlinkReader(trackingConfig.GPS.localMavlinkPort,
-			trackingConfig.GPS.localMavlinkBaudrate);
+	// MAVLink reader for local MAVLink stream
+	MavlinkReader localMavlinkReader(trackingConfig.GPS.localMavlinkVid,trackingConfig.GPS.localMavlinkPid,trackingConfig.GPS.localMavlinkInterface,trackingConfig.GPS.localMavlinkBaudrate,"PX4");
 	trackingLog.add(localMavlinkReader.getLog());
 	trackingLog.registerInstance(&localMavlinkReader);
     MavlinkMessages localMavlinkMessages;
@@ -110,7 +109,7 @@ int main(int argc, char** argv) {
     localPosition = trackingConfig.GPS.AntennaPos;
 
 	// MAVLink reader for remote MAVLink stream
-    MavlinkReader remoteMavlinkReader(trackingConfig.GPS.remoteMavlinkPort,trackingConfig.GPS.remoteMavlinkBaudrate);
+    MavlinkReader remoteMavlinkReader(trackingConfig.GPS.remoteMavlinkVid,trackingConfig.GPS.remoteMavlinkPid,trackingConfig.GPS.remoteMavlinkInterface,trackingConfig.GPS.remoteMavlinkBaudrate,"3DR radio");
 	trackingLog.add(remoteMavlinkReader.getLog());
 	trackingLog.registerInstance(&remoteMavlinkReader);
     MavlinkMessages remoteMavlinkMessages;
