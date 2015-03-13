@@ -10,7 +10,7 @@
 #define MAVLINKREADER_H_
 
 #include <common/mavlink.h>
-#include <ftdi.hpp>
+#include <libftdi1/ftdi.hpp>
 
 #include "trackingsetup/input.h"
 #include "trackingsetup/types.h"

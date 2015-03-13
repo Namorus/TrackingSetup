@@ -110,7 +110,7 @@ int main(int argc, char** argv) {
 
 	// MAVLink reader for remote MAVLink stream
     MavlinkReader remoteMavlinkReader(trackingConfig.GPS.remoteMavlinkVid,trackingConfig.GPS.remoteMavlinkPid,trackingConfig.GPS.remoteMavlinkInterface,trackingConfig.GPS.remoteMavlinkBaudrate,"3DR radio");
-	trackingLog.add(remoteMavlinkReader.getLog());
+    trackingLog.add(remoteMavlinkReader.getLog());
 	trackingLog.registerInstance(&remoteMavlinkReader);
     MavlinkMessages remoteMavlinkMessages;
     MavlinkRadioStatus radioStatus(&remoteMavlinkMessages);

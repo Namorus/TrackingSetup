@@ -93,29 +93,17 @@ bool MavlinkReader::start() {
 }
 
 bool MavlinkReader::openSerial() {
-	/* !! THIS IS NO GENERAL SOLUTION !! */
-	// Workaround since Ftdi::context.open(vid,pid) does not work...
-
-	Ftdi::List* list = Ftdi::List::find_all(vid_, pid_);
-	for (Ftdi::List::iterator it = list->begin(); it != list->end(); it++)
-	{
-//		std::cout << "FTDI (" << &*it << "): " << it->vendor() << ", " << it->description() << ", "	<< it->serial()	<< std::endl << std::endl;
-		context_ = *it;
-	}
-	delete list;
-
 	std::stringstream logmessage("MavlinkReader " + label_ + " :: ");
 	int res = 0;
 	res = context_.set_interface((ftdi_interface) interface_);
+
 	if( res < 0) {
 		logmessage << "Unable to set interface number: " << context_.error_string();
 		addLogMessage(vl_ERROR,logmessage.str());
 		return false;
 	}
 
-//	res = context_.open(vid_,pid_);
-//	res = context_.open(vid_,pid_,"","FTYJ6IB0");
-	res = context_.open();
+	res = context_.open(vid_,pid_);
 	if( res < 0) {
 		logmessage << "Unable to open interface (" << res << "): " << context_.error_string();
 		addLogMessage(vl_ERROR,logmessage.str());
