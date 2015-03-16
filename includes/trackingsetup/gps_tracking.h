@@ -33,6 +33,10 @@ public:
 
 	void updateEstimated();
 
+	double getDistance();
+
+	double getAzimuthFromLocal();
+
 	static double getLOSdistance(GPSPos* posA, GPSPos* posB);
 
 	static double getDistance(GPSPos* posA, GPSPos* posB);
