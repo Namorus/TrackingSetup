@@ -58,17 +58,17 @@ int Config::handler(void* user, const char* section, const char* name,
 	} else if (MATCH("GPS", "Antenna.elev")) {
 		pconfig->GPS.AntennaPos.elev = atof(value);
 	} else if (MATCH("GPS", "localMavlinkVid")) {
-		pconfig->GPS.localMavlinkVid = atoi(value);
+		pconfig->GPS.localMavlinkVid = strtol(value,NULL,0);
 	} else if (MATCH("GPS", "localMavlinkPid")) {
-		pconfig->GPS.localMavlinkPid = atoi(value);
+		pconfig->GPS.localMavlinkPid = strtol(value,NULL,0);
 	} else if (MATCH("GPS", "localMavlinkInterface")) {
 		pconfig->GPS.localMavlinkInterface = atoi(value);
 	} else if (MATCH("GPS", "localMavlinkBaudrate")) {
 		pconfig->GPS.localMavlinkBaudrate = atoi(value);
 	} else if (MATCH("GPS", "remoteMavlinkVid")) {
-		pconfig->GPS.remoteMavlinkVid = atoi(value);
+		pconfig->GPS.remoteMavlinkVid = strtol(value,NULL,0);
 	} else if (MATCH("GPS", "remoteMavlinkPid")) {
-		pconfig->GPS.remoteMavlinkPid = atoi(value);
+		pconfig->GPS.remoteMavlinkPid = strtol(value,NULL,0);
 	} else if (MATCH("GPS", "remoteMavlinkInterface")) {
 		pconfig->GPS.remoteMavlinkInterface = atoi(value);
 	} else if (MATCH("GPS", "remoteMavlinkBaudrate")) {
