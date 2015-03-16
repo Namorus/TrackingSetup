@@ -53,11 +53,15 @@ void GpsTrackingMode::updateGPOS(GlobalPos& targetGlobalPos) {
 	antennaLocalCartesian_.Forward(targetGlobalPos_.position.lat,targetGlobalPos_.position.lon,targetGlobalPos_.position.elev,targetPosLocal_[0],targetPosLocal_[1],targetPosLocal_[2]);
 
 	// received position is used as estimate
-	//TODO: maybe add some look ahead hear
+	//TODO: maybe add some look ahead here
 	targetEstimatedPos_ = targetGlobalPos.position;
 
+	double groundDistance = sqrt(targetPosLocal_[0]*targetPosLocal_[0]+targetPosLocal_[1]*targetPosLocal_[1]);
+	double azimuth = atan2(targetPosLocal_[2],groundDistance);
+
+
 	double bearing = getBearing(&antennaPos_, &targetEstimatedPos_);
-	double azimuth = getAzimuth(&antennaPos_, &targetEstimatedPos_);
+//	double azimuth = getAzimuth(&antennaPos_, &targetEstimatedPos_);
 
 	setNewSetpoints(ct_abspos, bearing - panOffset_ - magneticDeclination_, azimuth);
 }
@@ -81,8 +85,11 @@ void GpsTrackingMode::updateEstimated() {
 	// convert back to WGS84
 	antennaLocalCartesian_.Reverse(targetEstimatedPosLocal_[0],targetEstimatedPosLocal_[1],targetEstimatedPosLocal_[2],targetEstimatedPos_.lat,targetEstimatedPos_.lon,targetEstimatedPos_.elev);
 
+	double groundDistance = sqrt(targetPosLocal_[0]*targetPosLocal_[0]+targetPosLocal_[1]*targetPosLocal_[1]);
+	double azimuth = atan2(targetPosLocal_[2],groundDistance);
+
 	double bearing = getBearing(&antennaPos_, &targetEstimatedPos_);
-	double azimuth = getAzimuth(&antennaPos_, &targetEstimatedPos_);
+//	double azimuth = getAzimuth(&antennaPos_, &targetEstimatedPos_);
 
 	setNewSetpoints(ct_abspos, bearing - panOffset_ - magneticDeclination_, azimuth);
 }
