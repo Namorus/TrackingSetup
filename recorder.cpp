@@ -100,7 +100,7 @@ void Recorder::record(timespec* const Ts, std::vector<float>* const RSSvalues,
 		}
 
 		if (settings.recordGPSTracking) {
-			dataline << *gpsTracking;
+			dataline << *gpsTracking << " ";
 		}
 
 		if (settings.recordCurMode) {
