@@ -85,8 +85,8 @@ void GpsTrackingMode::updateEstimated() {
 	// convert back to WGS84
 	antennaLocalCartesian_.Reverse(targetEstimatedPosLocal_[0],targetEstimatedPosLocal_[1],targetEstimatedPosLocal_[2],targetEstimatedPos_.lat,targetEstimatedPos_.lon,targetEstimatedPos_.elev);
 
-	double groundDistance = sqrt(targetPosLocal_[0]*targetPosLocal_[0]+targetPosLocal_[1]*targetPosLocal_[1]);
-	double azimuth = atan2(targetPosLocal_[2],groundDistance);
+	double groundDistance = sqrt(targetEstimatedPosLocal_[0]*targetEstimatedPosLocal_[0]+targetEstimatedPosLocal_[1]*targetEstimatedPosLocal_[1]);
+	double azimuth = atan2(rad2deg(targetEstimatedPosLocal_[2]),groundDistance);
 
 	double bearing = getBearing(&antennaPos_, &targetEstimatedPos_);
 //	double azimuth = getAzimuth(&antennaPos_, &targetEstimatedPos_);
