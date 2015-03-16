@@ -107,15 +107,23 @@ struct GlobalConf {
 };
 
 struct GPStrackingConf {
+	GPStrackingConf() :
+		localMavlinkVid(0x0403),
+		localMavlinkPid(0x6011),
+		localMavlinkInterface(2),
+		localMavlinkBaudrate(115200),
+		remoteMavlinkVid(0x0403),
+		remoteMavlinkPid(0x6011),
+		remoteMavlinkInterface(1),
+		remoteMavlinkBaudrate(57600) {}
+
 	friend bool operator==(const GPStrackingConf& a, const GPStrackingConf& b);
 	friend bool operator!=(const GPStrackingConf& a, const GPStrackingConf& b);
 	GPSPos AntennaPos;
 
-	std::string localMavlinkPort;
-	int localMavlinkBaudrate;
+	int localMavlinkVid, localMavlinkPid, localMavlinkInterface, localMavlinkBaudrate;
 
-	std::string remoteMavlinkPort;
-	int remoteMavlinkBaudrate;
+	int remoteMavlinkVid, remoteMavlinkPid, remoteMavlinkInterface, remoteMavlinkBaudrate;
 };
 
 struct MotorControlConf {

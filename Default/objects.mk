@@ -4,5 +4,5 @@
 
 USER_OBJS :=
 
-LIBS := -lftdi -lpthread -lusb -lGeographic
+LIBS := -lpthread -lusb -lGeographic -lftdipp1 -lftdi1
 

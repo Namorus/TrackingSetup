@@ -33,10 +33,11 @@
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.1399123158" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.base.1382805325" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base">
 								<option id="gnu.cpp.link.option.libs.650559602" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="ftdi"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="pthread"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="usb"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="Geographic"/>
+									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="ftdipp1"/>
+									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="ftdi1"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1338909634" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
