@@ -60,7 +60,7 @@ public:
 
 	void setPanAngle(double panAngleMust);
 
-	void setTiltAngle(double tiltAngleMust);
+	bool setTiltAngle(double tiltAngleMust);
 
 	void setPanPosition(int panPositionMust);
 

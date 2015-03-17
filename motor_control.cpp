@@ -37,23 +37,25 @@ void MotorControl::init(MotorControlConf* arg) {
 
 		panController = new Epos(pEposPan, 0, "pan");
 		tiltController = new Epos(pEposTilt, 0, "tilt");
+		addLogChild(panController);
+		addLogChild(tiltController);
 
-		if (panController->getActualOperationMode() != Epos::OMD_CURRENT_MODE
-				&& panController->getActualOperationMode()
+		if (panController->getCurrentOperationMode() != Epos::OMD_CURRENT_MODE
+				&& panController->getCurrentOperationMode()
 						!= Epos::OMD_HOMING_MODE
-				&& panController->getActualOperationMode()
+				&& panController->getCurrentOperationMode()
 						!= Epos::OMD_INTERPOLATED_POSITION_MODE
-				&& panController->getActualOperationMode()
+				&& panController->getCurrentOperationMode()
 						!= Epos::OMD_MASTER_ENCODER_MODE
-				&& panController->getActualOperationMode()
+				&& panController->getCurrentOperationMode()
 						!= Epos::OMD_POSITION_MODE
-				&& panController->getActualOperationMode()
+				&& panController->getCurrentOperationMode()
 						!= Epos::OMD_PROFILE_POSITION_MODE
-				&& panController->getActualOperationMode()
+				&& panController->getCurrentOperationMode()
 						!= Epos::OMD_PROFILE_VELOCITY_MODE
-				&& panController->getActualOperationMode()
+				&& panController->getCurrentOperationMode()
 						!= Epos::OMD_STEP_DIRECTION_MODE
-				&& panController->getActualOperationMode()
+				&& panController->getCurrentOperationMode()
 						!= Epos::OMD_VELOCITY_MODE) {
 			commOpenRes = -99;
 		}
@@ -226,14 +228,32 @@ void MotorControl::setPanPosition(int panPosMust) {
 //	panController->setOperationMode(curOpMode);
 }
 
-void MotorControl::setTiltAngle(double tiltAngleMust) {
+bool MotorControl::setTiltAngle(double tiltAngleMust) {
 	// read out current operation mode for later resetting.
 //	Epos::operational_mode_t curOpMode = tiltController->getActualOperationMode();
 
+	int result = true;
+//	tiltController->stopProfileVelocity();
+
 	tiltController->setOperationMode(Epos::OMD_PROFILE_POSITION_MODE);
-	tiltController->setMotionProfileType(1);
-	tiltController->setTargetPosition(deg2epos(tiltAngleMust));
-	tiltController->startAbsoluteMotion();
+
+	if(!tiltController->setMotionProfileType(1)) {
+		result = false;
+		addLogMessage(vl_WARNING,"TiltMotorControl :: Could not set motion profile to sinusoidal!");
+	}
+
+	if (!tiltController->setTargetPosition(deg2epos(tiltAngleMust))) {
+		result = false;
+		addLogMessage(vl_WARNING,"TiltMotorControl :: Could not set target position!");
+	}
+	usleep(1000);
+
+	if (!tiltController->setControlword(0x003f)) {
+		result = false;
+		addLogMessage(vl_WARNING,"TiltMotorControl :: Error starting absolute motion!");
+	}
+
+	return result;
 
 	// set previous operation mode
 //	tiltController->setOperationMode(curOpMode);
@@ -314,7 +334,7 @@ void MotorControl::displayDigitalInputState() {
 }
 
 int MotorControl::deg2epos(double deg) {
-	return (int) deg * gearRatio * 2000.0 / 360 + 0.5;
+	return (int) (((deg * gearRatio * 2000.0) / 360) + 0.5);
 }
 
 int MotorControl::deg_s2epos(double deg_s) {

@@ -118,7 +118,7 @@ public:
     void setDigitialIn4ToHomeSwitch();
 
 	//! write EPOS control word
-	void setControlword(uint16_t val);
+	bool setControlword(uint16_t val);
 
 	/*! \brief change EPOS state */
 	void setState(desired_state_t state);
@@ -127,10 +127,10 @@ public:
 	int32_t getTargetPosition();
 
 	/*! \brief read target position */
-	void setTargetPosition(int32_t val);
+	bool setTargetPosition(int32_t val);
 
 	/*! \brief set OpMode to ProfilePosition and make absolute movement */
-	void moveAbsolute(int32_t steps);
+	bool moveAbsolute(int32_t steps);
 
 	/*! \brief set OpMode to ProfilePosition and make relative movement */
 	void moveRelative(int32_t steps);
@@ -157,10 +157,13 @@ public:
 	 *
 	 * @return 0 MEANS ERROR; '-1' is a valid OpMode, but 0 is not!
 	 */
-	operational_mode_t getActualOperationMode();
+	operational_mode_t getCurrentOperationMode();
+
+	//! \brief get string form of opmode
+	std::string getOperationModeString(operational_mode_t);
 
 	//! \brief start motion with absolute demanded position
-	void startAbsoluteMotion();
+	bool startAbsoluteMotion();
 
 	//! \brief start motion with relative demanded position
 	void startRelativeMotion();
@@ -222,7 +225,7 @@ public:
 	 *
 	 * @param type 0: linear ramp (trapezoidal profile), 1: sin^2 ramp (sinusoidal profile)
 	 */
-	void setMotionProfileType(int16_t type);
+	bool setMotionProfileType(int16_t type);
 
 	//! \brief Is the movement target reached?
 	bool isTargetReached();

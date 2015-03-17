@@ -12,7 +12,7 @@ namespace tracking {
 
 Epos::Epos(EposComm* _pGateway, uint8_t _nodeId, const std::string _deviceName) :
 		pGateway(_pGateway), nodeId(_nodeId), deviceName(_deviceName) {
-	OpMode = getActualOperationMode();
+	OpMode = getCurrentOperationMode();
 
 }
 
@@ -540,8 +540,8 @@ void Epos::setState(desired_state_t state) {
 }
 
 /* write EPOS control word (firmware spec 14.1.57) */
-void Epos::setControlword(uint16_t val) {
-	WriteObjectValue(0x6040, 0x00, val);
+bool Epos::setControlword(uint16_t val) {
+	return WriteObjectValue(0x6040, 0x00, val);
 }
 
 /* set mode of operation --- 14.1.59 */
@@ -550,17 +550,57 @@ void Epos::setOperationMode(Epos::operational_mode_t m) {
 		WriteObjectValue(0x6060, 0x00, (int32_t) m);
 
 		OpMode = m;
+		addLogMessage(vl_DEBUG,"Operation mode of " + deviceName + " switched to " + getOperationModeString(m));
 	}
 }
 
 /* read mode of operation --- 14.1.60 */
-Epos::operational_mode_t Epos::getActualOperationMode() {
+Epos::operational_mode_t Epos::getCurrentOperationMode() {
 	uint32_t mode = ReadObjectValue(0x6061, 0x00);
 	return (operational_mode_t) mode;
 }
 
-void Epos::startAbsoluteMotion() {
-	setControlword(0x003f);
+std::string Epos::getOperationModeString(Epos::operational_mode_t mode) {
+	std::string modeString;
+	switch (mode) {
+	case Epos::OMD_INTERPOLATED_POSITION_MODE:
+		modeString = "Interpolated Position Mode";
+		break;
+	case Epos::OMD_HOMING_MODE:
+		modeString = "Homing Mode";
+		break;
+	case Epos::OMD_PROFILE_VELOCITY_MODE:
+		modeString = "Profile Velocity Mode";
+		break;
+	case Epos::OMD_PROFILE_POSITION_MODE:
+		modeString = "Profile Position Mode";
+		break;
+	case Epos::OMD_POSITION_MODE:
+		modeString = "Position Mode";
+		break;
+	case Epos::OMD_VELOCITY_MODE:
+		modeString = "Position Mode";
+		break;
+	case Epos::OMD_CURRENT_MODE:
+		modeString = "Position Mode";
+		break;
+	case Epos::OMD_MASTER_ENCODER_MODE:
+		modeString = "Position Mode";
+		break;
+	case Epos::OMD_STEP_DIRECTION_MODE:
+		modeString = "Position Mode";
+		break;
+	default:
+		modeString = "!! Unknown Mode !!";
+		break;
+	}
+
+	return modeString;
+}
+
+
+bool Epos::startAbsoluteMotion() {
+	return setControlword(0x003f);
 }
 
 void Epos::startRelativeMotion() {
@@ -585,17 +625,22 @@ void Epos::moveRelative(int32_t steps) {
 	startRelativeMotion();
 }
 
-void Epos::moveAbsolute(int32_t steps) {
+bool Epos::moveAbsolute(int32_t steps) {
+	bool result = true;
 	// set the Profile Position Mode
 	setOperationMode(OMD_PROFILE_POSITION_MODE);
 
 	// write intended target position, is signed 32bit int
 	// firmware 14.1.70
-	setTargetPosition(steps);
+	result &= setTargetPosition(steps);
+
+	//stopProfileVelocity();
 
 	// switch to absolute positioning, cancel possible ongoing operation first!
 	// see maxon application note: device programming 2.1
-	startAbsoluteMotion();
+	result &= startAbsoluteMotion();
+
+	return result;
 }
 
 /* read EPOS target position; firmware description 14.1.70 */
@@ -603,8 +648,8 @@ int32_t Epos::getTargetPosition() {
 	return ReadObjectValue(0x607a, 0x00);
 }
 
-void Epos::setTargetPosition(int32_t val) {
-	WriteObjectValue(0x607a, 0x00, val);
+bool Epos::setTargetPosition(int32_t val) {
+	return WriteObjectValue(0x607a, 0x00, val);
 }
 
 int32_t Epos::getDemandPosition() {
@@ -682,8 +727,8 @@ void Epos::setMaxAcceleration(uint32_t maxacc) {
 	WriteObjectValue(0x60C5, 0x00, maxacc);
 }
 
-void Epos::setMotionProfileType(int16_t type) {
-	WriteObjectValue(0x6086, 0x00, type);
+bool Epos::setMotionProfileType(int16_t type) {
+	return WriteObjectValue(0x6086, 0x00, type);
 }
 
 bool Epos::isTargetReached() {
