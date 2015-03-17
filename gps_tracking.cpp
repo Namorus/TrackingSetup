@@ -64,6 +64,8 @@ void GpsTrackingMode::updateGPOS(GlobalPos& targetGlobalPos) {
 //	double azimuth = getAzimuth(&antennaPos_, &targetEstimatedPos_);
 	double azimuth = getAzimuthFromLocal();
 
+//	std::cout << "New projected distance: " << getDistance() << ", new azimuth: " << azimuth << std::endl;
+
 	setNewSetpoints(ct_abspos, bearing - panOffset_ - magneticDeclination_, azimuth);
 }
 
@@ -91,9 +93,10 @@ void GpsTrackingMode::updateEstimated() {
 //	double azimuth = getAzimuth(&antennaPos_, &targetEstimatedPos_);
 	double azimuth = getAzimuthFromLocal();
 
-//	std::cout << "New projected distance: " << getDistance() << ", new azimuth: " << azimuth << std::endl;
+	std::cout << "New projected distance: " << getDistance() << ", new azimuth: " << azimuth << std::endl;
 
 	setNewSetpoints(ct_abspos, bearing - panOffset_ - magneticDeclination_, azimuth);
+//	setNewSetpoints(ct_abspos, bearing - panOffset_ - magneticDeclination_, 0);
 }
 
 double GpsTrackingMode::getDistance() {
