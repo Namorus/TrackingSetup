@@ -303,7 +303,9 @@ int main(int argc, char** argv) {
 		 * call routine of current state
 		 */
 		motorSetpoints.panCtrltype = ct_undefined;
+		motorSetpoints.panValue = 0;
 		motorSetpoints.tiltCtrltype = ct_undefined;
+		motorSetpoints.tiltValue = 0;
 		switch (currentState.get()) {
 		case ts_ENDING:
 			motorSetpoints.panCtrltype = ct_velocity;
@@ -334,6 +336,7 @@ int main(int argc, char** argv) {
 				trackingLog.log(vl_DEBUG,
 						"processing new position of tracked object.");
 				gpsTracking.updateGPOS(remoteGlobalPosition);
+//				gpsTracking.updateGPS(remoteGlobalPosition.position);
 				motorSetpoints = gpsTracking.getNewSetpoints();
 			} else if (localGpsFixAcquired || commandLineOptions.noLocalGPS) {
 				//TODO: only do that for some time. stop if GPOS message is getting old.
