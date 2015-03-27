@@ -53,11 +53,12 @@ int MavlinkGps::getFixType() {
 std::ostream& operator<<(std::ostream& out, const MavlinkGps& mavlinkGPS) {
     MavlinkMessages mavlinkMessages = *mavlinkGPS.mavlinkMessages_;
 
-	double posAccuracy = sqrt(
-			mavlinkMessages.gps_raw_int.eph * mavlinkMessages.gps_raw_int.eph
-					+ mavlinkMessages.gps_raw_int.epv
-							* mavlinkMessages.gps_raw_int.epv) / 100;
+	double posAccuracy = sqrt(mavlinkMessages.gps_raw_int.eph * mavlinkMessages.gps_raw_int.eph
+					+ mavlinkMessages.gps_raw_int.epv * mavlinkMessages.gps_raw_int.epv) / 100;
 
+	if(isnan(posAccuracy)) {
+		posAccuracy = -1;
+	}
 	GPSPos pos;
 	pos.elev = mavlinkMessages.gps_raw_int.alt / 1000.0;
 	pos.lon = 1E-7 * mavlinkMessages.gps_raw_int.lon;
