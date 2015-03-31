@@ -11,12 +11,13 @@
 #include <unistd.h>
 
 #include <trackingsetup/trackingsetup.h>
-
 #include <trackingsetup/find_north.h>
+#include <trackingsetup/forward_calc.h>
 #include <trackingsetup/gui_backend.h>
 #include <trackingsetup/mavlink_mag.h>
 #include <trackingsetup/mavlink_radio_status.h>
 #include <trackingsetup/mavlink_gpos.h>
+#include <trackingsetup/VelBasedTracking.h>
 
 using namespace std;
 using namespace tracking;
@@ -135,6 +136,10 @@ int main(int argc, char** argv) {
 
 	GlobalPos remoteGlobalPosition;
 
+	ForwardCalc remotePosEstimator;
+	LocalPos estimatedRemotePosition;
+	LocalPos estimatedRemoteVelocity;
+
 	/* initialize motor control */
 	MotorControl motorControl;
 	if (!commandLineOptions.noMotors) {
@@ -151,6 +156,10 @@ int main(int argc, char** argv) {
 	// GPS Tracking
 	GpsTrackingMode gpsTracking;
 	trackingLog.add(gpsTracking.getLog());
+	trackingLog.registerInstance(&gpsTracking);
+
+	VelBasedGpsTrackingMode gpsVelTracking(&remotePosEstimator);
+	trackingLog.add(gpsVelTracking.getLog());
 	trackingLog.registerInstance(&gpsTracking);
 
 	// Magnetometer readings
@@ -223,9 +232,9 @@ int main(int argc, char** argv) {
 
 	if (commandLineOptions.noLocalGPS) {
 		localPosition = trackingConfig.GPS.AntennaPos;
-//		GPStracking.setAntennaPos(antennaPosition);
-		trackingLog.log(vl_INFO,
-				"Using GPS position from configuration as antenna position");
+		localGpsFixAcquired = true;
+		gpsTracking.setAntennaPos(localPosition);
+		trackingLog.log(vl_INFO,"Using GPS position from configuration as antenna position");
 	}
 
 	std::vector<float> RSSvalues;
@@ -275,9 +284,6 @@ int main(int argc, char** argv) {
         // process local GPS
 		if(!commandLineOptions.noLocalGPS) {
 			newAntennaPos = localGps.getPos(&localPosition);
-		} else {
-			localGpsFixAcquired = true;
-			gpsTracking.setAntennaPos(localPosition);
 		}
 
 		// process remote GPS
@@ -298,6 +304,14 @@ int main(int argc, char** argv) {
 		}
 
 		// cout << "Remote Position: " << remotePosition.toString() << endl;
+
+
+		// update estimator
+		if (newTrackedPos) {
+			remotePosEstimator.setNewRemoteGPos(remoteGlobalPosition);
+		}
+		remotePosEstimator.updateEstimate();
+
 
 		/*
 		 * call routine of current state
@@ -346,6 +360,11 @@ int main(int argc, char** argv) {
 				trackingLog.log(vl_DEBUG,
 						"GPS_Tracking: could not update remotePosition");
 			}
+			break;
+
+		case ts_VEL_BASED_GPS_TRACKING:
+			gpsVelTracking.update();
+			motorSetpoints = gpsVelTracking.getNewSetpoints();
 			break;
 
 		case ts_FIND_NORTH:

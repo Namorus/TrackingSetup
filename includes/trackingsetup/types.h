@@ -58,7 +58,7 @@ struct commandLineOptions {
  */
 struct LocalPos {
 	double x; // Easting
-	double y; // Nording
+	double y; // Northing
 	double z; // Up
 
 	LocalPos() :
@@ -178,6 +178,7 @@ enum trackingSetupState {
 	ts_INIT = 0,
 	ts_GPS_TRACKING = 1,
 	ts_LOCATE = 2,
+	ts_VEL_BASED_GPS_TRACKING = 5,
 	ts_FIND_NORTH = 8,
 	ts_READY = 9,
 	ts_STOP = 10
