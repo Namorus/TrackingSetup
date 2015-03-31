@@ -23,7 +23,7 @@ std::ostream& operator<<(std::ostream& out, const PositionInput& posInput) {
 	out << "$" << posInput.label_ << " ";
 	out.precision(15);
 	out << posInput.pos_.lat << " " << posInput.pos_.lon << " "
-			<< posInput.pos_.elev << " ";
+			<< posInput.pos_.alt << " ";
 	return out;
 }
 

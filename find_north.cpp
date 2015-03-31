@@ -126,7 +126,7 @@ float FindNorth::northPanAngleFound() {
 float FindNorth::magneticDeclination(GPSPos& localPos) {
 	GeographicLib::MagneticModel mag("wmm2015","/usr/share/geographiclib/magnetic");
 	double Bx, By, Bz;
-	mag(2015, localPos.lat, localPos.lon, localPos.elev, Bx, By, Bz); // TODO: use function for value of year
+	mag(2015, localPos.lat, localPos.lon, localPos.alt, Bx, By, Bz); // TODO: use function for value of year
 	double H, F, D, I;
 	GeographicLib::MagneticModel::FieldComponents(Bx, By, Bz, H, F, D, I);
 

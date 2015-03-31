@@ -56,7 +56,7 @@ int Config::handler(void* user, const char* section, const char* name,
 	} else if (MATCH("GPS", "Antenna.lon")) {
 		pconfig->GPS.AntennaPos.lon = atof(value);
 	} else if (MATCH("GPS", "Antenna.elev")) {
-		pconfig->GPS.AntennaPos.elev = atof(value);
+		pconfig->GPS.AntennaPos.alt = atof(value);
 	} else if (MATCH("GPS", "localMavlinkVid")) {
 		pconfig->GPS.localMavlinkVid = strtol(value,NULL,0);
 	} else if (MATCH("GPS", "localMavlinkPid")) {
@@ -128,7 +128,7 @@ void Config::display(Config* pconfig) {
 	cout << "[GPStracking config]" << endl << "Antenna Position: \t\t"
 			<< pconfig->GPS.AntennaPos.lat << "N, "
 			<< pconfig->GPS.AntennaPos.lon << "E @ "
-			<< pconfig->GPS.AntennaPos.elev << "m " << endl
+			<< pconfig->GPS.AntennaPos.alt << "m " << endl
 			<< "PX4 Mavlink device: \t\tvid=0x" << std::hex << pconfig->GPS.localMavlinkVid << ", pid=0x" << pconfig->GPS.localMavlinkPid << ", interface=" << std::dec << pconfig->GPS.localMavlinkInterface << "" << endl
 			<< "PX4 Mavlink baudrate: \t\t" << pconfig->GPS.localMavlinkBaudrate << endl
 			<< "3DR radio Mavlink device: \tvid=0x" << std::hex << pconfig->GPS.remoteMavlinkVid << ", pid=0x" << pconfig->GPS.remoteMavlinkPid << ", interface=" << std::dec << pconfig->GPS.remoteMavlinkInterface << "" << endl
@@ -223,7 +223,7 @@ std::istream& operator>>(std::istream& in, Config& cfg) {
 	/* GPStrackingConf */
 	in >> cfg.GPS.AntennaPos.lat;
 	in >> cfg.GPS.AntennaPos.lon;
-	in >> cfg.GPS.AntennaPos.elev;
+	in >> cfg.GPS.AntennaPos.alt;
 	in >> cfg.GPS.localMavlinkVid;
 	in >> cfg.GPS.localMavlinkPid;
 	in >> cfg.GPS.localMavlinkInterface;

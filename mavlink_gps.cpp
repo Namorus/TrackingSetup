@@ -23,7 +23,7 @@ bool MavlinkGps::getPos(GPSPos* pos) {
 	}
 
     if (mavlinkMessages_->lastRawGpsPosition > lastTimestamp_) {
-        pos->elev = mavlinkMessages_->gps_raw_int.alt / 1000.0;
+        pos->alt = mavlinkMessages_->gps_raw_int.alt / 1000.0;
         pos->lon = 1E-7 * mavlinkMessages_->gps_raw_int.lon;
         pos->lat = 1E-7 * mavlinkMessages_->gps_raw_int.lat;
         lastTimestamp_ = mavlinkMessages_->lastRawGpsPosition;
@@ -60,7 +60,7 @@ std::ostream& operator<<(std::ostream& out, const MavlinkGps& mavlinkGPS) {
 		posAccuracy = -1;
 	}
 	GPSPos pos;
-	pos.elev = mavlinkMessages.gps_raw_int.alt / 1000.0;
+	pos.alt = mavlinkMessages.gps_raw_int.alt / 1000.0;
 	pos.lon = 1E-7 * mavlinkMessages.gps_raw_int.lon;
 	pos.lat = 1E-7 * mavlinkMessages.gps_raw_int.lat;
 

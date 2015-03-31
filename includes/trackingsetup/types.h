@@ -57,16 +57,16 @@ struct commandLineOptions {
 struct GPSPos {
 	double lat;
 	double lon;
-	double elev;
+	double alt;
 
 	GPSPos() :
-			lat(99.0), lon(199.0), elev(-1) {
+			lat(99.0), lon(199.0), alt(-1) {
 	}
 
 	std::string toString() {
 		char temp[50];
 		memset(temp, '\0', 50);
-		sprintf(temp, "(%.4fN/%.4fE @ %.2fm)", lat, lon, elev);
+		sprintf(temp, "(%.4fN/%.4fE @ %.2fm)", lat, lon, alt);
 
 		std::string posString = temp;
 
@@ -75,17 +75,17 @@ struct GPSPos {
 
 	friend std::ostream& operator<<(std::ostream& out, const GPSPos& pos) {
 		out.precision(15);
-		out << pos.lat << " " << pos.lon << " " << pos.elev;
+		out << pos.lat << " " << pos.lon << " " << pos.alt;
 		return out;
 	}
 	friend std::istream& operator>>(std::istream& in, GPSPos& pos) {
 		in >> pos.lat;
 		in >> pos.lon;
-		in >> pos.elev;
+		in >> pos.alt;
 		return in;
 	}
 	friend bool operator==(const GPSPos& a, const GPSPos& b) {
-		if (a.lat == b.lat && a.lon == b.lon && a.elev == b.elev)
+		if (a.lat == b.lat && a.lon == b.lon && a.alt == b.alt)
 			return true;
 		return false;
 	}
@@ -373,7 +373,7 @@ struct GlobalPos {
 		timestamp(0), localTimestamp(0) {
 		velocity.lat = 0;
 		velocity.lon = 0;
-		velocity.elev = 0;
+		velocity.alt = 0;
 	}
 	GPSPos position;
 	GPSPos velocity;
