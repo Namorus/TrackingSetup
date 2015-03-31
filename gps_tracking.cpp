@@ -35,7 +35,7 @@ void GpsTrackingMode::setMagneticDeclination(float magneticDeclination) {
 
 void GpsTrackingMode::setAntennaPos(GPSPos antennaPos) {
 	antennaPos_ = antennaPos;
-	antennaLocalCartesian_.Reset(antennaPos.lat,antennaPos.lon,antennaPos.elev);
+	antennaLocalCartesian_.Reset(antennaPos.lat,antennaPos.lon,antennaPos.alt);
 
 }
 
@@ -50,7 +50,7 @@ void GpsTrackingMode::updateGPOS(GlobalPos& targetGlobalPos) {
 	targetGlobalPos_ = targetGlobalPos;
 
 	// calculate target position in local frame
-	antennaLocalCartesian_.Forward(targetGlobalPos_.position.lat,targetGlobalPos_.position.lon,targetGlobalPos_.position.elev,targetPosLocal_[0],targetPosLocal_[1],targetPosLocal_[2]);
+	antennaLocalCartesian_.Forward(targetGlobalPos_.position.lat,targetGlobalPos_.position.lon,targetGlobalPos_.position.alt,targetPosLocal_[0],targetPosLocal_[1],targetPosLocal_[2]);
 
 	// received position is used as estimate
 	//TODO: maybe add some look ahead here
@@ -81,12 +81,12 @@ void GpsTrackingMode::updateEstimated() {
 	// update based on ground speed
 	targetEstimatedPosLocal_[0] = targetPosLocal_[0] + targetGlobalPos_.velocity.lat*dT*1e-6;
 	targetEstimatedPosLocal_[1] = targetPosLocal_[1] + targetGlobalPos_.velocity.lon*dT*1e-6;
-	targetEstimatedPosLocal_[2] = targetPosLocal_[2] + targetGlobalPos_.velocity.elev*dT*1e-6;
+	targetEstimatedPosLocal_[2] = targetPosLocal_[2] + targetGlobalPos_.velocity.alt*dT*1e-6;
 
 	// std::cout << "Target in local frame coordinates: (" << targetEstimatedPosLocal_[0] << ", " << targetEstimatedPosLocal_[1] << ", " << targetEstimatedPosLocal_[2] << "), dT since last GPOS: " << dT << std::endl;
 
 	// convert back to WGS84
-	antennaLocalCartesian_.Reverse(targetEstimatedPosLocal_[0],targetEstimatedPosLocal_[1],targetEstimatedPosLocal_[2],targetEstimatedPos_.lat,targetEstimatedPos_.lon,targetEstimatedPos_.elev);
+	antennaLocalCartesian_.Reverse(targetEstimatedPosLocal_[0],targetEstimatedPosLocal_[1],targetEstimatedPosLocal_[2],targetEstimatedPos_.lat,targetEstimatedPos_.lon,targetEstimatedPos_.alt);
 
 
 	double bearing = getBearing(&antennaPos_, &targetEstimatedPos_);
@@ -116,10 +116,10 @@ double GpsTrackingMode::getLOSdistance(GPSPos* posA, GPSPos* posB) {
 
 	double latA = deg2rad(posA->lat);
 	double lonA = deg2rad(posA->lon);
-	double rA = earthradius + posA->elev;
+	double rA = earthradius + posA->alt;
 	double latB = deg2rad(posB->lat);
 	double lonB = deg2rad(posB->lon);
-	double rB = earthradius + posB->elev;
+	double rB = earthradius + posB->alt;
 
 	double xA = rA * cos(latA) * cos(lonA);
 	double yA = -rA * cos(latA) * sin(lonA);
@@ -176,7 +176,7 @@ double GpsTrackingMode::getAzimuth(GPSPos* posA, GPSPos* posB) {
 
 	//assuming small distances
 	double distance = getDistance(posA, posB);
-	double dElev = posB->elev - posA->elev;
+	double dElev = posB->alt - posA->alt;
 
 	return rad2deg(atan2(dElev, distance));
 

@@ -23,7 +23,7 @@ bool MavlinkGpos::getPos(GPSPos* pos) {
 	}
 
     if (mavlinkMessages_->lastGlobalPosition > lastPosTimestamp_) {
-        pos->elev = mavlinkMessages_->global_position_int.alt / 1000.0;
+        pos->alt = mavlinkMessages_->global_position_int.alt / 1000.0;
         pos->lon = 1E-7 * mavlinkMessages_->global_position_int.lon;
         pos->lat = 1E-7 * mavlinkMessages_->global_position_int.lat;
         lastPosTimestamp_ = mavlinkMessages_->lastGlobalPosition;
@@ -38,9 +38,9 @@ bool MavlinkGpos::getVel(GPSPos* vel) {
 	}
 
     if (mavlinkMessages_->lastGlobalPosition > lastVelTimestamp_) {
-    	vel->elev = 1E-2 * mavlinkMessages_->global_position_int.vz;
-    	vel->lon = 1E-2 * mavlinkMessages_->global_position_int.vx;
-    	vel->lat = 1E-2 * mavlinkMessages_->global_position_int.vy;
+    	vel->alt = 1E-2 * mavlinkMessages_->global_position_int.vz;
+    	vel->lat = 1E-2 * mavlinkMessages_->global_position_int.vx;
+    	vel->lon = 1E-2 * mavlinkMessages_->global_position_int.vy;
     	lastVelTimestamp_ = mavlinkMessages_->lastGlobalPosition;
 		return true;
 	}
