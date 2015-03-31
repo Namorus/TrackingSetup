@@ -79,9 +79,9 @@ void GpsTrackingMode::updateEstimated() {
 	uint32_t dT = currentTimestamp - targetGlobalPos_.localTimestamp;
 
 	// update based on ground speed
-	targetEstimatedPosLocal_[0] = targetPosLocal_[0] + targetGlobalPos_.speed.lat*dT*1e-6;
-	targetEstimatedPosLocal_[1] = targetPosLocal_[1] + targetGlobalPos_.speed.lon*dT*1e-6;
-	targetEstimatedPosLocal_[2] = targetPosLocal_[2] + targetGlobalPos_.speed.elev*dT*1e-6;
+	targetEstimatedPosLocal_[0] = targetPosLocal_[0] + targetGlobalPos_.velocity.lat*dT*1e-6;
+	targetEstimatedPosLocal_[1] = targetPosLocal_[1] + targetGlobalPos_.velocity.lon*dT*1e-6;
+	targetEstimatedPosLocal_[2] = targetPosLocal_[2] + targetGlobalPos_.velocity.elev*dT*1e-6;
 
 	// std::cout << "Target in local frame coordinates: (" << targetEstimatedPosLocal_[0] << ", " << targetEstimatedPosLocal_[1] << ", " << targetEstimatedPosLocal_[2] << "), dT since last GPOS: " << dT << std::endl;
 
