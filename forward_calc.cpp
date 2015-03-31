@@ -27,15 +27,15 @@ void ForwardCalc::updateEstimate() {
 	uint32_t dT = currentTimestamp - targetGlobalPos_.localTimestamp;
 
 	// update based on ground speed
-	targetEstimatedPosLocal_.x = targetPosLocal_.x + targetGlobalPos_.speed.lat*dT*1e-6;
-	targetEstimatedPosLocal_.y = targetPosLocal_.y + targetGlobalPos_.speed.lon*dT*1e-6;
-	targetEstimatedPosLocal_.z = targetPosLocal_.z + targetGlobalPos_.speed.elev*dT*1e-6;
+	targetEstimatedPosLocal_.x = targetPosLocal_.x + targetGlobalPos_.velocity.lat*dT*1e-6;
+	targetEstimatedPosLocal_.y = targetPosLocal_.y + targetGlobalPos_.velocity.lon*dT*1e-6;
+	targetEstimatedPosLocal_.z = targetPosLocal_.z + targetGlobalPos_.velocity.elev*dT*1e-6;
 
 	// convert back to WGS84
 	antennaLocalCartesian_.Reverse(targetEstimatedPosLocal_.x,targetEstimatedPosLocal_.y,targetEstimatedPosLocal_.z,targetEstimatedPos_.lat,targetEstimatedPos_.lon,targetEstimatedPos_.elev);
 
 	// velocity estimate is previous groundspeed measurement
-	targetEstimatedVel_ = targetGlobalPos_.speed;
+	targetEstimatedVel_ = targetGlobalPos_.velocity;
 }
 
 } /* namespace tracking */
