@@ -59,7 +59,7 @@ bool MavlinkGpos::getGpos(GlobalPos* gpos) {
 	gpos->localTimestamp = now.tv_sec*1e6 + now.tv_usec;
 
 	bool result = getPos(&gpos->position);
-    result &= getVel(&gpos->speed);
+    result &= getVel(&gpos->velocity);
     return result;
 }
 

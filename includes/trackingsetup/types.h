@@ -371,12 +371,12 @@ struct RadioRSSI {
 struct GlobalPos {
 	GlobalPos() :
 		timestamp(0), localTimestamp(0) {
-		speed.lat = 0;
-		speed.lon = 0;
-		speed.elev = 0;
+		velocity.lat = 0;
+		velocity.lon = 0;
+		velocity.elev = 0;
 	}
 	GPSPos position;
-	GPSPos speed;
+	GPSPos velocity;
 
 	uint32_t timestamp;
 	uint64_t localTimestamp;
