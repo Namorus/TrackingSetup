@@ -2,10 +2,11 @@
  * TrackingEstimator.cpp
  *
  *  Created on: Mar 30, 2015
- *      Author: asl
+ *      Author: Thomas
  */
+#include <cmath>
 
-#include "TrackingEstimator.h"
+#include "includes/trackingsetup/trackingEstimator.h"
 
 namespace tracking {
 
