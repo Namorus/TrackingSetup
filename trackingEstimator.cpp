@@ -20,7 +20,7 @@ TrackingEstimator::~TrackingEstimator() {
 
 void TrackingEstimator::setAntennaPos(GPSPos antennaPos) {
 	antennaPos_ = antennaPos;
-	antennaLocalCartesian_.Reset(antennaPos.lat,antennaPos.lon,antennaPos.elev);
+	antennaLocalCartesian_.Reset(antennaPos.lat,antennaPos.lon,antennaPos.alt);
 
 }
 
