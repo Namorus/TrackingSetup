@@ -24,6 +24,11 @@ void TrackingEstimator::setAntennaPos(GPSPos antennaPos) {
 
 }
 
+void TrackingEstimator::setNewRemoteGPos(GlobalPos& remoteGpos) {
+	targetGlobalPos_ = remoteGpos;
+}
+
+
 void TrackingEstimator::updateAntennaPos(GPSPos antennaPos) {
 	setAntennaPos(antennaPos);
 	updateEstimate();

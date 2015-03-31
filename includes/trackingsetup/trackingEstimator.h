@@ -22,6 +22,8 @@ public:
 
 	void virtual updateEstimate() = 0;
 
+	void setNewRemoteGPos(GlobalPos& remoteGpos);
+
 	void getGlobalPosEstimate(GPSPos& posEstimate);
 
 	void getLocalPosEstimate(LocalPos& posEstimate);

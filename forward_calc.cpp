@@ -33,6 +33,9 @@ void ForwardCalc::updateEstimate() {
 
 	// convert back to WGS84
 	antennaLocalCartesian_.Reverse(targetEstimatedPosLocal_.x,targetEstimatedPosLocal_.y,targetEstimatedPosLocal_.z,targetEstimatedPos_.lat,targetEstimatedPos_.lon,targetEstimatedPos_.elev);
+
+	// velocity estimate is previous groundspeed measurement
+	targetEstimatedVel_ = targetGlobalPos_.speed;
 }
 
 } /* namespace tracking */
