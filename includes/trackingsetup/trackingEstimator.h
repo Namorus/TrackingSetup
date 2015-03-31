@@ -8,16 +8,27 @@
 #ifndef TRACKINGESTIMATOR_H_
 #define TRACKINGESTIMATOR_H_
 
+#include <GeographicLib/Geocentric.hpp>
+#include <GeographicLib/LocalCartesian.hpp>
+
 #include <trackingsetup/trackingsetup.h>
 
 namespace tracking {
 
 class TrackingEstimator: public TrackingSetup {
-
-	virtual TrackingEstimator();
+public:
+	TrackingEstimator();
 	virtual ~TrackingEstimator();
 
 	void virtual updateEstimate() = 0;
+
+	void getGlobalPosEstimate(GPSPos& posEstimate);
+
+	void getLocalPosEstimate(LocalPos& posEstimate);
+
+	void getLocalVelEstimate(LocalPos& velEstimate);
+
+	void getEstimate(GlobalPos& estimate);
 
 	void setAntennaPos(GPSPos antennaPOS);
 	void updateAntennaPos(GPSPos antennaPOS);
@@ -84,13 +95,15 @@ class TrackingEstimator: public TrackingSetup {
 //	 */
 //	static double getElevation(GPSPos* posA, GPSPos* posB);
 
-private:
+protected:
 	GPSPos antennaPos_;
 	GlobalPos targetGlobalPos_;
-	double targetPosLocal_[3];
+	LocalPos targetPosLocal_;
 
 	GPSPos targetEstimatedPos_;
-	double targetEstimatedPosLocal_[3];
+	LocalPos targetEstimatedPosLocal_;
+
+	LocalPos targetEstimatedVel_;
 
 	GeographicLib::LocalCartesian antennaLocalCartesian_;
 

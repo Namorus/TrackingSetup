@@ -9,6 +9,14 @@
 #include "includes/trackingsetup/trackingEstimator.h"
 
 namespace tracking {
+TrackingEstimator::TrackingEstimator() {
+	earth_ = GeographicLib::Geocentric::WGS84;
+	antennaLocalCartesian_ = GeographicLib::LocalCartesian(earth_);
+}
+
+TrackingEstimator::~TrackingEstimator() {
+
+}
 
 void TrackingEstimator::setAntennaPos(GPSPos antennaPos) {
 	antennaPos_ = antennaPos;
@@ -22,20 +30,20 @@ void TrackingEstimator::updateAntennaPos(GPSPos antennaPos) {
 }
 
 double TrackingEstimator::getDistance() {
-	return sqrt(targetEstimatedPosLocal_[0]*targetEstimatedPosLocal_[0]+targetEstimatedPosLocal_[1]*targetEstimatedPosLocal_[1]);
+	return sqrt(targetEstimatedPosLocal_.x*targetEstimatedPosLocal_.x+targetEstimatedPosLocal_.y*targetEstimatedPosLocal_.y);
 }
 
 double TrackingEstimator::getLOSDistance() {
-	return sqrt(targetEstimatedPosLocal_[0]*targetEstimatedPosLocal_[0]+targetEstimatedPosLocal_[1]*targetEstimatedPosLocal_[1]+targetEstimatedPosLocal_[2]*targetEstimatedPosLocal_[2]);;
+	return sqrt(targetEstimatedPosLocal_.x*targetEstimatedPosLocal_.x+targetEstimatedPosLocal_.y*targetEstimatedPosLocal_.y+targetEstimatedPosLocal_.z*targetEstimatedPosLocal_.z);;
 }
 
 double TrackingEstimator::getAzimuth() {
-	return rad2deg(fmod(atan2(targetEstimatedPosLocal_[1],targetEstimatedPosLocal_[0]),2*M_PI));
+	return rad2deg(fmod(atan2(M_PI_2-targetEstimatedPosLocal_.y,targetEstimatedPosLocal_.x),2*M_PI));
 }
 
 double TrackingEstimator::getElevation() {
 	double groundDistance = getDistance();
-	return rad2deg(atan2(targetEstimatedPosLocal_[2],groundDistance));
+	return rad2deg(atan2(targetEstimatedPosLocal_.z,groundDistance));
 }
 
 double TrackingEstimator::deg2rad(double deg) {
@@ -45,6 +53,22 @@ double TrackingEstimator::deg2rad(double deg) {
 double TrackingEstimator::getGroundspeed() {
 
 	return 0;
+}
+
+void TrackingEstimator::getGlobalPosEstimate(GPSPos& posEstimate) {
+	posEstimate = targetGlobalPos_.position;
+}
+
+void TrackingEstimator::getLocalPosEstimate(LocalPos& posEstimate) {
+	posEstimate = targetPosLocal_;
+}
+
+void TrackingEstimator::getLocalVelEstimate(LocalPos& velEstimate) {
+	velEstimate = targetEstimatedVel_;
+}
+
+void TrackingEstimator::getEstimate(GlobalPos& estimate) {
+	estimate = targetGlobalPos_;
 }
 
 double TrackingEstimator::rad2deg(double rad) {

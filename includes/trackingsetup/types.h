@@ -53,7 +53,23 @@ struct commandLineOptions {
 	bool useTUI;
 	bool useStdout;
 };
+/*!
+ * localPos holds a position in a local ENU frame.
+ */
+struct LocalPos {
+	double x; // Easting
+	double y; // Nording
+	double z; // Up
 
+	LocalPos() :
+		x(0), y(0), z(0) {}
+
+	friend std::ostream& operator<<(std::ostream& out, const LocalPos& pos) {
+		out.precision(15);
+		out << pos.x << " " << pos.y << " " << pos.z;
+		return out;
+	}
+};
 struct GPSPos {
 	double lat;
 	double lon;
