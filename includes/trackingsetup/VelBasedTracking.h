@@ -24,11 +24,23 @@ public:
 
 	void setMapping(float panOffset, float tiltOffset);
 
-	void update();
+	void update(double curPanAngle, double curTiltAngle);
 
 private:
+
+	TrackingEstimator* estimator_;
+
 	float panOffset_, tiltOffset_;
 	float magneticDeclination_;
+
+	bool hardPositioning_;
+
+	double azimuthAngle_, elevationAngle_;
+
+	LocalPos localPos_,localVel_;
+
+	double azimuthRate, elevationRate_;
+
 
 };
 

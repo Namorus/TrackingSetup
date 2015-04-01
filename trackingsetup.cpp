@@ -363,7 +363,7 @@ int main(int argc, char** argv) {
 			break;
 
 		case ts_VEL_BASED_GPS_TRACKING:
-			gpsVelTracking.update();
+			gpsVelTracking.update(curPanAngle,curTiltAngle);
 			motorSetpoints = gpsVelTracking.getNewSetpoints();
 			break;
 
