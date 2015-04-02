@@ -39,6 +39,8 @@ std::string State::getModeName(trackingSetupState mode) {
 		return std::string("INIT");
 	case ts_GPS_TRACKING:
 		return std::string("GPS TRACKING");
+	case ts_VEL_BASED_GPS_TRACKING:
+		return std::string("VELOCITY BASED GPS TRACKING");
 	case ts_LOCATE:
 		return std::string("LOCATE");
 	case ts_FIND_NORTH:

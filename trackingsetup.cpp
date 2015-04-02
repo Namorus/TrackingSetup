@@ -137,8 +137,11 @@ int main(int argc, char** argv) {
 	GlobalPos remoteGlobalPosition;
 
 	ForwardCalc remotePosEstimator;
-	LocalPos estimatedRemotePosition;
-	LocalPos estimatedRemoteVelocity;
+	trackingLog.add(remotePosEstimator.getLog());
+	trackingLog.registerInstance(&remotePosEstimator);
+
+//	LocalPos estimatedRemotePosition;
+//	LocalPos estimatedRemoteVelocity;
 
 	/* initialize motor control */
 	MotorControl motorControl;
@@ -160,7 +163,7 @@ int main(int argc, char** argv) {
 
 	VelBasedGpsTrackingMode gpsVelTracking(&remotePosEstimator);
 	trackingLog.add(gpsVelTracking.getLog());
-	trackingLog.registerInstance(&gpsTracking);
+	trackingLog.registerInstance(&gpsVelTracking);
 
 	// Magnetometer readings
     MavlinkMagnetometer mavlinkMagn(&localMavlinkMessages);
@@ -234,6 +237,7 @@ int main(int argc, char** argv) {
 		localPosition = trackingConfig.GPS.AntennaPos;
 		localGpsFixAcquired = true;
 		gpsTracking.setAntennaPos(localPosition);
+		remotePosEstimator.setAntennaPos(localPosition);
 		trackingLog.log(vl_INFO,"Using GPS position from configuration as antenna position");
 	}
 
@@ -310,7 +314,12 @@ int main(int argc, char** argv) {
 		if (newTrackedPos) {
 			remotePosEstimator.setNewRemoteGPos(remoteGlobalPosition);
 		}
-		remotePosEstimator.updateEstimate();
+		if (remoteGlobalPosition.localTimestamp - (startTs.tv_sec*1e6 + startTs.tv_nsec*1e-3) > 10*1e6) {
+			remotePosEstimator.updateEstimate();
+		} else {
+			if (remoteGlobalPosition.localTimestamp > 0) trackingLog.log(vl_DEBUG,"Not updating estimator anymore");
+			else trackingLog.log(vl_DEBUG,"Not yet updating estimator (no global position received so far)");
+		}
 
 
 		/*
@@ -376,7 +385,7 @@ int main(int argc, char** argv) {
 			}
 			else if (findNorth.getLocateState() == fn_FINISHED) {
 				gpsTracking.setMapping(findNorth.northPanAngleFound(),0);
-				currentState.set(ts_GPS_TRACKING);
+				currentState.set(ts_VEL_BASED_GPS_TRACKING);
 				findNorth.reset();
 			}
 			else {

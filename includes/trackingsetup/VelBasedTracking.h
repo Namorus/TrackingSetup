@@ -37,7 +37,7 @@ private:
 
 	double azimuthAngle_, elevationAngle_;
 
-	LocalPos localPos_,localVel_;
+	LocalPos targetLocalPos_,targetLocalVel_;
 
 	double azimuthRate, elevationRate_;
 

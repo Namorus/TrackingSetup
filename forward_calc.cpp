@@ -5,6 +5,7 @@
  *      Author: thomas
  */
 #include <sys/time.h>
+#include <sstream>
 
 #include <trackingsetup/forward_calc.h>
 
@@ -40,6 +41,9 @@ void ForwardCalc::updateEstimate() {
 	// convert back to WGS84
 	antennaLocalCartesian_.Reverse(targetEstimatedPosLocal_.x,targetEstimatedPosLocal_.y,targetEstimatedPosLocal_.z,targetEstimatedPos_.lat,targetEstimatedPos_.lon,targetEstimatedPos_.alt);
 
+	std::stringstream logmessage;
+	logmessage << "Estimated local pos: " << targetEstimatedPosLocal_ << ", local vel: " << targetEstimatedVel_;
+	addLogMessage(vl_DEBUG,logmessage.str());
 }
 
 } /* namespace tracking */

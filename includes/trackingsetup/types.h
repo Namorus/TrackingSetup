@@ -176,9 +176,9 @@ struct FindNorthConf {
 enum trackingSetupState {
 	ts_ENDING = -1,
 	ts_INIT = 0,
-	ts_GPS_TRACKING = 1,
+	ts_GPS_TRACKING = 5,
 	ts_LOCATE = 2,
-	ts_VEL_BASED_GPS_TRACKING = 5,
+	ts_VEL_BASED_GPS_TRACKING = 1,
 	ts_FIND_NORTH = 8,
 	ts_READY = 9,
 	ts_STOP = 10
