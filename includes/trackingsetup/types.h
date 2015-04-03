@@ -255,6 +255,7 @@ struct recorderSettings {
 	bool recordRemoteGPS;
 	bool recordCurMode;
 	bool recordGPSTracking;
+	bool recordRadioRSSI;
 
 	recorderSettings() :
 			recordTimestamp(false),
@@ -263,7 +264,8 @@ struct recorderSettings {
 			recordLocalGPS(false),
 			recordRemoteGPS(false),
 			recordCurMode(false),
-			recordGPSTracking(true) {
+			recordGPSTracking(true),
+			recordRadioRSSI(false) {
 	} // initializer
 
 	friend std::istream& operator>>(std::istream& in, recorderSettings& a) {
@@ -275,6 +277,7 @@ struct recorderSettings {
 		in >> a.recordRemoteGPS;
 		in >> a.recordGPSTracking;
 		in >> a.recordCurMode;
+		in >> a.recordRadioRSSI;
 		return in;
 	}
 };
@@ -355,11 +358,18 @@ struct RadioRSSI {
     int rxErrors;
     int fixed;
 
-//	friend std::ostream& operator<<(std::ostream& out, const MagReading& magReading) {
-//		out.precision(15);
-//		out << magReading.magX << " " << magReading.magY << " " << magReading.magZ;
-//		return out;
-//	}
+	friend std::ostream& operator<<(std::ostream& out, const RadioRSSI& radioRssi) {
+		out.precision(15);
+		out << radioRssi.rssi << " "
+			<< radioRssi.remRssi << " "
+			<< radioRssi.txbuf  << " "
+			<< radioRssi.noise << " "
+			<< radioRssi.remNoise << " "
+			<< radioRssi.rxErrors << " "
+			<< radioRssi.fixed;
+
+		return out;
+	}
 //	friend std::istream& operator>>(std::istream& in, MagReading& magReading) {
 //		in >> magReading.magX;
 //		in >> magReading.magX;

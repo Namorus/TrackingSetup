@@ -67,7 +67,7 @@ bool Recorder::isRecording() {
 
 void Recorder::record(timespec* const Ts, std::vector<float>* const RSSvalues,
 		int panPosition, int tiltPosition, setpoints* motorSetPoints, GPSPos* const localGPS,
-		GPSPos* const remoteGPS, GpsTrackingMode* const gpsTracking, int curMode) {
+		GPSPos* const remoteGPS, GpsTrackingMode* const gpsTracking, RadioRSSI* const radioRssi, int curMode) {
 	if (isRecording()) {
 		// prepare string to write
 
@@ -104,6 +104,10 @@ void Recorder::record(timespec* const Ts, std::vector<float>* const RSSvalues,
 
 		if (settings.recordGPSTracking) {
 			dataline << *gpsTracking << " ";
+		}
+
+		if (settings.recordRadioRSSI) {
+			dataline << *radioRssi << " ";
 		}
 
 		if (settings.recordCurMode) {
@@ -146,12 +150,16 @@ void Recorder::writeHeader() {
 		headerLine << "object.lat object.lon object.elev ";
 	}
 
-
 	if (settings.recordGPSTracking) {
 		headerLine << "object.x object.y object.z "
 				   << "estObject.x estObject.y estObject.z "
 				   << "estObject.lat estObject.lon estObject.elev ";
 	}
+
+	if (settings.recordRadioRSSI) {
+		headerLine << "rssi remRssi txbuf noise remNoise rxErrors fixed ";
+	}
+
 	if (settings.recordCurMode) {
 		headerLine << "curMode";
 	}

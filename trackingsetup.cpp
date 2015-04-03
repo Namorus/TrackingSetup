@@ -433,7 +433,7 @@ int main(int argc, char** argv) {
 			}
 		}
 		// record
-		recorder.record(&startTs, &RSSvalues, motorControl.getPanPosition(), motorControl.getTiltPosition(), &motorSetpoints, &localPosition, &remotePosition, &gpsTracking, (int) currentState.get());
+		recorder.record(&startTs, &RSSvalues, motorControl.getPanPosition(), motorControl.getTiltPosition(), &motorSetpoints, &localPosition, &remotePosition, &gpsTracking, &mavlinkRSSI, (int) currentState.get());
 
 		// get log messages
 		trackingLog.fetchLogs();

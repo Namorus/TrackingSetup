@@ -76,6 +76,7 @@ public:
 	void setMotorControl(MotorControl* motorControl);
 	void setMotorSetpoints(setpoints* motorSetpoints);
 	void setRecorder(Recorder* recorder);
+	void setRadioRssi(RadioRSSI* radioRssi);
 
 	template<class T> void addToData(T* ptr) {
 		sendBuffer << *ptr;
@@ -92,6 +93,7 @@ private:
 	State* pCurMode;
 	GpsTrackingMode* pGPStracking;
 	MotorControl* pMotorControl;
+	RadioRSSI* pRadioRssi;
 	Recorder* pRecorder;
 
 	setpoints* pMotorSetpoints;

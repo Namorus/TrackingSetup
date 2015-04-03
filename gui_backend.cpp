@@ -25,6 +25,7 @@ GuiBackend::GuiBackend() :
 		pGPStracking(NULL),
 //		pMapEst(NULL),
 		pMotorControl(NULL),
+		pRadioRssi(NULL),
 		pRecorder(NULL),
 		pMotorSetpoints(NULL),
 		new_sd(-1),
@@ -303,6 +304,10 @@ void GuiBackend::sendData() {
 
 		sendBuffer << (*pMotorSetpoints);
 
+		if(!pCLO->noRemoteGPS) {
+			sendBuffer << "$RSSI " << (*pRadioRssi) << " ";
+		}
+
 //		sendBuffer << (*pMapEst); //TODO: send FindNorth instead
 
 		sendBuffer << (*pLog);
@@ -474,6 +479,10 @@ void GuiBackend::setMotorSetpoints(setpoints* motorSetpoints) {
 
 void GuiBackend::setRecorder(Recorder* recorder) {
 	pRecorder = recorder;
+}
+
+void GuiBackend::setRadioRssi(RadioRSSI* radioRssi) {
+	pRadioRssi = radioRssi;
 }
 
 //void TAGUIBackend::setTAclasses(TAConfig* _pCfg,
