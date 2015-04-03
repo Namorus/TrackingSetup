@@ -134,8 +134,10 @@ int main(int argc, char** argv) {
 	trackingLog.add(remoteGpos.getLog());
 	trackingLog.registerInstance(&remoteGpos);
 
+	// GlobalPos struct holding global position
 	GlobalPos remoteGlobalPosition;
 
+	// Estimator holding estimate of tracked object in local coordinates
 	ForwardCalc remotePosEstimator;
 	trackingLog.add(remotePosEstimator.getLog());
 	trackingLog.registerInstance(&remotePosEstimator);
@@ -161,6 +163,7 @@ int main(int argc, char** argv) {
 	trackingLog.add(gpsTracking.getLog());
 	trackingLog.registerInstance(&gpsTracking);
 
+	// GPS Tracking with velocity control of pan and tilt axes
 	VelBasedGpsTrackingMode gpsVelTracking(&remotePosEstimator);
 	trackingLog.add(gpsVelTracking.getLog());
 	trackingLog.registerInstance(&gpsVelTracking);
@@ -233,9 +236,11 @@ int main(int argc, char** argv) {
 
 	float curPanAngle = 0, curTiltAngle = 0;
 
+	// Handle local GPS in case no receiver is used
 	if (commandLineOptions.noLocalGPS) {
 		localPosition = trackingConfig.GPS.AntennaPos;
-		localGpsFixAcquired = true;
+		// localGpsFixAcquired = true;
+		// set local position to instances where needed
 		gpsTracking.setAntennaPos(localPosition);
 		remotePosEstimator.setAntennaPos(localPosition);
 		trackingLog.log(vl_INFO,"Using GPS position from configuration as antenna position");
@@ -278,6 +283,7 @@ int main(int argc, char** argv) {
 			curTiltAngle = motorControl.getTiltAngle();
 		}
 //        printf(".");
+
         // read MAVLink messages
         localMavlinkReader.getMavlinkMessages(localMavlinkMessages);
         remoteMavlinkReader.getMavlinkMessages(remoteMavlinkMessages);
@@ -298,13 +304,14 @@ int main(int argc, char** argv) {
 
 		// check whether local GPS fix is acquired
 		// once it is, calculate magnetic declination for current location
-		if (!localGpsFixAcquired && localGps.getFixType() == 3) {
+		if (!localGpsFixAcquired && (localGps.getFixType() == 3 || commandLineOptions.noLocalGPS)) {
 			localGpsFixAcquired = true;
 			float magneticDeclination = findNorth.magneticDeclination(localPosition);
 			gpsTracking.setMagneticDeclination(magneticDeclination);
+			gpsVelTracking.setMagneticDeclination(magneticDeclination);
 			stringstream logmessage;
 			logmessage << "Magnetic declination: " << magneticDeclination;
-			trackingLog.log(vl_DEBUG,logmessage.str());
+			trackingLog.log(vl_INFO,logmessage.str());
 		}
 
 		// cout << "Remote Position: " << remotePosition.toString() << endl;
@@ -314,7 +321,7 @@ int main(int argc, char** argv) {
 		if (newTrackedPos) {
 			remotePosEstimator.setNewRemoteGPos(remoteGlobalPosition);
 		}
-		if (remoteGlobalPosition.localTimestamp - (startTs.tv_sec*1e6 + startTs.tv_nsec*1e-3) > 10*1e6) {
+		if (remoteGlobalPosition.localTimestamp - (startTs.tv_sec*1e6 + startTs.tv_nsec*1e-3) > 10*1e6) { // keep estimator running for after last GPOS message 10s
 			remotePosEstimator.updateEstimate();
 		} else {
 			if (remoteGlobalPosition.localTimestamp > 0) trackingLog.log(vl_DEBUG,"Not updating estimator anymore");

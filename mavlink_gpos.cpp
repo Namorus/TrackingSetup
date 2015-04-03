@@ -52,6 +52,9 @@ MavlinkGpos::~MavlinkGpos() {
 }
 
 bool MavlinkGpos::getGpos(GlobalPos* gpos) {
+	if(mavlinkMessages_->lastGlobalPosition <= 0) {
+		return false;
+	}
 	gpos->timestamp = mavlinkMessages_->global_position_int.time_boot_ms;
 
 	timeval now;
