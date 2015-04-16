@@ -4,8 +4,10 @@
  *  Created on: Mar 31, 2015
  *      Author: thomas
  */
-#include <trackingsetup/velBasedTracking.h>
+#include <cmath>
 #include <sstream>
+
+#include <trackingsetup/velBasedTracking.h>
 
 
 namespace tracking {
@@ -46,9 +48,13 @@ void VelBasedGpsTrackingMode::update(double curPanAngle, double curTiltAngle) {
 	estimator_->getLocalPosEstimate(targetLocalPos_);
 	estimator_->getLocalVelEstimate(targetLocalVel_);
 
-	if (fabs(azimuthAngle_ - curPanAngle)  > 45 || fabs(elevationAngle_ - curTiltAngle) > 30) {
+	if (fmod(azimuthAngle_ - curPanAngle)  > 45 || fabs(elevationAngle_ - curTiltAngle) > 30) {
 		if (hardPositioning_) {
 			setNewSetpoints(ct_undefined,0,0);
+			logmessage.str("");
+			logmessage << "Velocity based GPS tracking | Hard Positioning: deltas: " << fabs(azimuthAngle_ - curPanAngle) << "/" << fabs(elevationAngle_ - curTiltAngle);
+			addLogMessage(vl_DEBUG,logmessage.str());
+
 		} else {
 			hardPositioning_ = true;
 			addLogMessage(vl_INFO,"Velocity based GPS tracking | Hard Positioning ...");
@@ -58,7 +64,14 @@ void VelBasedGpsTrackingMode::update(double curPanAngle, double curTiltAngle) {
 	}
 
 	// 1. Calculate pan and tilt speeds from pos & vel
-	azimuthRate_ = -(targetLocalPos_.x*targetLocalVel_.y-targetLocalPos_.y*targetLocalVel_.x)/(targetLocalPos_.x*targetLocalPos_.x+targetLocalPos_.y*targetLocalPos_.y);
+	double azimuthRateNumerator = -(targetLocalPos_.x*targetLocalVel_.y-targetLocalPos_.y*targetLocalVel_.x);
+	double azimuthRateDenominator = (targetLocalPos_.x*targetLocalPos_.x+targetLocalPos_.y*targetLocalPos_.y);
+	if (azimuthRateDenominator > 0) {
+		azimuthRate_ = azimuthRateNumerator/azimuthRateDenominator;
+	} else {
+		azimuthRate_ = 0;
+	}
+
 	double elevationRateNumerator = ((targetLocalPos_.x*targetLocalPos_.x+targetLocalPos_.y*targetLocalPos_.y)*targetLocalVel_.z-targetLocalPos_.z*(targetLocalPos_.x*targetLocalVel_.x+targetLocalPos_.y*targetLocalVel_.y));
 	double elevationRateDenominator = (sqrt(targetLocalPos_.x*targetLocalPos_.x+targetLocalPos_.y*targetLocalPos_.y)*(targetLocalPos_.x*targetLocalPos_.x+targetLocalPos_.y*targetLocalPos_.y+targetLocalPos_.z*targetLocalPos_.z));
 	if (elevationRateDenominator > 0) {
