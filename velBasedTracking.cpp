@@ -34,9 +34,14 @@ void VelBasedGpsTrackingMode::setMapping(float panOffset, float tiltOffset) {
 }
 
 void VelBasedGpsTrackingMode::update(double curPanAngle, double curTiltAngle) {
+	std::stringstream logmessage("Velocity based GPS tracking | ");
+
 	// read values from estimator
 	azimuthAngle_ = estimator_->getAzimuth()-magneticDeclination_-panOffset_;
 	elevationAngle_ = estimator_->getElevation();
+
+	logmessage << "Estimated azimuth angle: " << azimuthAngle_ << ", elevation angle: " << elevationAngle_;
+	addLogMessage(vl_DEBUG,logmessage.str());
 
 	estimator_->getLocalPosEstimate(targetLocalPos_);
 	estimator_->getLocalVelEstimate(targetLocalVel_);
@@ -68,7 +73,6 @@ void VelBasedGpsTrackingMode::update(double curPanAngle, double curTiltAngle) {
 	double newTiltSpeed = estimator_->rad2deg(elevationRate_) - 0.5*(elevationAngle_ - curTiltAngle); // TODO: make gain configurable
 
 	// 3. Update setpoint
-	std::stringstream logmessage("Velocity based GPS tracking | ");
 
 	if (isnan(newPanSpeed)) {
 		logmessage << "New pan speed is nan -> stopping";
