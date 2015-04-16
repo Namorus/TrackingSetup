@@ -4,9 +4,9 @@
  *  Created on: Mar 31, 2015
  *      Author: thomas
  */
+#include <trackingsetup/velBasedTracking.h>
 #include <sstream>
 
-#include "trackingsetup/VelBasedTracking.h"
 
 namespace tracking {
 

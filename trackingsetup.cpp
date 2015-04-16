@@ -17,7 +17,7 @@
 #include <trackingsetup/mavlink_mag.h>
 #include <trackingsetup/mavlink_radio_status.h>
 #include <trackingsetup/mavlink_gpos.h>
-#include <trackingsetup/VelBasedTracking.h>
+#include <trackingsetup/velBasedTracking.h>
 
 using namespace std;
 using namespace tracking;
