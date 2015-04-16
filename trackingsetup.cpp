@@ -321,8 +321,11 @@ int main(int argc, char** argv) {
 		if (newTrackedPos) {
 			remotePosEstimator.setNewRemoteGPos(remoteGlobalPosition);
 		}
-		if (remoteGlobalPosition.localTimestamp - (startTs.tv_sec*1e6 + startTs.tv_nsec*1e-3) > 10*1e6) { // keep estimator running for after last GPOS message 10s
+		if (remoteGlobalPosition.localTimestamp - (startTs.tv_sec*1e6 + startTs.tv_nsec*1e-3) < 10*1e6) { // keep estimator running for 10s after last GPOS message
 			remotePosEstimator.updateEstimate();
+//			trackingLog.log(vl_DEBUG,"Estimator update done.");
+//			printf("azimuth angle: %f deg, elevation angle: %f deg \n",remotePosEstimator.getAzimuth(),remotePosEstimator.getElevation());
+
 		} else {
 			if (remoteGlobalPosition.localTimestamp > 0) trackingLog.log(vl_DEBUG,"Not updating estimator anymore");
 			else trackingLog.log(vl_DEBUG,"Not yet updating estimator (no global position received so far)");

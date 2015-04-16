@@ -26,6 +26,8 @@ void TrackingEstimator::setAntennaPos(GPSPos antennaPos) {
 
 void TrackingEstimator::setNewRemoteGPos(GlobalPos& remoteGpos) {
 	targetGlobalPos_ = remoteGpos;
+	antennaLocalCartesian_.Forward(remoteGpos.position.lat,remoteGpos.position.lon,remoteGpos.position.alt,targetPosLocal_.x,targetPosLocal_.y,targetPosLocal_.z);
+
 }
 
 
@@ -43,7 +45,7 @@ double TrackingEstimator::getLOSDistance() {
 }
 
 double TrackingEstimator::getAzimuth() {
-	return rad2deg(fmod(atan2(M_PI_2-targetEstimatedPosLocal_.y,targetEstimatedPosLocal_.x),2*M_PI));
+	return rad2deg(fmod(M_PI_2-atan2(targetEstimatedPosLocal_.y,targetEstimatedPosLocal_.x),2*M_PI));
 }
 
 double TrackingEstimator::getElevation() {
