@@ -39,7 +39,7 @@ private:
 
 	LocalPos targetLocalPos_,targetLocalVel_;
 
-	double azimuthRate, elevationRate_;
+	double azimuthRate_, elevationRate_;
 
 
 };
