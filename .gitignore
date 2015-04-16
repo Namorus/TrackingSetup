@@ -1,3 +1,4 @@
 #ignore build files
 /Default
 trackingsetup.log
+.settings

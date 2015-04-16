@@ -4,13 +4,11 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../VelBasedTracking.cpp \
 ../config.cpp \
 ../epos.cpp \
 ../epos_comm.cpp \
 ../find_north.cpp \
 ../forward_calc.cpp \
-../gpos_tracking.cpp \
 ../gps_tracking.cpp \
 ../gui_backend.cpp \
 ../input.cpp \
@@ -26,16 +24,15 @@ CPP_SRCS += \
 ../trackingEstimator.cpp \
 ../tracking_mode.cpp \
 ../tracking_state.cpp \
-../trackingsetup.cpp 
+../trackingsetup.cpp \
+../velBasedTracking.cpp 
 
 OBJS += \
-./VelBasedTracking.o \
 ./config.o \
 ./epos.o \
 ./epos_comm.o \
 ./find_north.o \
 ./forward_calc.o \
-./gpos_tracking.o \
 ./gps_tracking.o \
 ./gui_backend.o \
 ./input.o \
@@ -51,16 +48,15 @@ OBJS += \
 ./trackingEstimator.o \
 ./tracking_mode.o \
 ./tracking_state.o \
-./trackingsetup.o 
+./trackingsetup.o \
+./velBasedTracking.o 
 
 CPP_DEPS += \
-./VelBasedTracking.d \
 ./config.d \
 ./epos.d \
 ./epos_comm.d \
 ./find_north.d \
 ./forward_calc.d \
-./gpos_tracking.d \
 ./gps_tracking.d \
 ./gui_backend.d \
 ./input.d \
@@ -76,7 +72,8 @@ CPP_DEPS += \
 ./trackingEstimator.d \
 ./tracking_mode.d \
 ./tracking_state.d \
-./trackingsetup.d 
+./trackingsetup.d \
+./velBasedTracking.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
