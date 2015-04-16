@@ -392,6 +392,7 @@ int main(int argc, char** argv) {
 			}
 			else if (findNorth.getLocateState() == fn_FINISHED) {
 				gpsTracking.setMapping(findNorth.northPanAngleFound(),0);
+				gpsVelTracking.setMapping(findNorth.northPanAngleFound(),0);
 				currentState.set(ts_VEL_BASED_GPS_TRACKING);
 				findNorth.reset();
 			}

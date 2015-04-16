@@ -20,7 +20,7 @@ public:
 
 	void setNorthOffset(float panAngleNorth);
 
-	void setMagneticDeclination(float magneticDeclination_);
+	void setMagneticDeclination(float magneticDeclination);
 
 	void setMapping(float panOffset, float tiltOffset);
 

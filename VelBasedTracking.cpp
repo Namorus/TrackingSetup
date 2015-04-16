@@ -24,15 +24,18 @@ VelBasedGpsTrackingMode::~VelBasedGpsTrackingMode() {
 void VelBasedGpsTrackingMode::setNorthOffset(float panAngleNorth) {
 }
 
-void VelBasedGpsTrackingMode::setMagneticDeclination(float magneticDeclination_) {
+void VelBasedGpsTrackingMode::setMagneticDeclination(float magneticDeclination) {
+	magneticDeclination = magneticDeclination_;
 }
 
 void VelBasedGpsTrackingMode::setMapping(float panOffset, float tiltOffset) {
+	panOffset_ = panOffset;
+	tiltOffset_ = tiltOffset;
 }
 
 void VelBasedGpsTrackingMode::update(double curPanAngle, double curTiltAngle) {
 	// read values from estimator
-	azimuthAngle_ = estimator_->getAzimuth();
+	azimuthAngle_ = estimator_->getAzimuth()-magneticDeclination_-panOffset_;
 	elevationAngle_ = estimator_->getElevation();
 
 	estimator_->getLocalPosEstimate(targetLocalPos_);
@@ -44,7 +47,7 @@ void VelBasedGpsTrackingMode::update(double curPanAngle, double curTiltAngle) {
 		} else {
 			hardPositioning_ = true;
 			addLogMessage(vl_INFO,"Velocity based GPS tracking | Hard Positioning ...");
-			setNewSetpoints(ct_abspos,azimuthAngle_-magneticDeclination_-panOffset_,elevationAngle_);
+			setNewSetpoints(ct_abspos,azimuthAngle_,elevationAngle_);
 		}
 		return;
 	}
