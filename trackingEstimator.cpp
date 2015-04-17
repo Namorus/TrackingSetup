@@ -67,7 +67,7 @@ void TrackingEstimator::getGlobalPosEstimate(GPSPos& posEstimate) {
 }
 
 void TrackingEstimator::getLocalPosEstimate(LocalPos& posEstimate) {
-	posEstimate = targetPosLocal_;
+	posEstimate = targetEstimatedPosLocal_;
 }
 
 void TrackingEstimator::getLocalVelEstimate(LocalPos& velEstimate) {

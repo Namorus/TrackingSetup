@@ -48,20 +48,20 @@ void VelBasedGpsTrackingMode::update(double curPanAngle, double curTiltAngle) {
 	estimator_->getLocalPosEstimate(targetLocalPos_);
 	estimator_->getLocalVelEstimate(targetLocalVel_);
 
-	if (fmod(azimuthAngle_ - curPanAngle)  > 45 || fabs(elevationAngle_ - curTiltAngle) > 30) {
-		if (hardPositioning_) {
-			setNewSetpoints(ct_undefined,0,0);
-			logmessage.str("");
-			logmessage << "Velocity based GPS tracking | Hard Positioning: deltas: " << fabs(azimuthAngle_ - curPanAngle) << "/" << fabs(elevationAngle_ - curTiltAngle);
-			addLogMessage(vl_DEBUG,logmessage.str());
-
-		} else {
-			hardPositioning_ = true;
-			addLogMessage(vl_INFO,"Velocity based GPS tracking | Hard Positioning ...");
-			setNewSetpoints(ct_abspos,azimuthAngle_,elevationAngle_);
-		}
-		return;
-	}
+//	if (fmod(azimuthAngle_ - curPanAngle,360)  > 45 || fabs(elevationAngle_ - curTiltAngle) > 30) {
+//		if (hardPositioning_) {
+//			setNewSetpoints(ct_undefined,0,0);
+//			logmessage.str("");
+//			logmessage << "Velocity based GPS tracking | Hard Positioning: deltas: " << fabs(azimuthAngle_ - curPanAngle) << "/" << fabs(elevationAngle_ - curTiltAngle);
+//			addLogMessage(vl_DEBUG,logmessage.str());
+//
+//		} else {
+//			hardPositioning_ = true;
+//			addLogMessage(vl_INFO,"Velocity based GPS tracking | Hard Positioning ...");
+//			setNewSetpoints(ct_abspos,azimuthAngle_,elevationAngle_);
+//		}
+//		return;
+//	}
 
 	// 1. Calculate pan and tilt speeds from pos & vel
 	double azimuthRateNumerator = -(targetLocalPos_.x*targetLocalVel_.y-targetLocalPos_.y*targetLocalVel_.x);
@@ -79,14 +79,19 @@ void VelBasedGpsTrackingMode::update(double curPanAngle, double curTiltAngle) {
 	} else {
 		elevationRate_ = 0;
 	}
+	logmessage.str("");
+	logmessage << "Velocity based GPS tracking | "
+			   << "azimuth rate: " << azimuthRate_ << "/ elevation rate: " << elevationRate_;
 
+	addLogMessage(vl_DEBUG,logmessage.str());
 
 	// 2. correction of speed based on measured angle
 	double newPanSpeed = estimator_->rad2deg(azimuthRate_) - 0.5*(azimuthAngle_ - curPanAngle); // TODO: make gain configurable
 	double newTiltSpeed = estimator_->rad2deg(elevationRate_) - 0.5*(elevationAngle_ - curTiltAngle); // TODO: make gain configurable
 
 	// 3. Update setpoint
-	logmessage.str("Velocity based GPS tracking | ");
+	logmessage.str("");
+	logmessage << "Velocity based GPS tracking | ";
 	if (isnan(newPanSpeed)) {
 		logmessage << "New pan speed is nan -> stopping";
 		setNewSetpoints(ct_velocity, 0, 0);
@@ -98,7 +103,7 @@ void VelBasedGpsTrackingMode::update(double curPanAngle, double curTiltAngle) {
 		setNewSetpoints(ct_velocity, newPanSpeed, newTiltSpeed);
 	}
 
-	addLogMessage(vl_INFO,logmessage.str());
+	addLogMessage(vl_DEBUG,logmessage.str());
 }
 
 } /* namespace tracking */
