@@ -41,7 +41,7 @@ void GpsTrackingMode::update(double curPanAngle, double curTiltAngle, bool panPo
 	std::stringstream logmessage("Estimator based tracking | ");
 
 	// read values from estimator
-	azimuthAngle_ = estimator_->getAzimuth()-magneticDeclination_-panOffset_;
+	azimuthAngle_ = fmod(estimator_->getAzimuth()-magneticDeclination_-panOffset_,360.0);
 	elevationAngle_ = estimator_->getElevation();
 
 	logmessage << "Estimated azimuth angle: " << azimuthAngle_ << ", elevation angle: " << elevationAngle_;
@@ -59,7 +59,7 @@ void GpsTrackingMode::update(double curPanAngle, double curTiltAngle, bool panPo
 		}
 	}
 	if (!hardPositioningPan_) {
-		if (fabs(azimuthAngle_ - curPanAngle)  > 30 || fabs(azimuthAngle_ - (curPanAngle+360.0)) > 30) {
+		if (fabs(azimuthAngle_ - curPanAngle)  > 30 && fabs(azimuthAngle_ - (curPanAngle+360.0)) > 30) {
 			hardPositioningPan_ = true;
 			addLogMessage(vl_DEBUG,"Estimator based tracking | Hard Positioning Pan...");
 		}
@@ -75,7 +75,7 @@ void GpsTrackingMode::update(double curPanAngle, double curTiltAngle, bool panPo
 			addLogMessage(vl_DEBUG,"Estimator based tracking | ... Hard Positioning Tilt ...");
 		}
 	}
-	if (!hardPositioningPan_) {
+	if (!hardPositioningTilt_) {
 		if (fabs(elevationAngle_ - curTiltAngle)  > 15) {
 			hardPositioningTilt_ = true;
 			addLogMessage(vl_DEBUG,"Estimator based tracking | Hard Positioning Tilt ...");
