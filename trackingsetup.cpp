@@ -359,7 +359,7 @@ int main(int argc, char** argv) {
 
 		case ts_GPS_TRACKING:
 			if(estimateUpdated) {
-				gpsTracking.update(curPanAngle,curTiltAngle);
+				gpsTracking.update(curPanAngle,curTiltAngle,motorControl.panPositionReached(),motorControl.tiltPositionReached());
 				motorSetpoints = gpsTracking.getNewSetpoints();
 			}
 			break;

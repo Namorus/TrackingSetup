@@ -24,7 +24,7 @@ public:
 
 	void setMapping(float panOffset, float tiltOffset);
 
-	void update(double curPanAngle, double curTiltAngle);
+	void update(double curPanAngle, double curTiltAngle, bool panPosReached, bool tiltPosReached);
 
 private:
 

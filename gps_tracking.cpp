@@ -37,7 +37,7 @@ void GpsTrackingMode::setMapping(float panOffset, float tiltOffset) {
 	tiltOffset_ = tiltOffset;
 }
 
-void GpsTrackingMode::update(double curPanAngle, double curTiltAngle) {
+void GpsTrackingMode::update(double curPanAngle, double curTiltAngle, bool panPosReached, bool tiltPosReached) {
 	std::stringstream logmessage("Estimator based tracking | ");
 
 	// read values from estimator
@@ -50,40 +50,38 @@ void GpsTrackingMode::update(double curPanAngle, double curTiltAngle) {
 
 	// Update setpoint
 	// workaround to avoid overshoot of maxon controller
-	if (fabs(azimuthAngle_ - curPanAngle)  > 30 || fabs(azimuthAngle_ - (curPanAngle+360.0)) > 30) {
-		if (hardPositioningPan_) {
-			setNewPanSetpoint(ct_undefined,0);
-			addLogMessage(vl_DEBUG,"Estimator based tracking | Hard Positioning Pan");
-
+	if (hardPositioningPan_) {
+		if(panPosReached) {
+			hardPositioningPan_ = false;
 		} else {
+			setNewPanSetpoint(ct_undefined,0);
+			addLogMessage(vl_DEBUG,"Estimator based tracking | ... Hard Positioning Pan ...");
+		}
+	}
+	if (!hardPositioningPan_) {
+		if (fabs(azimuthAngle_ - curPanAngle)  > 30 || fabs(azimuthAngle_ - (curPanAngle+360.0)) > 30) {
 			hardPositioningPan_ = true;
 			addLogMessage(vl_DEBUG,"Estimator based tracking | Hard Positioning Pan...");
-			setNewPanSetpoint(ct_abspos,azimuthAngle_);
-		}
-	} else {
-		if (hardPositioningPan_) {
-			hardPositioningPan_ = false;
 		}
 		setNewPanSetpoint(ct_abspos,azimuthAngle_);
 	}
 
-	if (fabs(elevationAngle_ - curTiltAngle)  > 15) {
-		if (hardPositioningTilt_) {
-			setNewTiltSetpoint(ct_undefined,0);
-			addLogMessage(vl_DEBUG,"Estimator based tracking | Hard Positioning Tilt");
 
+	if (hardPositioningTilt_) {
+		if(tiltPosReached) {
+			hardPositioningTilt_ = false;
 		} else {
+			setNewTiltSetpoint(ct_undefined,0);
+			addLogMessage(vl_DEBUG,"Estimator based tracking | ... Hard Positioning Tilt ...");
+		}
+	}
+	if (!hardPositioningPan_) {
+		if (fabs(elevationAngle_ - curTiltAngle)  > 15) {
 			hardPositioningTilt_ = true;
 			addLogMessage(vl_DEBUG,"Estimator based tracking | Hard Positioning Tilt ...");
-			setNewTiltSetpoint(ct_abspos,elevationAngle_);
-		}
-	} else {
-		if (hardPositioningTilt_) {
-			hardPositioningTilt_ = false;
 		}
 		setNewTiltSetpoint(ct_abspos,elevationAngle_);
 	}
-
 }
 
 } /* namespace tracking */
