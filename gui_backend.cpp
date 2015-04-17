@@ -456,7 +456,7 @@ void GuiBackend::setLocalGps(MavlinkGps* localGps) {
 void GuiBackend::setRemoteGps(MavlinkGps* remoteGps) {
 	pRemoteGps = remoteGps;
 }
-void GuiBackend::setGpStracking(GpsTrackingMode* gpStracking) {
+void GuiBackend::setGpsTracking(GpsTrackingMode* gpStracking) {
 	pGPStracking = gpStracking;
 }
 

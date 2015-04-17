@@ -1,71 +1,50 @@
 /*
- * TAGPSTracking.h
+ * VelBasedTracking.h
  *
- *  Created on: Jun 18, 2013
+ *  Created on: Mar 31, 2015
  *      Author: thomas
  */
 
-#ifndef TAGPSTRACKING_H_
-#define TAGPSTRACKING_H_
+#ifndef VELBASEDTRACKING_H_
+#define VELBASEDTRACKING_H_
 
-#include <GeographicLib/Geocentric.hpp>
-#include <GeographicLib/LocalCartesian.hpp>
-
+#include <trackingsetup/trackingEstimator.h>
 #include <trackingsetup/tracking_mode.h>
 
 namespace tracking {
 
 class GpsTrackingMode: public tracking::TrackingMode {
 public:
-	GpsTrackingMode();
+	GpsTrackingMode(TrackingEstimator* estimator);
+	virtual ~GpsTrackingMode();
 
 	void setNorthOffset(float panAngleNorth);
 
-	void setMagneticDeclination(float magneticDeclination_);
+	void setMagneticDeclination(float magneticDeclination);
 
 	void setMapping(float panOffset, float tiltOffset);
 
-	void setAntennaPos(GPSPos antennaPOS);
+	void update(double curPanAngle, double curTiltAngle);
 
-	void updateGPS(GPSPos& targetPos);
-
-	void updateGPOS(GlobalPos& targetGlobalPos);
-
-	void updateEstimated();
-
-	double getDistance();
-
-	double getAzimuthFromLocal();
-
-	static double getLOSdistance(GPSPos* posA, GPSPos* posB);
-
-	static double getDistance(GPSPos* posA, GPSPos* posB);
-
-	static double getAzimuth(GPSPos* posA, GPSPos* posB);
-
-	static double getBearing(GPSPos* posA, GPSPos* posB);
-
-	static double deg2rad(double deg);
-
-	static double rad2deg(double rad);
-
-	friend std::ostream& operator<<(std::ostream& out, const GpsTrackingMode& gpsTracking);
 private:
+
+	TrackingEstimator* estimator_;
+
 	float panOffset_, tiltOffset_;
 	float magneticDeclination_;
 
-	GPSPos antennaPos_;
-	GlobalPos targetGlobalPos_;
-	double targetPosLocal_[3];
+	bool hardPositioningTilt_;
+	bool hardPositioningPan_;
 
-	GPSPos targetEstimatedPos_;
-	double targetEstimatedPosLocal_[3];
+	double azimuthAngle_, elevationAngle_;
 
-	GeographicLib::LocalCartesian antennaLocalCartesian_;
+	LocalPos targetLocalPos_,targetLocalVel_;
 
-	GeographicLib::Geocentric earth_;
+	double azimuthRate_, elevationRate_;
+
 
 };
 
 } /* namespace tracking */
-#endif /* TAGPSTRACKING_H_ */
+
+#endif /* VELBASEDTRACKING_H_ */

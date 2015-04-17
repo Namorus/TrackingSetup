@@ -11,8 +11,9 @@
 #include <unistd.h>
 
 #include <trackingsetup/trackingsetup.h>
-
 #include <trackingsetup/find_north.h>
+#include <trackingsetup/forward_calc.h>
+#include <trackingsetup/gps_tracking.h>
 #include <trackingsetup/gui_backend.h>
 #include <trackingsetup/mavlink_mag.h>
 #include <trackingsetup/mavlink_radio_status.h>
@@ -133,7 +134,16 @@ int main(int argc, char** argv) {
 	trackingLog.add(remoteGpos.getLog());
 	trackingLog.registerInstance(&remoteGpos);
 
+	// GlobalPos struct holding global position
 	GlobalPos remoteGlobalPosition;
+
+	// Estimator holding estimate of tracked object in local coordinates
+	ForwardCalc remotePosEstimator;
+	trackingLog.add(remotePosEstimator.getLog());
+	trackingLog.registerInstance(&remotePosEstimator);
+
+//	LocalPos estimatedRemotePosition;
+//	LocalPos estimatedRemoteVelocity;
 
 	/* initialize motor control */
 	MotorControl motorControl;
@@ -149,7 +159,7 @@ int main(int argc, char** argv) {
 	trackingLog.registerInstance(&currentState);
 
 	// GPS Tracking
-	GpsTrackingMode gpsTracking;
+	GpsTrackingMode gpsTracking(&remotePosEstimator);
 	trackingLog.add(gpsTracking.getLog());
 	trackingLog.registerInstance(&gpsTracking);
 
@@ -180,7 +190,7 @@ int main(int argc, char** argv) {
 	guiBackend.setLocalGps(&localGps);
 	guiBackend.setRemoteGps(&remoteGps);
 	guiBackend.setCurMode(&currentState);
-	guiBackend.setGpStracking(&gpsTracking);
+	guiBackend.setGpsTracking(&gpsTracking);
 	guiBackend.setMotorControl(&motorControl);
 	guiBackend.setMotorSetpoints(&motorSetpoints);
 	guiBackend.setRecorder(&recorder);
@@ -216,16 +226,19 @@ int main(int argc, char** argv) {
 
 	bool newAntennaPos = false;
 	bool newTrackedPos = false;
+	bool estimateUpdated = false;
 
 	bool localGpsFixAcquired = false;
 
 	float curPanAngle = 0, curTiltAngle = 0;
 
+	// Handle local GPS in case no receiver is used
 	if (commandLineOptions.noLocalGPS) {
 		localPosition = trackingConfig.GPS.AntennaPos;
-//		GPStracking.setAntennaPos(antennaPosition);
-		trackingLog.log(vl_INFO,
-				"Using GPS position from configuration as antenna position");
+		// localGpsFixAcquired = true;
+		// set local position to instances where needed
+		remotePosEstimator.setAntennaPos(localPosition);
+		trackingLog.log(vl_INFO,"Using GPS position from configuration as antenna position");
 	}
 
 	std::vector<float> RSSvalues;
@@ -265,6 +278,7 @@ int main(int argc, char** argv) {
 			curTiltAngle = motorControl.getTiltAngle();
 		}
 //        printf(".");
+
         // read MAVLink messages
         localMavlinkReader.getMavlinkMessages(localMavlinkMessages);
         remoteMavlinkReader.getMavlinkMessages(remoteMavlinkMessages);
@@ -275,9 +289,6 @@ int main(int argc, char** argv) {
         // process local GPS
 		if(!commandLineOptions.noLocalGPS) {
 			newAntennaPos = localGps.getPos(&localPosition);
-		} else {
-			localGpsFixAcquired = true;
-			gpsTracking.setAntennaPos(localPosition);
 		}
 
 		// process remote GPS
@@ -288,16 +299,34 @@ int main(int argc, char** argv) {
 
 		// check whether local GPS fix is acquired
 		// once it is, calculate magnetic declination for current location
-		if (!localGpsFixAcquired && localGps.getFixType() == 3) {
+		if (!localGpsFixAcquired && (localGps.getFixType() == 3 || commandLineOptions.noLocalGPS)) {
 			localGpsFixAcquired = true;
 			float magneticDeclination = findNorth.magneticDeclination(localPosition);
 			gpsTracking.setMagneticDeclination(magneticDeclination);
 			stringstream logmessage;
 			logmessage << "Magnetic declination: " << magneticDeclination;
-			trackingLog.log(vl_DEBUG,logmessage.str());
+			trackingLog.log(vl_INFO,logmessage.str());
 		}
 
 		// cout << "Remote Position: " << remotePosition.toString() << endl;
+
+
+		// update estimator
+		if (newTrackedPos) {
+			remotePosEstimator.setNewRemoteGPos(remoteGlobalPosition);
+		}
+		if (remoteGlobalPosition.localTimestamp - (startTs.tv_sec*1e6 + startTs.tv_nsec*1e-3) < 10*1e6) { // keep estimator running for 10s after last GPOS message
+			remotePosEstimator.updateEstimate();
+			estimateUpdated = true;
+//			trackingLog.log(vl_DEBUG,"Estimator update done.");
+//			printf("azimuth angle: %f deg, elevation angle: %f deg \n",remotePosEstimator.getAzimuth(),remotePosEstimator.getElevation());
+
+		} else {
+			if (remoteGlobalPosition.localTimestamp > 0) trackingLog.log(vl_DEBUG,"Not updating estimator anymore");
+			else trackingLog.log(vl_DEBUG,"Not yet updating estimator (no global position received so far)");
+			estimateUpdated = false;
+		}
+
 
 		/*
 		 * call routine of current state
@@ -329,22 +358,9 @@ int main(int argc, char** argv) {
 			break;
 
 		case ts_GPS_TRACKING:
-			if (newAntennaPos) {
-				gpsTracking.setAntennaPos(localPosition);
-			}
-			if (newTrackedPos) {
-				trackingLog.log(vl_DEBUG,
-						"processing new position of tracked object.");
-				gpsTracking.updateGPOS(remoteGlobalPosition);
-//				gpsTracking.updateGPS(remoteGlobalPosition.position);
+			if(estimateUpdated) {
+				gpsTracking.update(curPanAngle,curTiltAngle);
 				motorSetpoints = gpsTracking.getNewSetpoints();
-			} else if (localGpsFixAcquired || commandLineOptions.noLocalGPS) {
-				//TODO: only do that for some time. stop if GPOS message is getting old.
-				gpsTracking.updateEstimated();
-				motorSetpoints = gpsTracking.getNewSetpoints();
-			} else {
-				trackingLog.log(vl_DEBUG,
-						"GPS_Tracking: could not update remotePosition");
 			}
 			break;
 
@@ -433,7 +449,7 @@ int main(int argc, char** argv) {
 			}
 		}
 		// record
-		recorder.record(&startTs, &RSSvalues, motorControl.getPanPosition(), motorControl.getTiltPosition(), &motorSetpoints, &localPosition, &remotePosition, &gpsTracking, (int) currentState.get());
+		recorder.record(&startTs, &RSSvalues, motorControl.getPanPosition(), motorControl.getTiltPosition(), &motorSetpoints, &localPosition, &remotePosition, &remotePosEstimator, (int) currentState.get());
 
 		// get log messages
 		trackingLog.fetchLogs();

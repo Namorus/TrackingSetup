@@ -53,7 +53,23 @@ struct commandLineOptions {
 	bool useTUI;
 	bool useStdout;
 };
+/*!
+ * localPos holds a position in a local ENU frame.
+ */
+struct LocalPos {
+	double x; // Easting
+	double y; // Northing
+	double z; // Up
 
+	LocalPos() :
+		x(0), y(0), z(0) {}
+
+	friend std::ostream& operator<<(std::ostream& out, const LocalPos& pos) {
+		out.precision(15);
+		out << pos.x << " " << pos.y << " " << pos.z;
+		return out;
+	}
+};
 struct GPSPos {
 	double lat;
 	double lon;
@@ -254,7 +270,7 @@ struct recorderSettings {
 	bool recordLocalGPS;
 	bool recordRemoteGPS;
 	bool recordCurMode;
-	bool recordGPSTracking;
+	bool recordEstimator;
 
 	recorderSettings() :
 			recordTimestamp(false),
@@ -263,7 +279,7 @@ struct recorderSettings {
 			recordLocalGPS(false),
 			recordRemoteGPS(false),
 			recordCurMode(false),
-			recordGPSTracking(true) {
+			recordEstimator(true) {
 	} // initializer
 
 	friend std::istream& operator>>(std::istream& in, recorderSettings& a) {
@@ -273,7 +289,7 @@ struct recorderSettings {
 		in >> a.recordMotData;
 		in >> a.recordLocalGPS;
 		in >> a.recordRemoteGPS;
-		in >> a.recordGPSTracking;
+		in >> a.recordEstimator;
 		in >> a.recordCurMode;
 		return in;
 	}

@@ -71,7 +71,7 @@ public:
 	void setConfig(Config* cfg);
 	void setCommandLineOptions(commandLineOptions* clo);
 	void setCurMode(State* curMode);
-	void setGpStracking(GpsTrackingMode* gpStracking);
+	void setGpsTracking(GpsTrackingMode* gpStracking);
 	void setLog(Logger* log);
 	void setMotorControl(MotorControl* motorControl);
 	void setMotorSetpoints(setpoints* motorSetpoints);

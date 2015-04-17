@@ -8,6 +8,7 @@ CPP_SRCS += \
 ../epos.cpp \
 ../epos_comm.cpp \
 ../find_north.cpp \
+../forward_calc.cpp \
 ../gps_tracking.cpp \
 ../gui_backend.cpp \
 ../input.cpp \
@@ -20,6 +21,7 @@ CPP_SRCS += \
 ../motor_control.cpp \
 ../position_input.cpp \
 ../recorder.cpp \
+../trackingEstimator.cpp \
 ../tracking_mode.cpp \
 ../tracking_state.cpp \
 ../trackingsetup.cpp 
@@ -29,6 +31,7 @@ OBJS += \
 ./epos.o \
 ./epos_comm.o \
 ./find_north.o \
+./forward_calc.o \
 ./gps_tracking.o \
 ./gui_backend.o \
 ./input.o \
@@ -41,6 +44,7 @@ OBJS += \
 ./motor_control.o \
 ./position_input.o \
 ./recorder.o \
+./trackingEstimator.o \
 ./tracking_mode.o \
 ./tracking_state.o \
 ./trackingsetup.o 
@@ -50,6 +54,7 @@ CPP_DEPS += \
 ./epos.d \
 ./epos_comm.d \
 ./find_north.d \
+./forward_calc.d \
 ./gps_tracking.d \
 ./gui_backend.d \
 ./input.d \
@@ -62,6 +67,7 @@ CPP_DEPS += \
 ./motor_control.d \
 ./position_input.d \
 ./recorder.d \
+./trackingEstimator.d \
 ./tracking_mode.d \
 ./tracking_state.d \
 ./trackingsetup.d 
