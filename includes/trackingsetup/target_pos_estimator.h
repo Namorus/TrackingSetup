@@ -17,7 +17,9 @@ public:
 	ForwardCalc();
 	virtual ~ForwardCalc();
 
+	void predictEstimate(); // Roman
 	void updateEstimate();
+
 };
 
 } /* namespace tracking */

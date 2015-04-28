@@ -9,6 +9,7 @@
 #include <list>
 #include <sstream>
 #include <unistd.h>
+#include <armadillo> // ROMAN	 matrix calculation library
 
 #include <trackingsetup/trackingsetup.h>
 #include <trackingsetup/find_north.h>
@@ -21,6 +22,7 @@
 
 using namespace std;
 using namespace tracking;
+using namespace arma; // ROMAN
 
 commandLineOptions parseCommandLine(int argc, char** argv);
 
@@ -228,6 +230,8 @@ int main(int argc, char** argv) {
 	bool newTrackedPos = false;
 	bool estimateUpdated = false;
 
+	bool newPhi = false; // ROMAN
+
 	bool localGpsFixAcquired = false;
 
 	float curPanAngle = 0, curTiltAngle = 0;
@@ -286,6 +290,11 @@ int main(int argc, char** argv) {
 //        printf("RSSI: %d\n",mavlinkRSSI.rssi);
 //        printf("\n");
 
+        // add phi measurement and airspeed measurement
+
+        // newPhi =                                               ?????????????????????????????
+        // AirSpeed =                                               ?????????????????????????????
+
         // process local GPS
 		if(!commandLineOptions.noLocalGPS) {
 			newAntennaPos = localGps.getPos(&localPosition);
@@ -311,21 +320,171 @@ int main(int argc, char** argv) {
 		// cout << "Remote Position: " << remotePosition.toString() << endl;
 
 
+double r_a;
+double r_b;
+double kf_time_old = (startTs.tv_sec*1e6 + startTs.tv_nsec*1e-3); //???????????????????? // past KF start time
+double kf_time;  // current KF start time
+
+//--------------------------------------------------------------------------
+// check if position measurement is available
+//--------------------------------------------------------------------------
+if (newTrackedPos){	//if p_pdot_time>=kf_time_old && p_pdot_time<kf_time
+
+	//--------------------------------------------------------------------------
+	// check if phi measurement is available
+	//--------------------------------------------------------------------------
+	if (newPhi){ //phi_time>=kf_time_old && phi_time<kf_time %booth are available
+
+		  // (re-)order timestamps
+				        if (remoteGlobalPosition.localTimestamp > mavlink_message.timestamp) { // check if phi measurement (mavlink message) was first
+				           double timestamp_1 = mavlink_message.timestamp;
+				           double timestamp_2 = remoteGlobalPosition.localTimestamp;
+
+				                double dt1 = timestamp_1 - kf_time_old; // calculate dt
+
+				            // predict with phi_old
+				            // [Xhat1,~,P1]  = KF_predict(Xhat,v_air_old,phi_old,P,dt1,q,var_phi,gravity);
+
+				                double dt2 = timestamp_2 - timestamp_1; // calculate dt
+
+				            // predict with phi_new
+				                // [Xhat2,~,P2]  = KF_predict(Xhat1,v_air,phi,P1,dt2,q,var_phi,gravity);
+
+				            // udpate position
+				                // [Xhat3,P3]  = KF_update_pos(Xhat2,p_pdot',P2,r_a,r_b);
+				                remotePosEstimator.updateEstimate();	//execution of update function
+
+				                double dt3 = kf_time - p_pdot_time; // calculate dt
+
+				            // predict with new position and new phi
+				                // [Xhat_out,omega_out,P]  = KF_predict(Xhat3,v_air,phi,P3,dt3,q,var_phi,gravity);
+
+				        }else if (p_pdot_time<phi_time) { // check if GPOS was first
+				            double timestamp_1 = remoteGlobalPosition.localTimestamp;
+				            double timestamp_2 = mavlink_message.timestamp;
+
+				                double dt1 = timestamp_1 - kf_time_old; // calculate dt
+
+				            // predict
+				                // [Xhat1,~,P1]  = KF_predict(Xhat,v_air_old,phi_old,P,dt1,q,var_phi,gravity);
+
+				            // udpate position
+				                // [Xhat2,P2]  = KF_update_pos(Xhat1,p_pdot',P1,r_a,r_b);
+				                remotePosEstimator.updateEstimate();	//execution of update function
+
+				                double dt2 = timestamp_2 - timestamp_1; // calculate dt
+
+				            // predict with new position and old phi
+				                // [Xhat3,~,P3]  = KF_predict(Xhat2,v_air_old,phi_old,P2,dt2,q,var_phi,gravity);
+
+				                double dt3 = kf_time - p_pdot_time; // calculate dt
+
+				            // predict with new position and new phi
+				                // [Xhat_out,omega_out,P]  = KF_predict(Xhat3,v_air,phi,P3,dt3,q,var_phi,gravity);
+
+				        }else if (remoteGlobalPosition.localTimestamp == mavlink_message.timestamp){
+				            double timestamp=remoteGlobalPosition.localTimestamp;
+
+				                double dt1 = timestamp - kf_time_old; // calculate dt
+
+				            // predict
+				                // [Xhat1,~,P1]  = KF_predict(Xhat,v_air_old,phi_old,P,dt1,q,var_phi,gravity);
+
+				            // udpate position
+				                // [Xhat2,P2]  = KF_update_pos(Xhat1,p_pdot',P1,r_a,r_b);
+
+				                double dt2 = kf_time - timestamp; // calculate dt
+
+				            // predict
+				                // [Xhat_out,omega_out,P]  = KF_predict(Xhat2,v_air,phi,P2,dt2,q,var_phi,gravity);
+
+				        }
+
+				    // phi_old_out = phi;
+				    // v_air_old_out = v_air;
+
+	 }else{ //only position measurement is available
+
+	        	double dt1 = remoteGlobalPosition.localTimestamp - kf_time_old; // calculate dt
+
+		    // predict
+	        	// [Xhat1,~,P1]  = KF_predict(Xhat,v_air_old,phi_old,P,dt1,q,var_phi,gravity);
+
+		    // udpate position
+	        	// [Xhat2,P2]  = KF_update_pos(Xhat1,p_pdot',P1,r_a,r_b);
+	        	remotePosEstimator.updateEstimate();	//execution of update function
+
+		    	double dt2 = kf_time - remoteGlobalPosition.localTimestamp; // calculate dt
+
+		    // predict
+		    	// [Xhat_out,omega_out,P]  = KF_predict(Xhat2,v_air_old,phi_old,P2,dt2,q,var_phi,gravity);
+
+		    // phi_old_out = phi_old;
+		    // v_air_old_out = v_air_old;
+
+	 }
+
+
+	        //--------------------------------------------------------------------------
+			// check if phi measurement is available but no position measurement
+			//--------------------------------------------------------------------------
+	}else if (mavlink_message.timestamp >= kf_time_old && mavlink_message.timestamp < kf_time){
+
+			    double dt1 = mavlink_message.timestamp - kf_time_old; // calculate dt
+
+			// predict with old phi
+			    // [Xhat1,~,P1]  = KF_predict(Xhat,v_air_old,phi_old,P,dt1,q,var_phi,gravity);
+
+			    double dt2 = kf_time - mavlink_message.timestamp; // calculate dt
+
+			// predict with new phi
+			    // [Xhat_out,omega_out,P]  = KF_predict(Xhat1,v_air,phi,P1,dt2,q,var_phi,gravity);
+
+			// phi_old_out = phi;
+			// v_air_old_out = v_air;
+
+			//--------------------------------------------------------------------------
+			// no measurement is available
+			//--------------------------------------------------------------------------
+	}else {
+
+			    double dt1 = kf_time - kf_time_old; // calculate dt
+
+			    // [Xhat_out,omega_out,P]  = KF_predict(Xhat,v_air_old,phi_old,P,dt1,q,var_phi,gravity);
+
+			// phi_old_out = phi_old;
+			// v_air_old_out = v_air_old;
+
+}
+
+kf_time_old = kf_time;
+
+
+
+
+
+
+
 		// update estimator
-		if (newTrackedPos) {
+		if (newTrackedPos) { //check if new position is available
 			remotePosEstimator.setNewRemoteGPos(remoteGlobalPosition);
 		}
+
 		if (remoteGlobalPosition.localTimestamp - (startTs.tv_sec*1e6 + startTs.tv_nsec*1e-3) < 10*1e6) { // keep estimator running for 10s after last GPOS message
-			remotePosEstimator.updateEstimate();
+			remotePosEstimator.updateEstimate();	//execution of update function
 			estimateUpdated = true;
+
 //			trackingLog.log(vl_DEBUG,"Estimator update done.");
 //			printf("azimuth angle: %f deg, elevation angle: %f deg \n",remotePosEstimator.getAzimuth(),remotePosEstimator.getElevation());
+
 
 		} else {
 			if (remoteGlobalPosition.localTimestamp > 0) trackingLog.log(vl_DEBUG,"Not updating estimator anymore");
 			else trackingLog.log(vl_DEBUG,"Not yet updating estimator (no global position received so far)");
 			estimateUpdated = false;
 		}
+
+
 
 
 		/*
