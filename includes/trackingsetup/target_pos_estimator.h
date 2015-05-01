@@ -21,11 +21,11 @@ private:			//are parameters of member function
 	const float var_phi;		// variance of roll angle phi
 	const float r_a;			// measurement covariance parameter (position)
 	const float r_b;			// measurement covariance parameter (velocity)
-	const float q;				// initial auxilary process covariance parameter
+	const float q;				// initial auxiliary process covariance parameter
 
 public:
-	arma::vec xhat(6);			// state
-	arma::mat P(6,6);			// covariance matrix
+	vec xhat; // state declaration
+	mat P;	 // covariance matrix declaration
 
 	ForwardCalc(){ 				//constructor: initialize parameters at first call of class
 		gravity=9.81;
@@ -51,7 +51,7 @@ public:
 	virtual ~ForwardCalc(); //(virtual?) destructor
 
 	void predictEstimate(double phi, double v_air, double dt); // Roman, element function
-	void updateEstimate(arma::vec Z);
+	void updateEstimate(vec Z);
 
 };
 

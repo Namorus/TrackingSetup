@@ -25,7 +25,4 @@ C_UPPER_DEPS :=
 SUBDIRS := \
 . \
 includes/iniparser \
-armadillo-5.000.1/src \
-armadillo-5.000.1/mex_interface \
-armadillo-5.000.1/examples \
 

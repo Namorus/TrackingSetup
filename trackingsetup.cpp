@@ -16,7 +16,8 @@
 
 #include <trackingsetup/trackingsetup.h>
 #include <trackingsetup/find_north.h>
-#include <trackingsetup/forward_calc.h>
+//#include <trackingsetup/forward_calc.h>
+#include <trackingsetup/target_pos_estimator.h>
 #include <trackingsetup/gps_tracking.h>
 #include <trackingsetup/gui_backend.h>
 #include <trackingsetup/mavlink_mag.h>

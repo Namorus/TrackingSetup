@@ -9,9 +9,6 @@ RM := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include includes/iniparser/subdir.mk
--include armadillo-5.000.1/src/subdir.mk
--include armadillo-5.000.1/mex_interface/subdir.mk
--include armadillo-5.000.1/examples/subdir.mk
 -include subdir.mk
 -include objects.mk
 
@@ -47,7 +44,7 @@ all: Antenna_Estimator_Namorus
 Antenna_Estimator_Namorus: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MacOS X C++ Linker'
-	g++  -o "Antenna_Estimator_Namorus" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L"/Users/Maverick/Documents/workspace/Antenna_Estimator_Namorus/armadillo" -o "Antenna_Estimator_Namorus" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
