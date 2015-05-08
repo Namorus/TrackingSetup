@@ -1,0 +1,961 @@
+Start testing: May 05 09:47 CEST
+----------------------------------------------------------
+1/53 Testing: GeoConvert0
+1/53 Test: GeoConvert0
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeoConvert" "-p" "-3" "-m" "--input-string" "33.3 44.4"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeoConvert0" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+38SMB4484
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[38SMB4484
+]
+"GeoConvert0" end time: May 05 09:47 CEST
+"GeoConvert0" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/53 Testing: GeoConvert1
+2/53 Test: GeoConvert1
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeoConvert" "-d" "--input-string" "38smb"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeoConvert1" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+32d59'14.1"N 044d27'53.4"E
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[32d59'14\.1"N 044d27'53\.4"E
+]
+"GeoConvert1" end time: May 05 09:47 CEST
+"GeoConvert1" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/53 Testing: GeoConvert2
+3/53 Test: GeoConvert2
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeoConvert" "-p" "-2" "--input-string" "30d30'30" 30.50833"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeoConvert2" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+30.508 30.508
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[30\.508 30\.508
+]
+"GeoConvert2" end time: May 05 09:47 CEST
+"GeoConvert2" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/53 Testing: GeoConvert3
+4/53 Test: GeoConvert3
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeoConvert" "--junk"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeoConvert3" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+Usage:
+    GeoConvert [ -g | -d | -: | -u | -m | -c ] [ -p prec ] [ -z zone | -s |
+    -t ] [ -n ] [ -w ] [ -l | -a ] [ --comment-delimiter commentdelim ] [
+    --version | -h | --help ] [ --input-file infile | --input-string
+    instring ] [ --line-separator linesep ] [ --output-file outfile ]
+
+For full documentation type:
+    GeoConvert --help
+or visit:
+    http://geographiclib.sf.net/1.42/GeoConvert.1.html
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"GeoConvert3" end time: May 05 09:47 CEST
+"GeoConvert3" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/53 Testing: GeoConvert4
+5/53 Test: GeoConvert4
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeoConvert" "--input-string" "garbage"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeoConvert4" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+ERROR: Band letter g not in UPS set ABYZ
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"GeoConvert4" end time: May 05 09:47 CEST
+"GeoConvert4" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/53 Testing: GeoConvert5
+6/53 Test: GeoConvert5
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeoConvert" "--input-string" "5d. 0"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeoConvert5" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+ERROR: Missing numbers in trailing component of 5d.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"GeoConvert5" end time: May 05 09:47 CEST
+"GeoConvert5" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/53 Testing: GeoConvert6
+7/53 Test: GeoConvert6
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeoConvert" "-p" "9" "--input-string" "0 179.99999999999998578"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeoConvert6" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+0.00000000000000 179.99999999999997
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[179\.9999999999999[7-9]
+]
+"GeoConvert6" end time: May 05 09:47 CEST
+"GeoConvert6" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/53 Testing: GeodSolve0
+8/53 Test: GeodSolve0
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeodSolve" "-i" "-p" "0" "--input-string" "40.6 -73.8 49d01'N 2d33'E"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeodSolve0" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+53.47022 111.59367 5853226
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[53\.47022 111\.59367 5853226
+]
+"GeodSolve0" end time: May 05 09:47 CEST
+"GeodSolve0" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/53 Testing: GeodSolve1
+9/53 Test: GeodSolve1
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeodSolve" "-p" "0" "--input-string" "40d38'23"N 073d46'44"W 53d30' 5850e3"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeodSolve1" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+49.01467 2.56106 111.62947
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[49\.01467 2\.56106 111\.62947
+]
+"GeodSolve1" end time: May 05 09:47 CEST
+"GeodSolve1" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/53 Testing: GeodSolve2
+10/53 Test: GeodSolve2
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeodSolve" "-i" "-p" "0" "-e" "6.4e6" "-1/150" "--input-string" "0.07476 0 -0.07476 180"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeodSolve2" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+90.00078 90.00078 20106193
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[90\.00078 90\.00078 20106193
+]
+"GeodSolve2" end time: May 05 09:47 CEST
+"GeodSolve2" time elapsed: 00:00:00
+----------------------------------------------------------
+
+11/53 Testing: GeodSolve3
+11/53 Test: GeodSolve3
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeodSolve" "-i" "-p" "0" "-e" "6.4e6" "-1/150" "--input-string" "0.1 0 -0.1 180"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeodSolve3" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+90.00105 90.00105 20106193
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[90\.00105 90\.00105 20106193
+]
+"GeodSolve3" end time: May 05 09:47 CEST
+"GeodSolve3" time elapsed: 00:00:00
+----------------------------------------------------------
+
+12/53 Testing: GeodSolve4
+12/53 Test: GeodSolve4
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeodSolve" "-i" "--input-string" "36.493349428792 0 36.49334942879201 .0000008"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeodSolve4" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+89.99999976 90.00000024 0.072
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[.* .* 0\.072
+]
+"GeodSolve4" end time: May 05 09:47 CEST
+"GeodSolve4" time elapsed: 00:00:00
+----------------------------------------------------------
+
+13/53 Testing: GeodSolve5
+13/53 Test: GeodSolve5
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeodSolve" "-p" "0" "--input-string" "0.01777745589997 30 0 10e6"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeodSolve5" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+90.00000 -150.00000 -180.00000
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[90\.00000 -150\.00000 -180\.00000
+90\.00000 30\.00000 0\.00000
+]
+"GeodSolve5" end time: May 05 09:47 CEST
+"GeodSolve5" time elapsed: 00:00:00
+----------------------------------------------------------
+
+14/53 Testing: GeodSolve6
+14/53 Test: GeodSolve6
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeodSolve" "-i" "--input-string" "88.202499451857 0 -88.202499451857 179.981022032992859592"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeodSolve6" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+90.00000000 90.00000000 20003898.214
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[.* .* 20003898.214
+]
+"GeodSolve6" end time: May 05 09:47 CEST
+"GeodSolve6" time elapsed: 00:00:00
+----------------------------------------------------------
+
+15/53 Testing: GeodSolve7
+15/53 Test: GeodSolve7
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeodSolve" "-i" "--input-string" "89.262080389218 0 -89.262080389218 179.992207982775375662"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeodSolve7" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+90.00000000 90.00000000 20003925.854
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[.* .* 20003925.854
+]
+"GeodSolve7" end time: May 05 09:47 CEST
+"GeodSolve7" time elapsed: 00:00:00
+----------------------------------------------------------
+
+16/53 Testing: GeodSolve8
+16/53 Test: GeodSolve8
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeodSolve" "-i" "--input-string" "89.333123580033 0 -89.333123580032997687 179.99295812360148422"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeodSolve8" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+90.00000000 90.00000000 20003926.881
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[.* .* 20003926.881
+]
+"GeodSolve8" end time: May 05 09:47 CEST
+"GeodSolve8" time elapsed: 00:00:00
+----------------------------------------------------------
+
+17/53 Testing: GeodSolve9
+17/53 Test: GeodSolve9
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeodSolve" "-i" "--input-string" "56.320923501171 0 -56.320923501171 179.664747671772880215"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeodSolve9" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+90.00000000 90.00000000 19993558.287
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[.* .* 19993558.287
+]
+"GeodSolve9" end time: May 05 09:47 CEST
+"GeodSolve9" time elapsed: 00:00:00
+----------------------------------------------------------
+
+18/53 Testing: GeodSolve10
+18/53 Test: GeodSolve10
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeodSolve" "-i" "--input-string" "52.784459512564 0 -52.784459512563990912 179.634407464943777557"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeodSolve10" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+89.99995977 90.00004025 19991596.095
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[.* .* 19991596.095
+]
+"GeodSolve10" end time: May 05 09:47 CEST
+"GeodSolve10" time elapsed: 00:00:00
+----------------------------------------------------------
+
+19/53 Testing: GeodSolve11
+19/53 Test: GeodSolve11
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeodSolve" "-i" "--input-string" "48.522876735459 0 -48.52287673545898293 179.599720456223079643"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeodSolve11" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+89.99996442 90.00003560 19989144.774
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[.* .* 19989144.774
+]
+"GeodSolve11" end time: May 05 09:47 CEST
+"GeodSolve11" time elapsed: 00:00:00
+----------------------------------------------------------
+
+20/53 Testing: GeodSolve12
+20/53 Test: GeodSolve12
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeodSolve" "-i" "-e" "89.8" "-1.83" "-p" "1" "--input-string" "0 0 -10 160"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeodSolve12" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+120.271181 105.158683 266.7
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[120\.27.* 105\.15.* 266\.7
+]
+"GeodSolve12" end time: May 05 09:47 CEST
+"GeodSolve12" time elapsed: 00:00:00
+----------------------------------------------------------
+
+21/53 Testing: GeodSolve13
+21/53 Test: GeodSolve13
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeodSolve" "-i" "-e" "89.8" "-1.83" "-p" "1" "--input-string" "0 0 -10 160" "-E"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeodSolve13" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+120.271236 105.158802 266.7
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[120\.27.* 105\.15.* 266\.7
+]
+"GeodSolve13" end time: May 05 09:47 CEST
+"GeodSolve13" time elapsed: 00:00:00
+----------------------------------------------------------
+
+22/53 Testing: GeodSolve14
+22/53 Test: GeodSolve14
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeodSolve" "-i" "--input-string" "0 0 1 nan"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeodSolve14" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+nan nan nan
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[nan nan nan
+]
+"GeodSolve14" end time: May 05 09:47 CEST
+"GeodSolve14" time elapsed: 00:00:00
+----------------------------------------------------------
+
+23/53 Testing: GeodSolve15
+23/53 Test: GeodSolve15
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeodSolve" "-e" "6.4e6" "-1/150" "-f" "--input-string" "1 2 3 4"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeodSolve15" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+1.00000000 2.00000000 3.00000000 1.00003529 2.00000187 3.00000003 4.000 0.00003557 4.000 1.0000000000 1.0000000000 23700
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[1\..* 2\..* 3\..* 1\..* 2\..* 3\..* 4\..* 0\..* 4\..* 1\..* 1\..* 23700
+]
+"GeodSolve15" end time: May 05 09:47 CEST
+"GeodSolve15" time elapsed: 00:00:00
+----------------------------------------------------------
+
+24/53 Testing: GeodSolve16
+24/53 Test: GeodSolve16
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/GeodSolve" "-e" "6.4e6" "-1/150" "-f" "--input-string" "1 2 3 4" "-E"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"GeodSolve16" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+1.00000000 2.00000000 3.00000000 1.00003529 2.00000187 3.00000003 4.000 0.00003557 4.000 1.0000000000 1.0000000000 23700
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[1\..* 2\..* 3\..* 1\..* 2\..* 3\..* 4\..* 0\..* 4\..* 1\..* 1\..* 23700
+]
+"GeodSolve16" end time: May 05 09:47 CEST
+"GeodSolve16" time elapsed: 00:00:00
+----------------------------------------------------------
+
+25/53 Testing: Planimeter0
+25/53 Test: Planimeter0
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/Planimeter" "--input-string" "89 0;89 90;89 180;89 270"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"Planimeter0" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+4 631819.874528 24952305678.0
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[4 631819\.8745[0-9]+ 2495230567[78]\.[0-9]+
+]
+"Planimeter0" end time: May 05 09:47 CEST
+"Planimeter0" time elapsed: 00:00:00
+----------------------------------------------------------
+
+26/53 Testing: Planimeter1
+26/53 Test: Planimeter1
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/Planimeter" "-r" "--input-string" "-89 0;-89 90;-89 180;-89 270"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"Planimeter1" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+4 631819.874528 24952305678.0
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[4 631819\.8745[0-9]+ 2495230567[78]\.[0-9]+
+]
+"Planimeter1" end time: May 05 09:47 CEST
+"Planimeter1" time elapsed: 00:00:00
+----------------------------------------------------------
+
+27/53 Testing: Planimeter2
+27/53 Test: Planimeter2
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/Planimeter" "--input-string" "0 -1;-1 0;0 1;1 0"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"Planimeter2" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+4 627598.273165 24619419146.9
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[4 627598\.2731[0-9]+ 24619419146.[0-9]+
+]
+"Planimeter2" end time: May 05 09:47 CEST
+"Planimeter2" time elapsed: 00:00:00
+----------------------------------------------------------
+
+28/53 Testing: Planimeter3
+28/53 Test: Planimeter3
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/Planimeter" "--input-string" "90 0; 0 0; 0 90"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"Planimeter3" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+3 30022685.630020 63758202715511.1
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[3 30022685\.[0-9]+ 63758202715511\.[0-9]+
+]
+"Planimeter3" end time: May 05 09:47 CEST
+"Planimeter3" time elapsed: 00:00:00
+----------------------------------------------------------
+
+29/53 Testing: Planimeter4
+29/53 Test: Planimeter4
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/Planimeter" "-l" "--input-string" "90 0; 0 0; 0 90"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"Planimeter4" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+3 20020719.900707
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[3 20020719\.[0-9]+
+]
+"Planimeter4" end time: May 05 09:47 CEST
+"Planimeter4" time elapsed: 00:00:00
+----------------------------------------------------------
+
+30/53 Testing: Planimeter5
+30/53 Test: Planimeter5
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/Planimeter" "--input-string" "89,0.1;89,90.1;89,-179.9"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"Planimeter5" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+3 539297.667092 12476152839.0
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[3 539297\.[0-9]+ 1247615283[89]\.[0-9]+
+]
+"Planimeter5" end time: May 05 09:47 CEST
+"Planimeter5" time elapsed: 00:00:00
+----------------------------------------------------------
+
+31/53 Testing: Planimeter6
+31/53 Test: Planimeter6
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/Planimeter" "-p" "8" "--input-string" "9 -0.00000000000001;9 180;9 0"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"Planimeter6" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+3 36026861.80766834 0.001
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[3 36026861\.[0-9]+ -?0.0[0-9]+
+]
+"Planimeter6" end time: May 05 09:47 CEST
+"Planimeter6" time elapsed: 00:00:00
+----------------------------------------------------------
+
+32/53 Testing: Planimeter7
+32/53 Test: Planimeter7
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/Planimeter" "-p" "8" "--input-string" "9  0.00000000000001;9 0;9 180"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"Planimeter7" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+3 36026861.80766834 0.001
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[3 36026861\.[0-9]+ -?0.0[0-9]+
+]
+"Planimeter7" end time: May 05 09:47 CEST
+"Planimeter7" time elapsed: 00:00:00
+----------------------------------------------------------
+
+33/53 Testing: Planimeter8
+33/53 Test: Planimeter8
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/Planimeter" "-p" "8" "--input-string" "9  0.00000000000001;9 180;9 0"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"Planimeter8" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+3 36026861.80766834 -0.001
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[3 36026861\.[0-9]+ -?0.0[0-9]+
+]
+"Planimeter8" end time: May 05 09:47 CEST
+"Planimeter8" time elapsed: 00:00:00
+----------------------------------------------------------
+
+34/53 Testing: Planimeter9
+34/53 Test: Planimeter9
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/Planimeter" "-p" "8" "--input-string" "9 -0.00000000000001;9 0;9 180"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"Planimeter9" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+3 36026861.80766834 -0.001
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[3 36026861\.[0-9]+ -?0.0[0-9]+
+]
+"Planimeter9" end time: May 05 09:47 CEST
+"Planimeter9" time elapsed: 00:00:00
+----------------------------------------------------------
+
+35/53 Testing: Planimeter10
+35/53 Test: Planimeter10
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/Planimeter" "-R" "--input-string" "41N 111:3W; 41N 104:3W; 45N 104:3W; 45N 111:3W"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"Planimeter10" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+4 2029616.314952 253588376329.2
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[4 2029616\.[0-9]+ 2535883763..\.
+]
+"Planimeter10" end time: May 05 09:47 CEST
+"Planimeter10" time elapsed: 00:00:00
+----------------------------------------------------------
+
+36/53 Testing: Planimeter11
+36/53 Test: Planimeter11
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/Planimeter" "-R" "--input-string" "66:33:44 0; 66:33:44 180"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"Planimeter11" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+2 15985058.783250 21208418252304.7
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[2 15985058\.[0-9]+ 212084182523..\.
+]
+"Planimeter11" end time: May 05 09:47 CEST
+"Planimeter11" time elapsed: 00:00:00
+----------------------------------------------------------
+
+37/53 Testing: Planimeter12
+37/53 Test: Planimeter12
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/Planimeter" "--input-string" "66:33:44 0; 66:33:44 180"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"Planimeter12" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+2 10465729.174643 0.0
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[2 10465729\.[0-9]+ -?0.0
+]
+"Planimeter12" end time: May 05 09:47 CEST
+"Planimeter12" time elapsed: 00:00:00
+----------------------------------------------------------
+
+38/53 Testing: Planimeter13
+38/53 Test: Planimeter13
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/Planimeter" "--input-string" "89 -360; 89 -240; 89 -120; 89 0; 89 120; 89 240"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"Planimeter13" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+6 1160741.959502 32415230256.7
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[6 1160741\..* 32415230256\.
+]
+"Planimeter13" end time: May 05 09:47 CEST
+"Planimeter13" time elapsed: 00:00:00
+----------------------------------------------------------
+
+39/53 Testing: ConicProj0
+39/53 Test: ConicProj0
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/ConicProj" "-a" "40d58" "39d56" "-l" "77d45W" "-r" "--input-string" "220e3 -52e3"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"ConicProj0" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+39.95481374925 -75.17502526723 1.670535759228 0.999996726544
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[39\.95[0-9]+ -75\.17[0-9]+ 1\.67[0-9]+ 0\.99[0-9]+
+]
+"ConicProj0" end time: May 05 09:47 CEST
+"ConicProj0" time elapsed: 00:00:00
+----------------------------------------------------------
+
+40/53 Testing: ConicProj1
+40/53 Test: ConicProj1
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/ConicProj" "-a" "0" "0" "-e" "6.4e6" "-0.5" "-r" "--input-string" "0 8605508"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"ConicProj1" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+85.00002605400 0.00000000000 0.000000000000 17.174306224675
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[^85\.00
+]
+"ConicProj1" end time: May 05 09:47 CEST
+"ConicProj1" time elapsed: 00:00:00
+----------------------------------------------------------
+
+41/53 Testing: ConicProj2
+41/53 Test: ConicProj2
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/ConicProj" "-c" "-30" "-30" "--input-string" "-30 0"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"ConicProj2" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+0.000000 -0.000000 -0.000000000000 1.000000000000
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[^-?0\.0+ -?0\.0+ -?0\.0+ 1\.0+
+]
+"ConicProj2" end time: May 05 09:47 CEST
+"ConicProj2" time elapsed: 00:00:00
+----------------------------------------------------------
+
+42/53 Testing: ConicProj3
+42/53 Test: ConicProj3
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/ConicProj" "-r" "-c" "0" "0" "--input-string" "1113195 -1e10"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"ConicProj3" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+-90.00000000000 10.00000082705 0.000000000000 20214406524425874319170156363776.000000000000
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[^-90\.0+ 10\.00[0-9]+ 
+]
+"ConicProj3" end time: May 05 09:47 CEST
+"ConicProj3" time elapsed: 00:00:00
+----------------------------------------------------------
+
+43/53 Testing: ConicProj4
+43/53 Test: ConicProj4
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/ConicProj" "-r" "-c" "0" "0" "--input-string" "1113195 inf"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"ConicProj4" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+90.00000000000 10.00000082705 0.000000000000 20214406524425876570969970049024.000000000000
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[^90\.0+ 10\.00[0-9]+ 
+]
+"ConicProj4" end time: May 05 09:47 CEST
+"ConicProj4" time elapsed: 00:00:00
+----------------------------------------------------------
+
+44/53 Testing: ConicProj5
+44/53 Test: ConicProj5
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/ConicProj" "-r" "-c" "45" "45" "--input-string" "0 -1e100"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"ConicProj5" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+-90.00000000000 0.00000000000 0.000000000000 593415006546530957869428790174638201166892621056966656.000000000000
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[^-90\.0+ -?0\.00[0-9]+ 
+]
+"ConicProj5" end time: May 05 09:47 CEST
+"ConicProj5" time elapsed: 00:00:00
+----------------------------------------------------------
+
+45/53 Testing: ConicProj6
+45/53 Test: ConicProj6
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/ConicProj" "-r" "-c" "45" "45" "--input-string" "0 -inf"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"ConicProj6" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+-90.00000000000 0.00000000000 0.000000000000 593415006546530957869428790174638201166892621056966656.000000000000
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[^-90\.0+ -?0\.00[0-9]+ 
+]
+"ConicProj6" end time: May 05 09:47 CEST
+"ConicProj6" time elapsed: 00:00:00
+----------------------------------------------------------
+
+46/53 Testing: ConicProj7
+46/53 Test: ConicProj7
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/ConicProj" "-r" "-c" "90" "90" "--input-string" "0 -1e150"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"ConicProj7" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+-90.00000000000 0.00000000000 0.000000000000 1623571418297993469771590661362371071661943763535161211089846272.000000000000
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[^-90\.0+ -?0\.00[0-9]+ 
+]
+"ConicProj7" end time: May 05 09:47 CEST
+"ConicProj7" time elapsed: 00:00:00
+----------------------------------------------------------
+
+47/53 Testing: ConicProj8
+47/53 Test: ConicProj8
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/ConicProj" "-r" "-c" "90" "90" "--input-string" "0 -inf"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"ConicProj8" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+-90.00000000000 0.00000000000 0.000000000000 1623571418297993469771590661362371071661943763535161211089846272.000000000000
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[^-90\.0+ -?0\.00[0-9]+ 
+]
+"ConicProj8" end time: May 05 09:47 CEST
+"ConicProj8" time elapsed: 00:00:00
+----------------------------------------------------------
+
+48/53 Testing: CartConvert0
+48/53 Test: CartConvert0
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/CartConvert" "-e" "6.4e6" "1/100" "-r" "--input-string" "10e3 0 1e3"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"CartConvert0" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+85.576056375011106 0.000000000000000 -6334614.328681388870
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[85\.57[0-9]+ 0\.0[0]+ -6334614\.[0-9]+
+]
+"CartConvert0" end time: May 05 09:47 CEST
+"CartConvert0" time elapsed: 00:00:00
+----------------------------------------------------------
+
+49/53 Testing: CartConvert1
+49/53 Test: CartConvert1
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/CartConvert" "-e" "6.4e6" "-1/100" "-r" "--input-string" "1e3 0 10e3"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"CartConvert1" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+4.424162010202468 0.000000000000000 -6398614.309565132484
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[4\.42[0-9]+ 0\.0[0]+ -6398614\.[0-9]+
+]
+"CartConvert1" end time: May 05 09:47 CEST
+"CartConvert1" time elapsed: 00:00:00
+----------------------------------------------------------
+
+50/53 Testing: TransverseMercatorProj0
+50/53 Test: TransverseMercatorProj0
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/TransverseMercatorProj" "-k" "1" "--input-string" "90 75"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"TransverseMercatorProj0" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+0.000000 10001965.729313 75.000000000000 1.000000000000
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[^0\.0+ 10001965\.7293[0-9]+ 75\.0+ 1\.0+
+]
+"TransverseMercatorProj0" end time: May 05 09:47 CEST
+"TransverseMercatorProj0" time elapsed: 00:00:00
+----------------------------------------------------------
+
+51/53 Testing: TransverseMercatorProj1
+51/53 Test: TransverseMercatorProj1
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/TransverseMercatorProj" "-k" "1" "-r" "--input-string" "0 10001965.7293127228"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"TransverseMercatorProj1" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+90.00000000000 0.00000000000 0.000000000000 1.000000000000
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[(90\.0+ 0\.0+ 0\.0+|(90\.0+|89\.99999999999[0-9]+) -?180\.0+ -?180\.0+) (1\.0000+|0\.9999+)
+]
+"TransverseMercatorProj1" end time: May 05 09:47 CEST
+"TransverseMercatorProj1" time elapsed: 00:00:00
+----------------------------------------------------------
+
+52/53 Testing: RhumbSolve0
+52/53 Test: RhumbSolve0
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/RhumbSolve" "-p" "3" "-i" "--input-string" "0 0 90 0"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"RhumbSolve0" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+0.00000000 10001965.729 nan
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[^0\.0+ 10001965\.729 
+]
+"RhumbSolve0" end time: May 05 09:47 CEST
+"RhumbSolve0" time elapsed: 00:00:00
+----------------------------------------------------------
+
+53/53 Testing: RhumbSolve1
+53/53 Test: RhumbSolve1
+Command: "/Users/Maverick/Documents/GeographicLib-1.42/build/tools/RhumbSolve" "-p" "3" "-i" "--input-string" "0 0 90 0" "-s"
+Directory: /Users/Maverick/Documents/GeographicLib-1.42/build/tools
+"RhumbSolve1" start time: May 05 09:47 CEST
+Output:
+----------------------------------------------------------
+0.00000000 10001965.729 nan
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Pass Reason:
+Required regular expression found.Regex=[^0\.0+ 10001965\.729 
+]
+"RhumbSolve1" end time: May 05 09:47 CEST
+"RhumbSolve1" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: May 05 09:47 CEST
