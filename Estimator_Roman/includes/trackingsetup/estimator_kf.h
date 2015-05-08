@@ -1,5 +1,5 @@
 /*
- * forward_calc.h
+ * estimator_kf.h
  *
  *  Created on: Mar 31, 2015
  *      Author: thomas
@@ -12,10 +12,10 @@
 
 namespace tracking {
 
-class ForwardCalc: public TrackingEstimator {
+class EstimatorKF: public TrackingEstimator {
 public:
-	ForwardCalc();
-	virtual ~ForwardCalc();
+	EstimatorKF();
+	virtual ~EstimatorKF();
 
 	void updateEstimate();
 };

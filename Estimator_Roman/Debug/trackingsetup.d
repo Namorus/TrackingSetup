@@ -128,7 +128,7 @@ trackingsetup.d: ../trackingsetup.cpp \
   /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/find_north.h \
   /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/tracking_mode.h \
   /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/config.h \
-  /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/forward_calc.h \
+  /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/estimator_kf.h \
   /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/trackingEstimator.h \
   /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/gps_tracking.h \
   /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/gui_backend.h \
@@ -410,7 +410,7 @@ trackingsetup.d: ../trackingsetup.cpp \
 
 /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/config.h:
 
-/Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/forward_calc.h:
+/Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/estimator_kf.h:
 
 /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/trackingEstimator.h:
 

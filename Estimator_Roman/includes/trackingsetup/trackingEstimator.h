@@ -24,6 +24,9 @@ public:
 
 	void setNewRemoteGPos(GlobalPos& remoteGpos);
 
+	//-----------------------------------ROMAN--------Attitude
+	void setNewAttitude(Attitude& attitude);
+
 	void getGlobalPosEstimate(GPSPos& posEstimate);
 
 	void getLocalPosEstimate(LocalPos& posEstimate);
@@ -71,6 +74,10 @@ protected:
 	GPSPos antennaPos_;
 	GlobalPos targetGlobalPos_;
 	LocalPos targetPosLocal_;
+
+	//-----------------------------------------------ROMAN-------------------------------------Attitude
+	Attitude targetAttitude_;
+
 
 	GPSPos targetEstimatedPos_;
 	LocalPos targetEstimatedPosLocal_;

@@ -12,13 +12,12 @@
 
 #include <trackingsetup/trackingsetup.h>
 #include <trackingsetup/find_north.h>
-#include <trackingsetup/forward_calc.h>
+#include <trackingsetup/estimator_kf.h>
 #include <trackingsetup/gps_tracking.h>
 #include <trackingsetup/gui_backend.h>
 #include <trackingsetup/mavlink_mag.h>
 #include <trackingsetup/mavlink_radio_status.h>
 #include <trackingsetup/mavlink_gpos.h>
-#include <trackingsetup/mavlink_att.h> //--------------------------------------ROMAN
 #include <trackingsetup/mavlink_attitude.h>  //--------------------------------------ROMAN
 #include <trackingsetup/current_utc_time.h>  //--------------------------------------ROMAN
 
@@ -111,7 +110,7 @@ int main(int argc, char** argv) {
 	trackingLog.registerInstance(&localGps);
 
 	GPSPos localPosition;
-    localPosition = trackingConfig.GPS.AntennaPos;
+    localPosition = trackingConfig.GPS.AntennaPos; // Antenna Position
 
 	// MAVLink reader for remote MAVLink stream
     MavlinkReader remoteMavlinkReader(trackingConfig.GPS.remoteMavlinkVid,trackingConfig.GPS.remoteMavlinkPid,trackingConfig.GPS.remoteMavlinkInterface,trackingConfig.GPS.remoteMavlinkBaudrate,"3DR radio");
@@ -143,26 +142,20 @@ int main(int argc, char** argv) {
 
 	//--------------------------------------Roman--------------Attitude
 
-	// remote Att
-    MavlinkAtt remoteAtt(&remoteMavlinkMessages, "remoteAtt");
-	trackingLog.add(remoteAtt.getLog());
-	trackingLog.registerInstance(&remoteAtt);
-
-	Att remoteATT;
-
 	// remote Attitude
 	MavlinkAttitude remoteAttitude(&remoteMavlinkMessages);
-	trackingLog.add(remoteAttitude.getLog());
-	trackingLog.registerInstance(&remoteAttitude);
+	//trackingLog.add(remoteAttitude.getLog());
+	//trackingLog.registerInstance(&remoteAttitude);
 
 	// Attitude struct holding attiude (roll angle)
-	Attitude remoteAttitude_roll;
+	Attitude remoteAtt;
 
 
 	// Estimator holding estimate of tracked object in local coordinates
-	ForwardCalc remotePosEstimator;
+	EstimatorKF remotePosEstimator;
 	trackingLog.add(remotePosEstimator.getLog());
 	trackingLog.registerInstance(&remotePosEstimator);
+
 
 //	LocalPos estimatedRemotePosition;
 //	LocalPos estimatedRemoteVelocity;
@@ -318,15 +311,13 @@ int main(int argc, char** argv) {
 		remoteGps.getPos(&remotePosition);
 
 		// process remote GPOS
-		newTrackedPos = remoteGpos.getGpos(&remoteGlobalPosition); //wichtig!!
+		newTrackedPos = remoteGpos.getGpos(&remoteGlobalPosition);
 
 		//--------------------------------------Roman--------------Attitude
 
-		// process att
-		remoteAtt.getAtt(&remoteATT);
 
-		// process Attitude
-		newTrackedAtt = remoteAttitude.getAttitude(&remoteAttitude_roll);
+		// process attitude
+		newTrackedAtt = remoteAttitude.getAttitude(&remoteAtt);
 
 		// check whether local GPS fix is acquired
 		// once it is, calculate magnetic declination for current location
@@ -342,13 +333,20 @@ int main(int argc, char** argv) {
 		// cout << "Remote Position: " << remotePosition.toString() << endl;
 
 
-		// update estimator
+		// Estimator
 		if (newTrackedPos) {
 			remotePosEstimator.setNewRemoteGPos(remoteGlobalPosition);
 		}
+
+		//------------------------------ROMAN-----------------------------Attitude
+		if (newTrackedAtt) {
+			remotePosEstimator.setNewAttitude(remoteAtt);
+		}
+
 		if (newAntennaPos) {
 			remotePosEstimator.setAntennaPos(localPosition);
 		}
+
 		if (localGpsFixAcquired && remoteGlobalPosition.localTimestamp - (startTs.tv_sec*1e6 + startTs.tv_nsec*1e-3) < 10*1e6) { // keep estimator running for 10s after last GPOS message
 			remotePosEstimator.updateEstimate();
 			estimateUpdated = true;

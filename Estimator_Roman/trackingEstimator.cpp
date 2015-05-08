@@ -29,7 +29,12 @@ void TrackingEstimator::setNewRemoteGPos(GlobalPos& remoteGpos) {
 	antennaLocalCartesian_.Forward(remoteGpos.position.lat,remoteGpos.position.lon,remoteGpos.position.alt,targetPosLocal_.x,targetPosLocal_.y,targetPosLocal_.z);
 
 }
+//-----------------------------------------------ROMAN-------------------------------------Attitude
 
+void TrackingEstimator::setNewAttitude(Attitude& attitude) {
+	targetAttitude_ = attitude;
+
+}
 
 void TrackingEstimator::updateAntennaPos(GPSPos antennaPos) {
 	setAntennaPos(antennaPos);

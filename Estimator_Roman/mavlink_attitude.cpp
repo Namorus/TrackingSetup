@@ -12,24 +12,37 @@
 namespace tracking {
 
 MavlinkAttitude::MavlinkAttitude(MavlinkMessages* mavlinkMessages) :
-        mavlinkMessages_(mavlinkMessages), lastAttTimestamp_(0) {
+        mavlinkMessages_(mavlinkMessages), lastTimestamp_(0) {
 }
-
-bool MavlinkAttitude::getAtt(Att* att) {
-
-    if (mavlinkMessages_->lastAttitude > lastAttTimestamp_) {
-        att->roll = mavlinkMessages_->attitude.roll;
-        lastAttTimestamp_ = mavlinkMessages_->lastAttitude;
-		return true;
-	}
-	return false;
-}
-
 
 MavlinkAttitude::~MavlinkAttitude() {
 	// TODO Auto-generated destructor stub
 }
 
+bool MavlinkAttitude::getAttitude(Attitude* att) {
+
+    if (mavlinkMessages_->lastAttitude > lastTimestamp_) {
+        att->roll = mavlinkMessages_->attitude.roll;
+        att->pitch = mavlinkMessages_->attitude.pitch;
+        att->yaw = mavlinkMessages_->attitude.yaw;
+
+        att->rollrate = mavlinkMessages_->attitude.rollspeed;
+        att->pitchrate = mavlinkMessages_->attitude.pitchspeed;
+        att->yawrate = mavlinkMessages_->attitude.yawspeed;
+
+        att->timestamp = mavlinkMessages_->attitude.time_boot_ms;
+        lastTimestamp_ = mavlinkMessages_->lastAttitude; //???????
+
+    	timeval now;
+    	gettimeofday(&now,NULL);
+    	att->localTimestamp = now.tv_sec*1e6 + now.tv_usec;
+
+		return true;
+	}
+	return false;
+}
+
+/*
 bool MavlinkAttitude::getAttitude(Attitude* attitude) {
 	attitude->timestamp = mavlinkMessages_->attitude.time_boot_ms;
 
@@ -40,6 +53,8 @@ bool MavlinkAttitude::getAttitude(Attitude* attitude) {
 	bool result = getAtt(&attitude->attitude);
     return result;
 }
+*/
+
 
 } /* namespace tracking */
 

@@ -9,26 +9,21 @@
 #define MAVLINK_ATTITUDE_H_
 
 #include <trackingsetup/mavlink_reader.h>
-#include <trackingsetup/attitude_input.h>
 
 namespace tracking {
 
-class MavlinkAttitude: public AttitudeInput {
+class MavlinkAttitude {
 public:
     MavlinkAttitude(MavlinkMessages* mavlinkMessages);
-	bool getAtt(Att* att);
-	bool getAttitude(Attitude* attitude);
+	bool getAttitude(Attitude* att);
 
 	virtual ~MavlinkAttitude();
-
-	friend std::ostream& operator<<(std::ostream& out,
-			const MavlinkAttitude& mavlinkATT);
 
 private:
     MavlinkMessages* mavlinkMessages_;
 
-	uint64_t lastAttTimestamp_;
-
+	uint64_t lastTimestamp_;
+	//
 };
 
 } /* namespace tracking */

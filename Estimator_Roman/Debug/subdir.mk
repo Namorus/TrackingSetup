@@ -9,8 +9,8 @@ CPP_SRCS += \
 ../current_utc_time.cpp \
 ../epos.cpp \
 ../epos_comm.cpp \
+../estimator_kf.cpp \
 ../find_north.cpp \
-../forward_calc.cpp \
 ../gps_tracking.cpp \
 ../gui_backend.cpp \
 ../input.cpp \
@@ -36,8 +36,8 @@ OBJS += \
 ./current_utc_time.o \
 ./epos.o \
 ./epos_comm.o \
+./estimator_kf.o \
 ./find_north.o \
-./forward_calc.o \
 ./gps_tracking.o \
 ./gui_backend.o \
 ./input.o \
@@ -63,8 +63,8 @@ CPP_DEPS += \
 ./current_utc_time.d \
 ./epos.d \
 ./epos_comm.d \
+./estimator_kf.d \
 ./find_north.d \
-./forward_calc.d \
 ./gps_tracking.d \
 ./gui_backend.d \
 ./input.d \

@@ -1,5 +1,5 @@
-forward_calc.d: ../forward_calc.cpp \
-  /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/forward_calc.h \
+estimator_kf.d: ../estimator_kf.cpp \
+  /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/estimator_kf.h \
   /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/trackingEstimator.h \
   /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/trackingsetup.h \
   /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/types.h \
@@ -128,7 +128,7 @@ forward_calc.d: ../forward_calc.cpp \
   /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/mavlink/v1.0/common/./mavlink_msg_statustext.h \
   /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/mavlink/v1.0/common/./mavlink_msg_debug.h
 
-/Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/forward_calc.h:
+/Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/estimator_kf.h:
 
 /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/trackingEstimator.h:
 
