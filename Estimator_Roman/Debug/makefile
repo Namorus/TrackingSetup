@@ -46,7 +46,7 @@ all: TrackingSetup_Thomas
 TrackingSetup_Thomas: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross G++ Linker'
-	g++  -o "TrackingSetup_Thomas" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L/Users/Maverick/Documents/workspace/Libraries/armadillo -o "TrackingSetup_Thomas" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

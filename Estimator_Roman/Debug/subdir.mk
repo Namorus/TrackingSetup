@@ -4,7 +4,6 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../attitude_input.cpp \
 ../config.cpp \
 ../current_utc_time.cpp \
 ../epos.cpp \
@@ -15,7 +14,6 @@ CPP_SRCS += \
 ../gui_backend.cpp \
 ../input.cpp \
 ../logger.cpp \
-../mavlink_att.cpp \
 ../mavlink_attitude.cpp \
 ../mavlink_gpos.cpp \
 ../mavlink_gps.cpp \
@@ -31,7 +29,6 @@ CPP_SRCS += \
 ../trackingsetup.cpp 
 
 OBJS += \
-./attitude_input.o \
 ./config.o \
 ./current_utc_time.o \
 ./epos.o \
@@ -42,7 +39,6 @@ OBJS += \
 ./gui_backend.o \
 ./input.o \
 ./logger.o \
-./mavlink_att.o \
 ./mavlink_attitude.o \
 ./mavlink_gpos.o \
 ./mavlink_gps.o \
@@ -58,7 +54,6 @@ OBJS += \
 ./trackingsetup.o 
 
 CPP_DEPS += \
-./attitude_input.d \
 ./config.d \
 ./current_utc_time.d \
 ./epos.d \
@@ -69,7 +64,6 @@ CPP_DEPS += \
 ./gui_backend.d \
 ./input.d \
 ./logger.d \
-./mavlink_att.d \
 ./mavlink_attitude.d \
 ./mavlink_gpos.d \
 ./mavlink_gps.d \
@@ -89,7 +83,7 @@ CPP_DEPS += \
 %.o: ../%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: Cross G++ Compiler'
-	g++ -I"/Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/mavlink/v1.0" -I"/Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes" -I/Users/Maverick/Documents/workspace/Libraries/libftdi1-1.2/src -I/Users/Maverick/Documents/workspace/Libraries/libftdi1-1.2/ftdipp -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	g++ -I"/Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/mavlink/v1.0" -I"/Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes" -I/Users/Maverick/Documents/workspace/Libraries/libftdi1-1.2/src -I/Users/Maverick/Documents/workspace/Libraries/libftdi1-1.2/ftdipp -I/Users/Maverick/Documents/workspace/Libraries/armadillo/include/armadillo_bits -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

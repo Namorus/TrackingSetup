@@ -147,8 +147,6 @@ trackingsetup.d: ../trackingsetup.cpp \
   /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/mavlink_mag.h \
   /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/mavlink_radio_status.h \
   /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/mavlink_gpos.h \
-  /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/mavlink_att.h \
-  /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/attitude_input.h \
   /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/mavlink_attitude.h \
   /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/current_utc_time.h
 
@@ -447,10 +445,6 @@ trackingsetup.d: ../trackingsetup.cpp \
 /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/mavlink_radio_status.h:
 
 /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/mavlink_gpos.h:
-
-/Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/mavlink_att.h:
-
-/Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/attitude_input.h:
 
 /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/mavlink_attitude.h:
 

@@ -129,8 +129,7 @@ mavlink_attitude.d: ../mavlink_attitude.cpp \
   /Users/Maverick/Documents/workspace/Libraries/libftdi1-1.2/src/ftdi.h \
   /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/input.h \
   /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/trackingsetup.h \
-  /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/types.h \
-  /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/attitude_input.h
+  /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/types.h
 
 /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/mavlink_attitude.h:
 
@@ -393,5 +392,3 @@ mavlink_attitude.d: ../mavlink_attitude.cpp \
 /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/trackingsetup.h:
 
 /Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/types.h:
-
-/Users/Maverick/Documents/workspace/TrackingSetup_Thomas/includes/trackingsetup/attitude_input.h:

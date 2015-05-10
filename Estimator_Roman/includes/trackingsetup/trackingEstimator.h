@@ -20,7 +20,9 @@ public:
 	TrackingEstimator();
 	virtual ~TrackingEstimator();
 
-	void virtual updateEstimate() = 0;
+	//void virtual KFupdateEstimate() = 0;
+
+	// void virtual KFpredictEstimate() = 0; //---------ROMAN
 
 	void setNewRemoteGPos(GlobalPos& remoteGpos);
 
@@ -77,7 +79,6 @@ protected:
 
 	//-----------------------------------------------ROMAN-------------------------------------Attitude
 	Attitude targetAttitude_;
-
 
 	GPSPos targetEstimatedPos_;
 	LocalPos targetEstimatedPosLocal_;

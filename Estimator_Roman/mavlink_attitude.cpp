@@ -31,29 +31,15 @@ bool MavlinkAttitude::getAttitude(Attitude* att) {
         att->yawrate = mavlinkMessages_->attitude.yawspeed;
 
         att->timestamp = mavlinkMessages_->attitude.time_boot_ms;
-        lastTimestamp_ = mavlinkMessages_->lastAttitude; //???????
 
-    	timeval now;
-    	gettimeofday(&now,NULL);
-    	att->localTimestamp = now.tv_sec*1e6 + now.tv_usec;
+        // handle timestamps
+        lastTimestamp_ = mavlinkMessages_->lastAttitude;		//needed to check if new message is available
+        att->localTimestamp = mavlinkMessages_->lastAttitude;	//save lacalTimestamp (when message has been received by antenna)
 
 		return true;
 	}
 	return false;
 }
-
-/*
-bool MavlinkAttitude::getAttitude(Attitude* attitude) {
-	attitude->timestamp = mavlinkMessages_->attitude.time_boot_ms;
-
-	timeval now;
-	gettimeofday(&now,NULL);
-	attitude->localTimestamp = now.tv_sec*1e6 + now.tv_usec;
-
-	bool result = getAtt(&attitude->attitude);
-    return result;
-}
-*/
 
 
 } /* namespace tracking */

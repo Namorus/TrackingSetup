@@ -142,16 +142,6 @@ struct GPStrackingConf {
 	int remoteMavlinkVid, remoteMavlinkPid, remoteMavlinkInterface, remoteMavlinkBaudrate;
 };
 
-//--------------------------------------Roman--------------Attitude
-
-struct Att {
-	double roll;
-
-	Att() :
-			roll(0){
-	}
-};
-
 struct MotorControlConf {
 	friend bool operator==(const MotorControlConf& a,
 			const MotorControlConf& b);
@@ -404,8 +394,8 @@ struct GlobalPos {
 	GPSPos position;
 	GPSPos velocity;
 
-	uint32_t timestamp;
-	uint64_t localTimestamp;
+	uint32_t timestamp;			// px4 time
+	uint64_t localTimestamp;	// time message is received and saved at antenna
 };
 
 //--------------------------------------Roman--------------Attitude
@@ -429,8 +419,8 @@ struct Attitude {
 	float pitchrate;
 	float yawrate;
 
-	uint32_t timestamp;
-	uint64_t localTimestamp;
+	uint32_t timestamp;   		// px4 time
+	uint64_t localTimestamp;	// time message is received and saved at antenna
 	};
 
 }

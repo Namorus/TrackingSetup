@@ -38,7 +38,8 @@ void TrackingEstimator::setNewAttitude(Attitude& attitude) {
 
 void TrackingEstimator::updateAntennaPos(GPSPos antennaPos) {
 	setAntennaPos(antennaPos);
-	updateEstimate();
+	//updateEstimate();
+	//KFupdateEstimate();
 }
 
 double TrackingEstimator::getDistance() {
