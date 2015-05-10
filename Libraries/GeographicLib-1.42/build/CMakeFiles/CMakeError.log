@@ -1,0 +1,472 @@
+Determining if the system is big endian passed with the following output:
+Change Dir: /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec3942310193/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTryCompileExec3942310193.dir/build.make CMakeFiles/cmTryCompileExec3942310193.dir/build
+/usr/local/bin/cmake -E cmake_progress_report /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec3942310193.dir/TestEndianess.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc    -o CMakeFiles/cmTryCompileExec3942310193.dir/TestEndianess.c.o   -c /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/TestEndianess.c
+Linking C executable cmTryCompileExec3942310193
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3942310193.dir/link.txt --verbose=1
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc    -Wl,-search_paths_first -Wl,-headerpad_max_install_names   CMakeFiles/cmTryCompileExec3942310193.dir/TestEndianess.c.o  -o cmTryCompileExec3942310193  
+
+TestEndianess.c:
+/* A 16 bit integer is required. */
+typedef unsigned short cmakeint16;
+
+/* On a little endian machine, these 16bit ints will give "THIS IS LITTLE ENDIAN."
+   On a big endian machine the characters will be exchanged pairwise. */
+const cmakeint16 info_little[] =  {0x4854, 0x5349, 0x4920, 0x2053, 0x494c, 0x5454, 0x454c, 0x4520, 0x444e, 0x4149, 0x2e4e, 0x0000};
+
+/* on a big endian machine, these 16bit ints will give "THIS IS BIG ENDIAN."
+   On a little endian machine the characters will be exchanged pairwise. */
+const cmakeint16 info_big[] =     {0x5448, 0x4953, 0x2049, 0x5320, 0x4249, 0x4720, 0x454e, 0x4449, 0x414e, 0x2e2e, 0x0000};
+
+#ifdef __CLASSIC_C__
+int main(argc, argv) int argc; char *argv[];
+#else
+int main(int argc, char *argv[])
+#endif
+{
+  int require = 0;
+  require += info_little[argc];
+  require += info_big[argc];
+  (void)argv;
+  return require;
+}
+
+
+Performing C SOURCE FILE Test OpenMP_FLAG_DETECTED failed with the following output:
+Change Dir: /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec4249708957/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTryCompileExec4249708957.dir/build.make CMakeFiles/cmTryCompileExec4249708957.dir/build
+/usr/local/bin/cmake -E cmake_progress_report /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec4249708957.dir/src.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -DOpenMP_FLAG_DETECTED -arch i386 -arch x86_64   -o CMakeFiles/cmTryCompileExec4249708957.dir/src.c.o   -c /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.c
+/Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.c:2:10: fatal error: 'omp.h' file not found
+#include <omp.h>
+         ^
+1 error generated.
+make[1]: *** [CMakeFiles/cmTryCompileExec4249708957.dir/src.c.o] Error 1
+make: *** [cmTryCompileExec4249708957/fast] Error 2
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+
+Performing C SOURCE FILE Test OpenMP_FLAG_DETECTED failed with the following output:
+Change Dir: /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec3918972914/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTryCompileExec3918972914.dir/build.make CMakeFiles/cmTryCompileExec3918972914.dir/build
+/usr/local/bin/cmake -E cmake_progress_report /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec3918972914.dir/src.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -DOpenMP_FLAG_DETECTED -fopenmp -arch i386 -arch x86_64   -o CMakeFiles/cmTryCompileExec3918972914.dir/src.c.o   -c /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.c
+/Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.c:2:10: fatal error: 'omp.h' file not found
+#include <omp.h>
+         ^
+1 error generated.
+make[1]: *** [CMakeFiles/cmTryCompileExec3918972914.dir/src.c.o] Error 1
+make: *** [cmTryCompileExec3918972914/fast] Error 2
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+
+Performing C SOURCE FILE Test OpenMP_FLAG_DETECTED failed with the following output:
+Change Dir: /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec2672891785/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTryCompileExec2672891785.dir/build.make CMakeFiles/cmTryCompileExec2672891785.dir/build
+/usr/local/bin/cmake -E cmake_progress_report /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec2672891785.dir/src.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -DOpenMP_FLAG_DETECTED /openmp -arch i386 -arch x86_64   -o CMakeFiles/cmTryCompileExec2672891785.dir/src.c.o   -c /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.c
+clang: error: no such file or directory: '/openmp'
+make[1]: *** [CMakeFiles/cmTryCompileExec2672891785.dir/src.c.o] Error 1
+make: *** [cmTryCompileExec2672891785/fast] Error 2
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+
+Performing C SOURCE FILE Test OpenMP_FLAG_DETECTED failed with the following output:
+Change Dir: /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec2005794371/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTryCompileExec2005794371.dir/build.make CMakeFiles/cmTryCompileExec2005794371.dir/build
+/usr/local/bin/cmake -E cmake_progress_report /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec2005794371.dir/src.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -DOpenMP_FLAG_DETECTED -Qopenmp -arch i386 -arch x86_64   -o CMakeFiles/cmTryCompileExec2005794371.dir/src.c.o   -c /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.c
+clang: error: unknown argument: '-Qopenmp'
+make[1]: *** [CMakeFiles/cmTryCompileExec2005794371.dir/src.c.o] Error 1
+make: *** [cmTryCompileExec2005794371/fast] Error 2
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+
+Performing C SOURCE FILE Test OpenMP_FLAG_DETECTED failed with the following output:
+Change Dir: /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec2017901180/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTryCompileExec2017901180.dir/build.make CMakeFiles/cmTryCompileExec2017901180.dir/build
+/usr/local/bin/cmake -E cmake_progress_report /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec2017901180.dir/src.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -DOpenMP_FLAG_DETECTED -openmp -arch i386 -arch x86_64   -o CMakeFiles/cmTryCompileExec2017901180.dir/src.c.o   -c /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.c
+/Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.c:2:10: fatal error: 'omp.h' file not found
+#include <omp.h>
+         ^
+1 error generated.
+make[1]: *** [CMakeFiles/cmTryCompileExec2017901180.dir/src.c.o] Error 1
+make: *** [cmTryCompileExec2017901180/fast] Error 2
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+
+Performing C SOURCE FILE Test OpenMP_FLAG_DETECTED failed with the following output:
+Change Dir: /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec3498576732/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTryCompileExec3498576732.dir/build.make CMakeFiles/cmTryCompileExec3498576732.dir/build
+/usr/local/bin/cmake -E cmake_progress_report /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec3498576732.dir/src.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -DOpenMP_FLAG_DETECTED -xopenmp -arch i386 -arch x86_64   -o CMakeFiles/cmTryCompileExec3498576732.dir/src.c.o   -c /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.c
+clang: error: language not recognized: 'openmp'
+clang: warning: /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.c: 'linker' input unused
+make[1]: *** [CMakeFiles/cmTryCompileExec3498576732.dir/src.c.o] Error 1
+make: *** [cmTryCompileExec3498576732/fast] Error 2
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+
+Performing C SOURCE FILE Test OpenMP_FLAG_DETECTED failed with the following output:
+Change Dir: /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec173554230/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTryCompileExec173554230.dir/build.make CMakeFiles/cmTryCompileExec173554230.dir/build
+/usr/local/bin/cmake -E cmake_progress_report /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec173554230.dir/src.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -DOpenMP_FLAG_DETECTED +Oopenmp -arch i386 -arch x86_64   -o CMakeFiles/cmTryCompileExec173554230.dir/src.c.o   -c /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.c
+clang: error: no such file or directory: '+Oopenmp'
+make[1]: *** [CMakeFiles/cmTryCompileExec173554230.dir/src.c.o] Error 1
+make: *** [cmTryCompileExec173554230/fast] Error 2
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+
+Performing C SOURCE FILE Test OpenMP_FLAG_DETECTED failed with the following output:
+Change Dir: /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec2067087954/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTryCompileExec2067087954.dir/build.make CMakeFiles/cmTryCompileExec2067087954.dir/build
+/usr/local/bin/cmake -E cmake_progress_report /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec2067087954.dir/src.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -DOpenMP_FLAG_DETECTED -qsmp -arch i386 -arch x86_64   -o CMakeFiles/cmTryCompileExec2067087954.dir/src.c.o   -c /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.c
+clang: error: unknown argument: '-qsmp'
+make[1]: *** [CMakeFiles/cmTryCompileExec2067087954.dir/src.c.o] Error 1
+make: *** [cmTryCompileExec2067087954/fast] Error 2
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+
+Performing C SOURCE FILE Test OpenMP_FLAG_DETECTED failed with the following output:
+Change Dir: /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec420224246/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTryCompileExec420224246.dir/build.make CMakeFiles/cmTryCompileExec420224246.dir/build
+/usr/local/bin/cmake -E cmake_progress_report /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec420224246.dir/src.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc   -DOpenMP_FLAG_DETECTED -mp -arch i386 -arch x86_64   -o CMakeFiles/cmTryCompileExec420224246.dir/src.c.o   -c /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.c
+clang: error: unknown argument: '-mp'
+make[1]: *** [CMakeFiles/cmTryCompileExec420224246.dir/src.c.o] Error 1
+make: *** [cmTryCompileExec420224246/fast] Error 2
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+
+Performing C++ SOURCE FILE Test OpenMP_FLAG_DETECTED failed with the following output:
+Change Dir: /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec1463209964/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTryCompileExec1463209964.dir/build.make CMakeFiles/cmTryCompileExec1463209964.dir/build
+/usr/local/bin/cmake -E cmake_progress_report /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec1463209964.dir/src.cxx.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -Wall -Wextra -std=c++11 -DOpenMP_FLAG_DETECTED -arch i386 -arch x86_64   -o CMakeFiles/cmTryCompileExec1463209964.dir/src.cxx.o -c /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.cxx
+/Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.cxx:2:10: fatal error: 'omp.h' file not found
+#include <omp.h>
+         ^
+1 error generated.
+make[1]: *** [CMakeFiles/cmTryCompileExec1463209964.dir/src.cxx.o] Error 1
+make: *** [cmTryCompileExec1463209964/fast] Error 2
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+
+Performing C++ SOURCE FILE Test OpenMP_FLAG_DETECTED failed with the following output:
+Change Dir: /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec2743439553/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTryCompileExec2743439553.dir/build.make CMakeFiles/cmTryCompileExec2743439553.dir/build
+/usr/local/bin/cmake -E cmake_progress_report /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec2743439553.dir/src.cxx.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -Wall -Wextra -std=c++11 -DOpenMP_FLAG_DETECTED -fopenmp -arch i386 -arch x86_64   -o CMakeFiles/cmTryCompileExec2743439553.dir/src.cxx.o -c /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.cxx
+/Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.cxx:2:10: fatal error: 'omp.h' file not found
+#include <omp.h>
+         ^
+1 error generated.
+make[1]: *** [CMakeFiles/cmTryCompileExec2743439553.dir/src.cxx.o] Error 1
+make: *** [cmTryCompileExec2743439553/fast] Error 2
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+
+Performing C++ SOURCE FILE Test OpenMP_FLAG_DETECTED failed with the following output:
+Change Dir: /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec3886189678/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTryCompileExec3886189678.dir/build.make CMakeFiles/cmTryCompileExec3886189678.dir/build
+/usr/local/bin/cmake -E cmake_progress_report /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec3886189678.dir/src.cxx.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -Wall -Wextra -std=c++11 -DOpenMP_FLAG_DETECTED /openmp -arch i386 -arch x86_64   -o CMakeFiles/cmTryCompileExec3886189678.dir/src.cxx.o -c /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.cxx
+clang: error: no such file or directory: '/openmp'
+make[1]: *** [CMakeFiles/cmTryCompileExec3886189678.dir/src.cxx.o] Error 1
+make: *** [cmTryCompileExec3886189678/fast] Error 2
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+
+Performing C++ SOURCE FILE Test OpenMP_FLAG_DETECTED failed with the following output:
+Change Dir: /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec834519195/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTryCompileExec834519195.dir/build.make CMakeFiles/cmTryCompileExec834519195.dir/build
+/usr/local/bin/cmake -E cmake_progress_report /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec834519195.dir/src.cxx.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -Wall -Wextra -std=c++11 -DOpenMP_FLAG_DETECTED -Qopenmp -arch i386 -arch x86_64   -o CMakeFiles/cmTryCompileExec834519195.dir/src.cxx.o -c /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.cxx
+clang: error: unknown argument: '-Qopenmp'
+make[1]: *** [CMakeFiles/cmTryCompileExec834519195.dir/src.cxx.o] Error 1
+make: *** [cmTryCompileExec834519195/fast] Error 2
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+
+Performing C++ SOURCE FILE Test OpenMP_FLAG_DETECTED failed with the following output:
+Change Dir: /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec228645965/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTryCompileExec228645965.dir/build.make CMakeFiles/cmTryCompileExec228645965.dir/build
+/usr/local/bin/cmake -E cmake_progress_report /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec228645965.dir/src.cxx.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -Wall -Wextra -std=c++11 -DOpenMP_FLAG_DETECTED -openmp -arch i386 -arch x86_64   -o CMakeFiles/cmTryCompileExec228645965.dir/src.cxx.o -c /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.cxx
+/Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.cxx:2:10: fatal error: 'omp.h' file not found
+#include <omp.h>
+         ^
+1 error generated.
+make[1]: *** [CMakeFiles/cmTryCompileExec228645965.dir/src.cxx.o] Error 1
+make: *** [cmTryCompileExec228645965/fast] Error 2
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+
+Performing C++ SOURCE FILE Test OpenMP_FLAG_DETECTED failed with the following output:
+Change Dir: /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec834711476/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTryCompileExec834711476.dir/build.make CMakeFiles/cmTryCompileExec834711476.dir/build
+/usr/local/bin/cmake -E cmake_progress_report /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec834711476.dir/src.cxx.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -Wall -Wextra -std=c++11 -DOpenMP_FLAG_DETECTED -xopenmp -arch i386 -arch x86_64   -o CMakeFiles/cmTryCompileExec834711476.dir/src.cxx.o -c /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.cxx
+clang: error: language not recognized: 'openmp'
+clang: warning: /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.cxx: 'linker' input unused
+make[1]: *** [CMakeFiles/cmTryCompileExec834711476.dir/src.cxx.o] Error 1
+make: *** [cmTryCompileExec834711476/fast] Error 2
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+
+Performing C++ SOURCE FILE Test OpenMP_FLAG_DETECTED failed with the following output:
+Change Dir: /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec3789801229/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTryCompileExec3789801229.dir/build.make CMakeFiles/cmTryCompileExec3789801229.dir/build
+/usr/local/bin/cmake -E cmake_progress_report /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec3789801229.dir/src.cxx.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -Wall -Wextra -std=c++11 -DOpenMP_FLAG_DETECTED +Oopenmp -arch i386 -arch x86_64   -o CMakeFiles/cmTryCompileExec3789801229.dir/src.cxx.o -c /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.cxx
+clang: error: no such file or directory: '+Oopenmp'
+make[1]: *** [CMakeFiles/cmTryCompileExec3789801229.dir/src.cxx.o] Error 1
+make: *** [cmTryCompileExec3789801229/fast] Error 2
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+
+Performing C++ SOURCE FILE Test OpenMP_FLAG_DETECTED failed with the following output:
+Change Dir: /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec588051322/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTryCompileExec588051322.dir/build.make CMakeFiles/cmTryCompileExec588051322.dir/build
+/usr/local/bin/cmake -E cmake_progress_report /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec588051322.dir/src.cxx.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -Wall -Wextra -std=c++11 -DOpenMP_FLAG_DETECTED -qsmp -arch i386 -arch x86_64   -o CMakeFiles/cmTryCompileExec588051322.dir/src.cxx.o -c /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.cxx
+clang: error: unknown argument: '-qsmp'
+make[1]: *** [CMakeFiles/cmTryCompileExec588051322.dir/src.cxx.o] Error 1
+make: *** [cmTryCompileExec588051322/fast] Error 2
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+
+Performing C++ SOURCE FILE Test OpenMP_FLAG_DETECTED failed with the following output:
+Change Dir: /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTryCompileExec878447397/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTryCompileExec878447397.dir/build.make CMakeFiles/cmTryCompileExec878447397.dir/build
+/usr/local/bin/cmake -E cmake_progress_report /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec878447397.dir/src.cxx.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -Wall -Wextra -std=c++11 -DOpenMP_FLAG_DETECTED -mp -arch i386 -arch x86_64   -o CMakeFiles/cmTryCompileExec878447397.dir/src.cxx.o -c /Users/Maverick/Documents/GeographicLib-1.42/build/CMakeFiles/CMakeTmp/src.cxx
+clang: error: unknown argument: '-mp'
+make[1]: *** [CMakeFiles/cmTryCompileExec878447397.dir/src.cxx.o] Error 1
+make: *** [cmTryCompileExec878447397/fast] Error 2
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+
