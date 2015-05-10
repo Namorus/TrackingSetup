@@ -56,7 +56,7 @@ bool MavlinkGpos::getGpos(GlobalPos* gpos) {
 
 	timeval now;
 	gettimeofday(&now,NULL);
-	gpos->localTimestamp = now.tv_sec*1e6 + now.tv_usec;
+	gpos->localTimestamp = mavlinkMessages_->lastGlobalPosition; //now.tv_sec*1e6 + now.tv_usec;
 
 	bool result = getPos(&gpos->position);
     result &= getVel(&gpos->velocity);

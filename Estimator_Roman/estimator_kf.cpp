@@ -219,6 +219,10 @@ void EstimatorKF::KFupdateEstimate() { // updates latest position estimate by ne
 
 void EstimatorKF::KF_pos_attitude(){	// case new position & attitude available
 
+	static struct timeval current_time;
+	gettimeofday(&current_time, NULL);
+	KFcurrentTimestamp = current_time.tv_sec*1000000 + current_time.tv_usec;
+
 	// set new inputs
 	GPS_pos_vel << targetPosLocal_.y << endr
 			<< targetGlobalPos_.velocity.lat << endr
@@ -307,6 +311,10 @@ void EstimatorKF::KF_pos_attitude(){	// case new position & attitude available
 
 void EstimatorKF::KF_pos(){	// case ONLY new position available
 
+	static struct timeval current_time;
+	gettimeofday(&current_time, NULL);
+	KFcurrentTimestamp = current_time.tv_sec*1000000 + current_time.tv_usec;
+
 	// set new inputs
 	GPS_pos_vel << targetPosLocal_.y << endr
 			<< targetGlobalPos_.velocity.lat << endr
@@ -338,6 +346,11 @@ void EstimatorKF::KF_pos(){	// case ONLY new position available
 
 void EstimatorKF::KF_attitude(){	// case ONLY new attitude available
 
+	static struct timeval current_time;
+	gettimeofday(&current_time, NULL);
+	KFcurrentTimestamp = current_time.tv_sec*1000000 + current_time.tv_usec;
+
+
 	// set new inputs
 	phi_current=targetAttitude_.roll;
 
@@ -360,6 +373,11 @@ void EstimatorKF::KF_attitude(){	// case ONLY new attitude available
 }
 
 void EstimatorKF::KF_NoNewInformation(){	// case NO new information available
+
+	static struct timeval current_time;
+	gettimeofday(&current_time, NULL);
+	KFcurrentTimestamp = current_time.tv_sec*1000000 + current_time.tv_usec;
+
 	dt = KFcurrentTimestamp - KFlastTimestamp; // calculate dt
 	KFphi=phi_old;
 
