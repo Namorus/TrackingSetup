@@ -21,11 +21,11 @@ private:
 	//parameters of member function
 
 	//constant values
-	const double gravity; 		// gravity constant
-	const double var_phi;		// variance of roll angle phi
-	const double r_a;			// measurement covariance parameter (position)
-	const double r_b;			// measurement covariance parameter (velocity)
-	const double q;				// initial auxiliary process covariance parameter
+	double gravity; 		// gravity constant
+	double var_phi;			// variance of roll angle phi
+	double r_a;				// measurement covariance parameter (position)
+	double r_b;				// measurement covariance parameter (velocity)
+	double q;				// initial auxiliary process covariance parameter
 
 	// variable values
 	arma::vec xhat; 			// state declaration
@@ -40,62 +40,27 @@ private:
 	uint64_t KFcurrentTimestamp;// current Kalman Filter time of execution
 	uint64_t KFlastTimestamp;	// last Kalman Filter time of execution
 
-	// 3 time differences (new position & new attitude), 2 time differences (only new position or new attitude), 1 time difference (no new information)
 	double dt;
-	//double dt2;
-	//double dt1;
+
 public:
 
-	EstimatorKF() { 								//constructor: initialize parameters at first call of class
+	bool newAttitude;			// check if new attitude available
+	bool newPosition;			// check if new position available
 
-		//constant values
-		gravity = 9.81;
-		var_phi = pow(0.4*M_PI/ 180.0,2);
-		r_a = pow(0.8,2);
-		r_b = pow(0.5,2);
-		q = 0.025;
 
-		// variable values
-		xhat 	<< targetPosLocal_.y << endr
-				<< targetGlobalPos_.velocity.lat << endr
-				<< targetPosLocal_.x << endr
-				<< targetGlobalPos_.velocity.lon << endr
-				<< targetPosLocal_.z << endr
-				<< targetGlobalPos_.velocity.alt << endr;
-
-		GPS_pos_vel << targetPosLocal_.y << endr
-				<< targetGlobalPos_.velocity.lat << endr
-				<< targetPosLocal_.x << endr
-				<< targetGlobalPos_.velocity.lon << endr
-				<< targetPosLocal_.z << endr
-				<< targetGlobalPos_.velocity.alt << endr;
-
-		P 	<< r_a << 0 << 0 << 0 << 0 << 0 << endr
-			<< 0 << r_b << 0 << 0 << 0 << 0 << endr
-			<< 0 << 0 << r_a << 0 << 0 << 0 << endr
-			<< 0 << 0 << 0 << r_b << 0 << 0 << endr
-			<< 0 << 0 << 0 << 0 << r_a << 0 << endr
-			<< 0 << 0 << 0 << 0 << 0 << r_b << endr;
-
-		KFphi=0;
-		phi_current = targetAttitude_.roll;
-		phi_old = targetAttitude_.roll;
-		//old_v_air=;
-		KFcurrentTimestamp = 0;	// current Kalman Filter time of execution
-		KFlastTimestamp = 0;	// last Kalman Filter time of execution
-		dt=0;
-
-	}
+	EstimatorKF();
 	virtual ~EstimatorKF(); 	//(virtual?) destructor
 
 
-	void KFpredictEstimate();	// KF predict
-	void KFupdateEstimate();	// KF update
+	void KF_PredictEstimate();	// KF predict
+	void KF_UpdateEstimate();	// KF update
 
-	void KF_pos_attitude();		// case new position & attitude available
-	void KF_pos();				// case ONLY new position available
-	void KF_attitude();			// case ONLY new attitude available
+	void KF_Pos_Attitude();		// case new position & attitude available
+	void KF_Pos();				// case ONLY new position available
+	void KF_Attitude();			// case ONLY new attitude available
 	void KF_NoNewInformation();	// case NO new information available
+	void getEstimate(GlobalPos *remoteGlobalPosition, Attitude *remoteAtt);			// high level function to handle member functions and timestamps
+
 };
 
 } /* namespace tracking */

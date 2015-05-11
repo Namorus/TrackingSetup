@@ -20,9 +20,7 @@ public:
 	TrackingEstimator();
 	virtual ~TrackingEstimator();
 
-	//void virtual KFupdateEstimate() = 0;
-
-	// void virtual KFpredictEstimate() = 0; //---------ROMAN
+	//void virtual updateEstimate();
 
 	void setNewRemoteGPos(GlobalPos& remoteGpos);
 

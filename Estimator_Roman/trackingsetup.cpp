@@ -337,7 +337,9 @@ int main(int argc, char** argv) {
 
 		// cout << "Remote Position: " << remotePosition.toString() << endl;
 
-		// Start-Estimator ------------------------------------------------ ROMAN -------------------------------------
+
+		/* Start-Estimator ------------------------------------------------ ROMAN -------------------------------------
+
 		if (newTrackedPos) {
 			remotePosEstimator.setNewRemoteGPos(remoteGlobalPosition); // new position available
 			if (newTrackedAtt) {
@@ -364,14 +366,21 @@ int main(int argc, char** argv) {
 		if (newAntennaPos) {				// new antenna position available
 			remotePosEstimator.setAntennaPos(localPosition);
 		}
-		// End-Estimator ------------------------------------------------ ROMAN -------------------------------------
 
-		if (localGpsFixAcquired
+		//estimateUpdated = true;
+		//End-Estimator ------------------------------------------------ ROMAN -------------------------------------
+*/
+
+		remotePosEstimator.newPosition = localGpsFixAcquired; //newTrackedPos;
+		remotePosEstimator.newAttitude = newTrackedAtt;
+
+		if ((localGpsFixAcquired || newTrackedAtt)
 				&& remoteGlobalPosition.localTimestamp
 						- (startTs.tv_sec * 1e6 + startTs.tv_nsec * 1e-3)
 						< 10 * 1e6) { // keep estimator running for 10s after last GPOS message
-			remotePosEstimator.updateEstimate(); // ONLY PREDICT????
-			// TODO add only predict
+
+			remotePosEstimator.getEstimate(&remoteGlobalPosition, &remoteAtt);
+
 			estimateUpdated = true;
 //			trackingLog.log(vl_DEBUG,"Estimator update done.");
 //			printf("azimuth angle: %f deg, elevation angle: %f deg \n",remotePosEstimator.getAzimuth(),remotePosEstimator.getElevation());

@@ -12,19 +12,55 @@ using namespace arma;
 
 namespace tracking {
 
-/*
-EstimatorKF::EstimatorKF() {
-	// TODO Auto-generated constructor stub
+EstimatorKF::EstimatorKF() { 								//constructor: initialize parameters at first call of class
 
-}
+		//constant values
+		gravity = 9.81;
+		var_phi = pow(0.4*M_PI/ 180.0,2);
+		r_a = pow(0.8,2);
+		r_b = pow(0.5,2);
+		q = 0.025;
+
+		// variable values
+		xhat 	<< targetPosLocal_.y << endr
+				<< targetGlobalPos_.velocity.lat << endr
+				<< targetPosLocal_.x << endr
+				<< targetGlobalPos_.velocity.lon << endr
+				<< targetPosLocal_.z << endr
+				<< targetGlobalPos_.velocity.alt << endr;
+
+		GPS_pos_vel << targetPosLocal_.y << endr
+				<< targetGlobalPos_.velocity.lat << endr
+				<< targetPosLocal_.x << endr
+				<< targetGlobalPos_.velocity.lon << endr
+				<< targetPosLocal_.z << endr
+				<< targetGlobalPos_.velocity.alt << endr;
+
+		P 	<< r_a << 0 << 0 << 0 << 0 << 0 << endr
+			<< 0 << r_b << 0 << 0 << 0 << 0 << endr
+			<< 0 << 0 << r_a << 0 << 0 << 0 << endr
+			<< 0 << 0 << 0 << r_b << 0 << 0 << endr
+			<< 0 << 0 << 0 << 0 << r_a << 0 << endr
+			<< 0 << 0 << 0 << 0 << 0 << r_b << endr;
+
+		KFphi=0;
+		phi_current = targetAttitude_.roll;
+		phi_old = targetAttitude_.roll;
+		//old_v_air=;
+		KFcurrentTimestamp = 0;	// current Kalman Filter time of execution
+		KFlastTimestamp = 0;	// last Kalman Filter time of execution
+		dt=0;
+
+		newAttitude = false;
+		newPosition = false;
+
+	}
 
 EstimatorKF::~EstimatorKF() {
 	// TODO Auto-generated destructor stub
 }
-*/
 
-
-void EstimatorKF::KFpredictEstimate() { // predicts position and velocity from given data (old velocity, old position, old roll-angle,...)
+void EstimatorKF::KF_PredictEstimate() { // predicts position and velocity from given data (old velocity, old position, old roll-angle,...)
 
 // 0.1 calculation of turn rate omega ----------------------------------------------
 	double v_total2 = pow(xhat(1),2) + pow(xhat(3),2) + pow(xhat(5),2); //calculate total velocity^2
@@ -155,7 +191,7 @@ void EstimatorKF::KFpredictEstimate() { // predicts position and velocity from g
 
 }
 
-void EstimatorKF::KFupdateEstimate() { // updates latest position estimate by new ground position, velocity
+void EstimatorKF::KF_UpdateEstimate() { // updates latest position estimate by new ground position, velocity
 
 // 1. Calculate R and H -----------------------------------------------------------
 
@@ -192,36 +228,13 @@ void EstimatorKF::KFupdateEstimate() { // updates latest position estimate by ne
 
 	P = (Id_6 - K * H) * P;
 
-	// calculate time since last GPOS update
-	//timeval now;
-	//gettimeofday(&now,NULL);
-	//uint64_t currentTimestamp = now.tv_sec*1e6 + now.tv_usec;
-	//uint32_t dT = currentTimestamp - targetGlobalPos_.localTimestamp;
-
-// velocity estimate is previous groundspeed measurement
-// transform from NED to ENU
-//targetEstimatedVel_.x = xhat(3);		//targetGlobalPos_.velocity.lon;
-//targetEstimatedVel_.y = xhat(1);		//targetGlobalPos_.velocity.lat;
-//targetEstimatedVel_.z = xhat(5); 		//-targetGlobalPos_.velocity.alt;
-
-// update based on ground speed
-//targetEstimatedPosLocal_.x = xhat(2);	//targetPosLocal_.x + targetEstimatedVel_.x*dT*1e-6;
-//targetEstimatedPosLocal_.y = xhat(0);	//targetPosLocal_.y + targetEstimatedVel_.y*dT*1e-6;
-//targetEstimatedPosLocal_.z = xhat(4);	//targetPosLocal_.z + targetEstimatedVel_.z*dT*1e-6;
-
-// convert back to WGS84
-//antennaLocalCartesian_.Reverse(targetEstimatedPosLocal_.x,targetEstimatedPosLocal_.y,targetEstimatedPosLocal_.z,targetEstimatedPos_.lat,targetEstimatedPos_.lon,targetEstimatedPos_.alt);
-
-	//std::stringstream logmessage;
-	//logmessage << "update local pos: " << targetEstimatedPosLocal_ << ", local vel: " << targetEstimatedVel_;
-	//addLogMessage(vl_DEBUG,logmessage.str());
 }
 
-void EstimatorKF::KF_pos_attitude(){	// case new position & attitude available
+void EstimatorKF::KF_Pos_Attitude() {// case new position & attitude available
 
 	static struct timeval current_time;
 	gettimeofday(&current_time, NULL);
-	KFcurrentTimestamp = current_time.tv_sec*1000000 + current_time.tv_usec;
+	KFcurrentTimestamp = current_time.tv_sec * 1000000 + current_time.tv_usec;
 
 	// set new inputs
 	GPS_pos_vel << targetPosLocal_.y << endr
@@ -231,89 +244,110 @@ void EstimatorKF::KF_pos_attitude(){	// case new position & attitude available
 			<< targetPosLocal_.z << endr
 			<< targetGlobalPos_.velocity.alt << endr;
 
-	phi_current=targetAttitude_.roll;
+	phi_current = targetAttitude_.roll;
 
 	// order timestamps
 	if (targetGlobalPos_.localTimestamp > targetAttitude_.localTimestamp) { // check if position or attitude was first
 		double timestamp_1 = targetAttitude_.localTimestamp;
 		double timestamp_2 = targetGlobalPos_.localTimestamp;
 
-						dt = timestamp_1 - KFlastTimestamp; // calculate dt
-						KFphi=phi_old;
+		dt = timestamp_1 - KFlastTimestamp; // calculate dt
+		KFphi = phi_old;
 
-						// predict with phi_old
-						KFpredictEstimate();
+		// predict with phi_old
+		KF_PredictEstimate();
 
-						dt = timestamp_2 - timestamp_1; // calculate dt
-						KFphi=phi_current;
+		dt = timestamp_2 - timestamp_1; // calculate dt
+		KFphi = phi_current;
 
-						// predict with phi_new
-						KFpredictEstimate();
+		// predict with phi_new
+		KF_PredictEstimate();
 
-						// udpate position
-						KFupdateEstimate();
+		// udpate position
+		KF_UpdateEstimate();
 
-						dt = KFcurrentTimestamp - timestamp_2; // calculate dt
+		dt = KFcurrentTimestamp - timestamp_2; // calculate dt
 
-						// predict with new position and new phi
-						KFpredictEstimate();
+		// predict with new position and new phi
+		KF_PredictEstimate();
 
-					} else if (targetGlobalPos_.localTimestamp < targetAttitude_.localTimestamp) { // check if GPOS was first
-						double timestamp_1 = targetGlobalPos_.localTimestamp;
-						double timestamp_2 = targetAttitude_.localTimestamp;
+	} else if (targetGlobalPos_.localTimestamp < targetAttitude_.localTimestamp) { // check if GPOS was first
+		double timestamp_1 = targetGlobalPos_.localTimestamp;
+		double timestamp_2 = targetAttitude_.localTimestamp;
 
-						dt = timestamp_1 - KFlastTimestamp; // calculate dt
-						KFphi=phi_old;
+		dt = timestamp_1 - KFlastTimestamp; // calculate dt
+		KFphi = phi_old;
 
-						// predict
-						KFpredictEstimate();
+		// predict
+		KF_PredictEstimate();
 
-						// udpate position
-						KFupdateEstimate();
+		// udpate position
+		KF_UpdateEstimate();
 
-						dt = timestamp_2 - timestamp_1; // calculate dt
+		dt = timestamp_2 - timestamp_1; // calculate dt
 
-						// predict with new position and old phi
-						KFpredictEstimate();
+		// predict with new position and old phi
+		KF_PredictEstimate();
 
-						dt = KFcurrentTimestamp - timestamp_1; // calculate dt
-						KFphi=phi_current;
+		dt = KFcurrentTimestamp - timestamp_1; // calculate dt
+		KFphi = phi_current;
 
-						// predict with new position and new phi
-						KFpredictEstimate();
+		// predict with new position and new phi
+		KF_PredictEstimate();
 
-					} else if (targetGlobalPos_.localTimestamp == targetAttitude_.localTimestamp) {
-						double timestamp = targetAttitude_.localTimestamp;
+	} else if (targetGlobalPos_.localTimestamp == targetAttitude_.localTimestamp) {
+		double timestamp = targetAttitude_.localTimestamp;
 
-						dt = timestamp - KFlastTimestamp; // calculate dt
-						KFphi=phi_old;
+		dt = timestamp - KFlastTimestamp; // calculate dt
+		KFphi = phi_old;
 
-						// predict
-						KFpredictEstimate();
+		// predict
+		KF_PredictEstimate();
 
-						// udpate position
-						KFupdateEstimate();
+		// udpate position
+		KF_UpdateEstimate();
 
-						dt = KFcurrentTimestamp - timestamp; // calculate dt
-						KFphi=phi_current;
+		dt = KFcurrentTimestamp - timestamp; // calculate dt
+		KFphi = phi_current;
 
-						// predict
-						KFpredictEstimate();
+		// predict
+		KF_PredictEstimate();
 
-					}
+	}
 
-					phi_old = phi_current;
-					//v_air_old = v_air_current;
-					KFlastTimestamp=KFcurrentTimestamp;
-					dt=0;
+	phi_old = phi_current;
+	//v_air_old = v_air_current;
+	KFlastTimestamp = KFcurrentTimestamp;
+	dt = 0;
+
+// velocity estimate is previous groundspeed measurement
+//transform from NED to ENU
+	targetEstimatedVel_.x = xhat(3);		//targetGlobalPos_.velocity.lon;
+	targetEstimatedVel_.y = xhat(1);		//targetGlobalPos_.velocity.lat;
+	targetEstimatedVel_.z = xhat(5); 		//-targetGlobalPos_.velocity.alt;
+
+// update based on ground speed
+	targetEstimatedPosLocal_.x = xhat(2);//targetPosLocal_.x + targetEstimatedVel_.x*dT*1e-6;
+	targetEstimatedPosLocal_.y = xhat(0);//targetPosLocal_.y + targetEstimatedVel_.y*dT*1e-6;
+	targetEstimatedPosLocal_.z = xhat(4);//targetPosLocal_.z + targetEstimatedVel_.z*dT*1e-6;
+
+// convert back to WGS84
+	antennaLocalCartesian_.Reverse(targetEstimatedPosLocal_.x,
+			targetEstimatedPosLocal_.y, targetEstimatedPosLocal_.z,
+			targetEstimatedPos_.lat, targetEstimatedPos_.lon,
+			targetEstimatedPos_.alt);
+
+//std::stringstream logmessage;
+//logmessage << "update local pos: " << targetEstimatedPosLocal_ << ", local vel: " << targetEstimatedVel_;
+//addLogMessage(vl_DEBUG,logmessage.str());
 
 }
 
-void EstimatorKF::KF_pos(){	// case ONLY new position available
+void EstimatorKF::KF_Pos() {	// case ONLY new position available
 
 	static struct timeval current_time;
 	gettimeofday(&current_time, NULL);
-	KFcurrentTimestamp = current_time.tv_sec*1000000 + current_time.tv_usec;
+	KFcurrentTimestamp = current_time.tv_sec * 1000000 + current_time.tv_usec;
 
 	// set new inputs
 	GPS_pos_vel << targetPosLocal_.y << endr
@@ -325,66 +359,143 @@ void EstimatorKF::KF_pos(){	// case ONLY new position available
 
 	dt = targetGlobalPos_.localTimestamp - KFlastTimestamp; // calculate dt
 
-	KFcurrentTimestamp=
+	KFcurrentTimestamp =
 
-	KFphi=phi_old;
-					// predict
-					KFpredictEstimate();
+	KFphi = phi_old;
+	// predict
+	KF_PredictEstimate();
 
-					// udpate position
-					KFupdateEstimate();//execution of update function
+	// udpate position
+	KF_UpdateEstimate(); //execution of update function
 
 	dt = KFcurrentTimestamp - targetGlobalPos_.localTimestamp; // calculate dt
 
-					// predict
-					KFpredictEstimate();
+	// predict
+	KF_PredictEstimate();
 
-					KFlastTimestamp=KFcurrentTimestamp;
-					dt=0;
+	KFlastTimestamp = KFcurrentTimestamp;
+	dt = 0;
+
+// velocity estimate is previous groundspeed measurement
+//transform from NED to ENU
+	targetEstimatedVel_.x = xhat(3);		//targetGlobalPos_.velocity.lon;
+	targetEstimatedVel_.y = xhat(1);		//targetGlobalPos_.velocity.lat;
+	targetEstimatedVel_.z = xhat(5); 		//-targetGlobalPos_.velocity.alt;
+
+// update based on ground speed
+	targetEstimatedPosLocal_.x = xhat(2);//targetPosLocal_.x + targetEstimatedVel_.x*dT*1e-6;
+	targetEstimatedPosLocal_.y = xhat(0);//targetPosLocal_.y + targetEstimatedVel_.y*dT*1e-6;
+	targetEstimatedPosLocal_.z = xhat(4);//targetPosLocal_.z + targetEstimatedVel_.z*dT*1e-6;
+
+// convert back to WGS84
+	antennaLocalCartesian_.Reverse(targetEstimatedPosLocal_.x,
+			targetEstimatedPosLocal_.y, targetEstimatedPosLocal_.z,
+			targetEstimatedPos_.lat, targetEstimatedPos_.lon,
+			targetEstimatedPos_.alt);
 
 }
 
-void EstimatorKF::KF_attitude(){	// case ONLY new attitude available
+void EstimatorKF::KF_Attitude() {	// case ONLY new attitude available
 
 	static struct timeval current_time;
 	gettimeofday(&current_time, NULL);
-	KFcurrentTimestamp = current_time.tv_sec*1000000 + current_time.tv_usec;
-
+	KFcurrentTimestamp = current_time.tv_sec * 1000000 + current_time.tv_usec;
 
 	// set new inputs
-	phi_current=targetAttitude_.roll;
+	phi_current = targetAttitude_.roll;
 
 	dt = targetAttitude_.localTimestamp - KFlastTimestamp; // calculate dt
-	KFphi=phi_old;
-				// predict with old phi
-				KFpredictEstimate();
+	KFphi = phi_old;
+	// predict with old phi
+	KF_PredictEstimate();
 
 	dt = KFcurrentTimestamp - targetAttitude_.localTimestamp; // calculate dt
-	KFphi=phi_current;
+	KFphi = phi_current;
 
-				// predict with new phi
-				KFpredictEstimate();
+	// predict with new phi
+	KF_PredictEstimate();
 
-				phi_old = phi_current;
-				//v_air_old = v_air_current;
-				KFlastTimestamp=KFcurrentTimestamp;
-				dt=0;
+	phi_old = phi_current;
+	//v_air_old = v_air_current;
+	KFlastTimestamp = KFcurrentTimestamp;
+	dt = 0;
+
+// velocity estimate is previous groundspeed measurement
+//transform from NED to ENU
+	targetEstimatedVel_.x = xhat(3);		//targetGlobalPos_.velocity.lon;
+	targetEstimatedVel_.y = xhat(1);		//targetGlobalPos_.velocity.lat;
+	targetEstimatedVel_.z = xhat(5); 		//-targetGlobalPos_.velocity.alt;
+
+// update based on ground speed
+	targetEstimatedPosLocal_.x = xhat(2);//targetPosLocal_.x + targetEstimatedVel_.x*dT*1e-6;
+	targetEstimatedPosLocal_.y = xhat(0);//targetPosLocal_.y + targetEstimatedVel_.y*dT*1e-6;
+	targetEstimatedPosLocal_.z = xhat(4);//targetPosLocal_.z + targetEstimatedVel_.z*dT*1e-6;
+
+// convert back to WGS84
+	antennaLocalCartesian_.Reverse(targetEstimatedPosLocal_.x,
+			targetEstimatedPosLocal_.y, targetEstimatedPosLocal_.z,
+			targetEstimatedPos_.lat, targetEstimatedPos_.lon,
+			targetEstimatedPos_.alt);
 
 }
 
-void EstimatorKF::KF_NoNewInformation(){	// case NO new information available
+void EstimatorKF::KF_NoNewInformation() {	// case NO new information available
 
 	static struct timeval current_time;
 	gettimeofday(&current_time, NULL);
-	KFcurrentTimestamp = current_time.tv_sec*1000000 + current_time.tv_usec;
+	KFcurrentTimestamp = current_time.tv_sec * 1000000 + current_time.tv_usec;
 
 	dt = KFcurrentTimestamp - KFlastTimestamp; // calculate dt
-	KFphi=phi_old;
+	KFphi = phi_old;
 
-				KFpredictEstimate();
+	KF_PredictEstimate();
 
-				KFlastTimestamp=KFcurrentTimestamp;
-				dt=0;
+	KFlastTimestamp = KFcurrentTimestamp;
+	dt = 0;
+
+// velocity estimate is previous groundspeed measurement
+//transform from NED to ENU
+	targetEstimatedVel_.x = xhat(3);		//targetGlobalPos_.velocity.lon;
+	targetEstimatedVel_.y = xhat(1);		//targetGlobalPos_.velocity.lat;
+	targetEstimatedVel_.z = xhat(5); 		//-targetGlobalPos_.velocity.alt;
+
+// update based on ground speed
+	targetEstimatedPosLocal_.x = xhat(2);//targetPosLocal_.x + targetEstimatedVel_.x*dT*1e-6;
+	targetEstimatedPosLocal_.y = xhat(0);//targetPosLocal_.y + targetEstimatedVel_.y*dT*1e-6;
+	targetEstimatedPosLocal_.z = xhat(4);//targetPosLocal_.z + targetEstimatedVel_.z*dT*1e-6;
+
+// convert back to WGS84
+	antennaLocalCartesian_.Reverse(targetEstimatedPosLocal_.x,
+			targetEstimatedPosLocal_.y, targetEstimatedPosLocal_.z,
+			targetEstimatedPos_.lat, targetEstimatedPos_.lon,
+			targetEstimatedPos_.alt);
+
+}
+
+void EstimatorKF::getEstimate(GlobalPos *remoteGlobalPosition, Attitude *remoteAtt) {
+
+	if (newPosition) {
+		setNewRemoteGPos(*remoteGlobalPosition); // new position available
+		if (newAttitude) {
+			setNewAttitude(*remoteAtt); // AND new attitude available
+			// UPDATE AND PREDICT
+			KF_Pos_Attitude();		// case new position & attitude available
+
+		} else {							// ONLY new position available
+			// UPDATE AND PREDICT
+			KF_Pos();
+
+		}
+	} else if (newAttitude) {				// ONLY new attitude available
+		setNewAttitude(*remoteAtt);
+		// ONLY PREDICT
+		KF_Attitude();
+
+	} else {										// NO new information
+		// ONLY PREDICT
+		KF_NoNewInformation();
+
+	}
 
 }
 
