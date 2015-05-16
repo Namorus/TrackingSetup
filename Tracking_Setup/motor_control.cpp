@@ -306,12 +306,28 @@ int MotorControl::homeTiltMotor() {
 	return 0;
 }
 
+/*
 bool MotorControl::panPositionReached() {
 	return (bool) panController->isTargetReached();
 }
 
 bool MotorControl::tiltPositionReached() {
 	return (bool) tiltController->isTargetReached();
+}
+*/
+
+bool MotorControl::panPositionReached() {
+    if (initialized)
+        return (bool) panController->isTargetReached();
+    else
+        return true;
+}
+
+bool MotorControl::tiltPositionReached() {
+    if (initialized)
+        return (bool) tiltController->isTargetReached();
+    else
+        return true;
 }
 
 int MotorControl::getPanPosition() {
