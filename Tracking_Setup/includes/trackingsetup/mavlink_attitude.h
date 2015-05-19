@@ -23,7 +23,7 @@ private:
     MavlinkMessages* mavlinkMessages_;
 
 	uint64_t lastTimestamp_;
-	//
+
 };
 
 } /* namespace tracking */

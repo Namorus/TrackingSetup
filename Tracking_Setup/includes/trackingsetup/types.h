@@ -14,6 +14,7 @@
 #include <vector>
 
 #include <common/mavlink.h>
+#include <matrixpilot/mavlink.h>  // ROMAN
 
 
 #ifndef TRACKINGANTENNA_H_
@@ -140,16 +141,6 @@ struct GPStrackingConf {
 	int localMavlinkVid, localMavlinkPid, localMavlinkInterface, localMavlinkBaudrate;
 
 	int remoteMavlinkVid, remoteMavlinkPid, remoteMavlinkInterface, remoteMavlinkBaudrate;
-};
-
-//--------------------------------------Roman--------------Attitude
-
-struct Att {
-	double roll;
-
-	Att() :
-			roll(0){
-	}
 };
 
 struct MotorControlConf {
@@ -317,9 +308,12 @@ struct MavlinkMessages {
         lastGpsStatus(0),
         lastHighresImu(0),
         lastAttitude(0),
+        lastVfrHud(0),
         lastRadioStatus(0) {}
+
 	int sysid;
 	int compid;
+
 	// Heartbeat
 	mavlink_heartbeat_t heartbeat;
     uint64_t lastHeartbeat;
@@ -343,6 +337,10 @@ struct MavlinkMessages {
 	// Attitude
 	mavlink_attitude_t attitude;
     uint64_t lastAttitude;
+
+	// Vfr_Hud
+    mavlink_vfr_hud_t vfrhud_mavlink;
+    uint64_t lastVfrHud;
 
 	// Radio info
 	mavlink_radio_status_t radio_status;
@@ -433,5 +431,30 @@ struct Attitude {
 	uint64_t localTimestamp;	// time message is received and saved at antenna
 	};
 
+//--------------------------------------Roman--------------VfrHud
+
+struct VfrHud {
+
+	VfrHud() :
+		airspeed(0),
+		groundspeed(0),
+		alt(0),
+		climb(0),
+		heading(0),
+		throttle(0),
+		timestamp(0),
+		localTimestamp(0){}
+
+	float airspeed; ///< Current airspeed in m/s
+	float groundspeed; ///< Current ground speed in m/s
+	float alt; ///< Current altitude (MSL), in meters
+	float climb; ///< Current climb rate in meters/second
+	int16_t heading; ///< Current heading in degrees, in compass units (0..360, 0=north)
+	uint16_t throttle; ///< Current throttle setting in integer percent, 0 to 100
+
+	uint32_t timestamp;   		// px4 time
+	uint64_t localTimestamp;	// time message is received and saved at antenna
+
+	};
 }
 #endif /* TRACKINGANTENNA_H_ */

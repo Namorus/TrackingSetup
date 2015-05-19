@@ -1,7 +1,6 @@
-logger.d: ../logger.cpp \
-  /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/logger.h \
-  /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/trackingsetup.h \
-  /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/types.h \
+mavlink_vfr_hud.d: ../mavlink_vfr_hud.cpp \
+  /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/mavlink_vfr_hud.h \
+  /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/mavlink_reader.h \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/mavlink.h \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/version.h \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/common.h \
@@ -126,14 +125,16 @@ logger.d: ../logger.cpp \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_named_value_int.h \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_statustext.h \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_debug.h \
-  /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/matrixpilot/mavlink.h \
-  /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/iniparser/ini.h
+  /Users/Maverick/Documents/workspace/Libraries/libftdi1-1.2/ftdipp/ftdi.hpp \
+  /Users/Maverick/Documents/workspace/Libraries/libftdi1-1.2/src/ftdi.h \
+  /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/input.h \
+  /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/trackingsetup.h \
+  /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/types.h \
+  /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/matrixpilot/mavlink.h
 
-/Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/logger.h:
+/Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/mavlink_vfr_hud.h:
 
-/Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/trackingsetup.h:
-
-/Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/types.h:
+/Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/mavlink_reader.h:
 
 /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/mavlink.h:
 
@@ -383,6 +384,14 @@ logger.d: ../logger.cpp \
 
 /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_debug.h:
 
-/Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/matrixpilot/mavlink.h:
+/Users/Maverick/Documents/workspace/Libraries/libftdi1-1.2/ftdipp/ftdi.hpp:
 
-/Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/iniparser/ini.h:
+/Users/Maverick/Documents/workspace/Libraries/libftdi1-1.2/src/ftdi.h:
+
+/Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/input.h:
+
+/Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/trackingsetup.h:
+
+/Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/types.h:
+
+/Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/matrixpilot/mavlink.h:

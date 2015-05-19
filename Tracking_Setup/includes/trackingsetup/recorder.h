@@ -25,12 +25,15 @@ public:
 			int panPosition, int tiltPosition, setpoints* motorSetPoints, GPSPos* const localGPS,
 			GPSPos* const remoteGPS, TrackingEstimator* const estimator, int curMode);
 
+	recorderSettings settings;			//ATTENTION should be private
+
+
 private:
 
 	std::ofstream fileHandle;
 	bool recording;
 
-	recorderSettings settings;
+	//recorderSettings settings;
 
 	pthread_mutex_t* pRecordMutex;
 

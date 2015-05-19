@@ -273,10 +273,17 @@ void MavlinkReader::messageHandler(mavlink_message_t& message) {
 			break;
 		}
 
-		case MAVLINK_MSG_ID_ATTITUDE: {
+				case MAVLINK_MSG_ID_ATTITUDE: { //vfr_HUD........................................
 			//printf("MAVLINK_MSG_ID_ATTITUDE\n");
 			mavlink_msg_attitude_decode(&message,&(currentMessages_.attitude));
 			currentMessages_.lastAttitude = get_usec();
+			break;
+		}
+
+		case MAVLINK_MSG_ID_VFR_HUD: {
+			//printf("MAVLINK_MSG_ID_VFR_HUD\n");
+			mavlink_msg_vfr_hud_decode(&message,&(currentMessages_.vfrhud_mavlink));
+			currentMessages_.lastVfrHud = get_usec();
 			break;
 		}
 

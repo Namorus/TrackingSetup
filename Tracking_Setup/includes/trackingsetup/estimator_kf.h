@@ -24,18 +24,25 @@ private:
 	//constant values
 	double gravity; 				// gravity constant
 	double var_phi;					// variance of roll angle phi
-	long double r_a;				// measurement covariance parameter (position)
-	long double r_b;				// measurement covariance parameter (velocity)
-	long double q;					// initial auxiliary process covariance parameter
+	double r_a;				// measurement covariance parameter (position)
+	double r_b;				// measurement covariance parameter (velocity)
+	double q;					// initial auxiliary process covariance parameter
+
+	//q_add = a_LS * v_wind + b_LS + b_LS * fabs(KFphi);
+	double a_LS;
+	double b_LS;
 
 	// variable values
-	arma::vec xhat; 				// state declaration
+    arma::vec xhat; 				// state declaration
 	arma::vec GPS_pos_vel;			// GPS position & velocity measurement
 	arma::mat P;	 				// covariance matrix declaration
 
-	long double phi_current;		// roll angle phi
-	long double phi_old;			// save old roll angle phi
-	long double KFphi;				// input roll angle phi into member function
+	double phi_current;		// roll angle phi
+	double phi_old;			// save old roll angle phi
+	double KFphi;				// input roll angle phi into member function
+
+	double vair_old;				// save old airspeed m/s
+	double KFvair;					// input airspeed into member function
 
 	//double old_v_air;				// save old air speed
 	uint64_t KFcurrentTimestamp;	// current Kalman Filter time of execution
@@ -44,10 +51,11 @@ private:
 	double dt;
 
 public:
+	//arma::vec xhat; 				// state declaration ------------------------ just for debugging
 
 	bool newAttitude;				// check if new attitude available
 	bool newPosition;				// check if new position available
-
+	bool newVfrHud;					// check if new airspeed available
 
 	EstimatorKF();
 	virtual ~EstimatorKF();
@@ -62,7 +70,7 @@ public:
 	void KF_NoNewInformation();		// case NO new information available
 
 	// high level function to handle member functions and timestamps
-	void getEstimate(GlobalPos remoteGlobalPosition, Attitude remoteAtt);
+	void getEstimate(GlobalPos remoteGlobalPosition, Attitude remoteAtt, VfrHud remoteVHud);
 
 };
 

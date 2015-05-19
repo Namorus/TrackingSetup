@@ -6,7 +6,7 @@ close all
 clc
 
 %% load data
-importdata('datarecording_1426593724.csv')
+importdata('datarecording_1431866912.csv')
 
 %% save to appropriate variables
 

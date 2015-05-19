@@ -161,17 +161,20 @@ void* GuiBackend::GuiBackendThread(void* arg) {
 					close(self->new_sd);
 					self->new_sd = -1;
 				} else {
-//					self->addLogMessage(vl_DEBUG,std::string("new data from remote GUI received: ") + incomming_data_buffer);
+					self->addLogMessage(vl_DEBUG,std::string("new data from remote GUI received: ") + incomming_data_buffer);
 					incomming_data_buffer[bytes_received] = '\0';
 					numRetValues = sscanf(incomming_data_buffer,
 							"$TrackingAntennaGUI %4s", initString);
 					if (numRetValues == 1
-							&& std::string(initString).compare("INIT") == 0) {
+							&& std::string(initString) == std::string("INIT")) {
 						self->addLogMessage(vl_DEBUG,
 								"GUI client request accepted");
 						self->setConnectionInitialized(true);
 						self->sendConfig();
 					} else {
+						std::stringstream logmessage;
+						logmessage << "GUI client request not accepted."; //numRetValues:" << numRetValues;
+						self->addLogMessage(vl_INFO,logmessage.str());
 						close(self->new_sd);
 						self->new_sd = -1;
 						self->setConnectionInitialized(false);

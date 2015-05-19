@@ -25,6 +25,7 @@ int32_t Epos::ReadObjectValue(uint16_t index, uint8_t subindex) {
 	uint16_t ans_frame[8];
 	int r = 0;
 	for (int attempts = 0; attempts < 5 && r == 0; attempts++) {
+
 		r = pGateway->ReadObject(ans_frame, 8, index, subindex, this->nodeId);
 	}
 	if (r == 0) {

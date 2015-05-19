@@ -119,7 +119,6 @@ void Recorder::record(timespec* const Ts, std::vector<float>* const RSSvalues,
 		}
 		pthread_mutex_unlock(pRecordMutex);
 	}
-
 }
 
 void Recorder::writeHeader() {

@@ -27,6 +27,9 @@ public:
 	//-----------------------------------ROMAN--------Attitude
 	void setNewAttitude(Attitude& attitude);
 
+	//-----------------------------------ROMAN--------Vfr_Hud
+	void setNewVfrHud(VfrHud& vfr_hud);
+
 	void getGlobalPosEstimate(GPSPos& posEstimate);
 
 	void getLocalPosEstimate(LocalPos& posEstimate);
@@ -77,7 +80,9 @@ protected:
 
 	//-----------------------------------------------ROMAN-------------------------------------Attitude
 	Attitude targetAttitude_;
+	//-----------------------------------------------ROMAN-------------------------------------Vfr_Hud
 
+	VfrHud targetVfrHud_;
 
 	GPSPos targetEstimatedPos_;
 	LocalPos targetEstimatedPosLocal_;

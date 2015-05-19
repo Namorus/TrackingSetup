@@ -20,6 +20,7 @@ CPP_SRCS += \
 ../mavlink_mag.cpp \
 ../mavlink_radio_status.cpp \
 ../mavlink_reader.cpp \
+../mavlink_vfr_hud.cpp \
 ../motor_control.cpp \
 ../position_input.cpp \
 ../recorder.cpp \
@@ -45,6 +46,7 @@ OBJS += \
 ./mavlink_mag.o \
 ./mavlink_radio_status.o \
 ./mavlink_reader.o \
+./mavlink_vfr_hud.o \
 ./motor_control.o \
 ./position_input.o \
 ./recorder.o \
@@ -70,6 +72,7 @@ CPP_DEPS += \
 ./mavlink_mag.d \
 ./mavlink_radio_status.d \
 ./mavlink_reader.d \
+./mavlink_vfr_hud.d \
 ./motor_control.d \
 ./position_input.d \
 ./recorder.d \

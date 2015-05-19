@@ -11,6 +11,7 @@
 #include <unistd.h>
 
 #include <trackingsetup/trackingsetup.h>
+
 #include <trackingsetup/find_north.h>
 #include <trackingsetup/estimator_kf.h>
 #include <trackingsetup/gps_tracking.h>
@@ -18,8 +19,9 @@
 #include <trackingsetup/mavlink_mag.h>
 #include <trackingsetup/mavlink_radio_status.h>
 #include <trackingsetup/mavlink_gpos.h>
-#include <trackingsetup/mavlink_attitude.h>  //--------------------------------------ROMAN
-#include <trackingsetup/current_utc_time.h>  //--------------------------------------ROMAN
+#include <trackingsetup/mavlink_attitude.h>
+#include <trackingsetup/mavlink_vfr_hud.h>
+#include <trackingsetup/current_utc_time.h>
 
 using namespace std;
 using namespace tracking;
@@ -27,6 +29,7 @@ using namespace tracking;
 commandLineOptions parseCommandLine(int argc, char** argv);
 
 namespace tracking {
+
 std::list<TALogMessage>* TrackingSetup::getLog() {
 //	std::list<TALogMessage> logCopy(logMessages);
 //	logMessages.clear();
@@ -99,7 +102,7 @@ int main(int argc, char** argv) {
 			trackingConfig.GPS.localMavlinkBaudrate, "PX4");
 	trackingLog.add(localMavlinkReader.getLog());
 	trackingLog.registerInstance(&localMavlinkReader);
-	MavlinkMessages localMavlinkMessages; //-----------------------localMavlinkMessages
+	MavlinkMessages localMavlinkMessages;
 
 	if (!commandLineOptions.noLocalGPS) {
 		if (localMavlinkReader.start() != true)
@@ -145,8 +148,6 @@ int main(int argc, char** argv) {
 	// GlobalPos struct holding global position
 	GlobalPos remoteGlobalPosition;
 
-	//--------------------------------------Roman--------------Attitude
-
 	// remote Attitude
 	MavlinkAttitude remoteAttitude(&remoteMavlinkMessages);
 	//trackingLog.add(remoteAttitude.getLog());
@@ -154,6 +155,12 @@ int main(int argc, char** argv) {
 
 	// Attitude struct holding attiude (roll angle)
 	Attitude remoteAtt;
+
+	// remote VfrHud
+	MavlinkVfrHud remoteVfrHud(&remoteMavlinkMessages);
+
+	// VfrHud struct holing airspeed (vair)
+	VfrHud remoteVHud;
 
 	// Estimator holding estimate of tracked object in local coordinates
 	EstimatorKF remotePosEstimator;
@@ -221,6 +228,18 @@ int main(int argc, char** argv) {
 
 	// TODO: GUI & GUI socket
 
+	//----------------------------------------ROMAN--------------------record
+
+	recorder.settings.recordTimestamp=true;
+	recorder.settings.recordRSSI=true;
+	recorder.settings.recordMotData=true;
+	recorder.settings.recordLocalGPS=true;
+	recorder.settings.recordRemoteGPS=true;
+	//recorder.settings.recordCurMode=true;
+	//recorder.settings.recordEstimator=true;
+
+	recorder.start(recorder.settings);		//ATTENTION: made recorderSettings settings puplic in recorder.h
+
 	/****************
 	 * control loop *
 	 ****************/
@@ -245,6 +264,8 @@ int main(int argc, char** argv) {
 	bool newAntennaPos = false;
 	bool newTrackedPos = false;
 	bool newTrackedAtt = false;
+	bool newTrackedVfrHud = false;
+
 	bool estimateUpdated = false;
 
 	bool localGpsFixAcquired = false;
@@ -320,6 +341,10 @@ int main(int argc, char** argv) {
 		// process attitude
 		newTrackedAtt = remoteAttitude.getAttitude(&remoteAtt);
 
+		// process vfrhud
+		newTrackedVfrHud = remoteVfrHud.getVfrHud(&remoteVHud);
+
+
 		// check whether local GPS fix is acquired
 		// once it is, calculate magnetic declination for current location
 		if (!localGpsFixAcquired
@@ -339,10 +364,11 @@ int main(int argc, char** argv) {
 
 		remotePosEstimator.newPosition = newTrackedPos; //localGpsFixAcquired;
 		remotePosEstimator.newAttitude = newTrackedAtt;
+		remotePosEstimator.newVfrHud = newTrackedVfrHud;
 
 		if (localGpsFixAcquired && remoteGlobalPosition.localTimestamp - (startTs.tv_sec * 1e6 + startTs.tv_nsec * 1e-3) < 10 * 1e6) { // keep estimator running for 10s after last GPOS message
 
-			remotePosEstimator.getEstimate(remoteGlobalPosition, remoteAtt);
+			remotePosEstimator.getEstimate(remoteGlobalPosition, remoteAtt, remoteVHud);
 
 			estimateUpdated = true;
 //			trackingLog.log(vl_DEBUG,"Estimator update done.");
@@ -385,7 +411,8 @@ int main(int argc, char** argv) {
 					}
 				}
 			} else
-				currentState.set(ts_FIND_NORTH);
+				currentState.set(ts_GPS_TRACKING);
+				//currentState.set(ts_FIND_NORTH);
 			break;
 
 		case ts_GPS_TRACKING:
@@ -504,7 +531,8 @@ int main(int argc, char** argv) {
 			usleep(waitDuration);
 		}
 
-	}
+	} //end while loop
+
 	/* end tracking antenna */
 	guiBackend.killThread();
 //	remoteGPS.closeGPSPosServer();
@@ -517,6 +545,7 @@ int main(int argc, char** argv) {
 	trackingLog.fetchLogs();
 	trackingLog.log(vl_INFO, "Tracking Antenna closed");
 	return EXIT_SUCCESS;
+
 }
 
 commandLineOptions parseCommandLine(int argc, char** argv) {

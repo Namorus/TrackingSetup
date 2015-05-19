@@ -33,7 +33,12 @@ void TrackingEstimator::setNewRemoteGPos(GlobalPos& remoteGpos) {
 
 void TrackingEstimator::setNewAttitude(Attitude& attitude) {
 	targetAttitude_ = attitude;
+}
 
+//-----------------------------------------------ROMAN-------------------------------------Vfr_Hud
+
+void TrackingEstimator::setNewVfrHud(VfrHud& vfr_hud) {
+	targetVfrHud_ = vfr_hud;
 }
 
 void TrackingEstimator::updateAntennaPos(GPSPos antennaPos) {

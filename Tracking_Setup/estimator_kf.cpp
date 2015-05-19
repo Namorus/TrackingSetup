@@ -4,6 +4,7 @@
  *  Created on: May 15, 2015
  *      Author: Roman Meier
  */
+
 #include <sys/time.h>
 #include <sstream>
 
@@ -15,10 +16,12 @@ EstimatorKF::EstimatorKF() { 								//constructor: initialize parameters at fir
 
 		//constant values
 		gravity = 9.81;
-		var_phi = pow(0.4*M_PI/ 180.0,2);
-		r_a = pow(0.8,2);
-		r_b = pow(0.5,2);
-		q = 0.025;
+		var_phi = pow(0.4*M_PI/ 180.0,2); //0.4
+		r_a = pow(0.5,2);
+		r_b = pow(0.3,2);
+		q = 0.2025;
+		a_LS = 0.066;
+		b_LS = 0.07;
 
 		// variable values
 		xhat 	<< targetPosLocal_.y << endr
@@ -45,16 +48,18 @@ EstimatorKF::EstimatorKF() { 								//constructor: initialize parameters at fir
 		KFphi=0;
 		phi_current = targetAttitude_.roll;
 		phi_old = targetAttitude_.roll;
-		//old_v_air=;
+		KFvair=0;
+		vair_old=targetVfrHud_.airspeed;
 
 		static struct timeval current_time;
 		gettimeofday(&current_time, NULL);
-		KFcurrentTimestamp = (current_time.tv_sec * 1000000 + current_time.tv_usec); 	// current Kalman Filter time of execution
+		KFcurrentTimestamp = (current_time.tv_sec * 1000000.0 + current_time.tv_usec); 	// current Kalman Filter time of execution
 		KFlastTimestamp = KFcurrentTimestamp;											// last Kalman Filter time of execution
 		dt=0;
 
 		newAttitude = false;
 		newPosition = false;
+		newVfrHud = false;
 
 	}
 
@@ -74,13 +79,13 @@ void EstimatorKF::KF_PredictEstimate() { // predicts position and velocity from 
 
 // TODO 0.2 calculation q according to wind ----------------------------------------------
 
-	//double v_wind = sqrt(v_total2) - fabs(v_air);
-	//float a_LS = 0.066;
-	//float b_LS = 0.07;
+	double v_wind = sqrt(v_total2) - fabs(KFvair);
 
-	//double q_add = a_LS * v_wind + b_LS + b_LS * fabs(phi);
+	double q_add = a_LS * v_wind + b_LS + b_LS * fabs(KFphi);
 
-	//q = q + q_add;
+	double q_z=q;
+
+	q = q + q_add;
 
 // 1. compute F matrix  -----------------------------------------------------------
 
@@ -88,9 +93,9 @@ void EstimatorKF::KF_PredictEstimate() { // predicts position and velocity from 
 
 	mat F_c(6, 6);
 	F_c << 0 << 1 << 0 << 0 << 0 << 0 << endr
-		<< 0 << gravity * xhat(1) * xhat(3) * tan(KFphi)/ pow(v_total2,(3. / 2.)) << 0 << gravity * pow(xhat(3),2) * tan(KFphi) / pow(v_total2,(3. / 2.)) - gravity * tan(KFphi) / sqrt(v_total2) << 0 << gravity * xhat(3) * xhat(5) * tan(KFphi)/ pow(v_total2,(3. / 2.)) << endr
+		<< 0 << gravity * xhat(1) * xhat(3) * tan(KFphi)/ pow(v_total2,(3.0 / 2.0)) << 0 << gravity * pow(xhat(3),2) * tan(KFphi) / pow(v_total2,(3.0 / 2.0)) - gravity * tan(KFphi) / sqrt(v_total2) << 0 << gravity * xhat(3) * xhat(5) * tan(KFphi)/ pow(v_total2,(3.0 / 2.0)) << endr
 		<< 0 << 0 << 0 << 1 << 0 << 0 << endr
-		<< 0 << gravity * tan(KFphi) / sqrt(v_total2) - gravity * pow(xhat(1),2) * tan(KFphi) / pow(v_total2,(3. / 2.)) << 0<< -gravity * xhat(1) * xhat(3) * tan(KFphi)/ pow(v_total2,(3. / 2.)) << 0 << -gravity * xhat(1) * xhat(5) * tan(KFphi)/ pow(v_total2,(3. / 2.)) << endr
+		<< 0 << gravity * tan(KFphi) / sqrt(v_total2) - gravity * pow(xhat(1),2) * tan(KFphi) / pow(v_total2,(3.0 / 2.0)) << 0<< -gravity * xhat(1) * xhat(3) * tan(KFphi)/ pow(v_total2,(3.0 / 2.0)) << 0 << -gravity * xhat(1) * xhat(5) * tan(KFphi)/ pow(v_total2,(3.0 / 2.0)) << endr
 		<< 0 << 0 << 0 << 0 << 0 << 1 << endr
 		<< 0 << 0 << 0 << 0 << 0 << 0 << endr;
 
@@ -129,7 +134,7 @@ void EstimatorKF::KF_PredictEstimate() { // predicts position and velocity from 
 	mat Id_12(12, 12);
 	Id_12.eye();
 
-	mat G = Id_12 + R * dt + (R * R) * pow(dt,2) / 2.;
+	mat G = Id_12 + R * dt + (R * R) * pow(dt,2.0) / 2.0;
 
 	mat F_dTQ_d(6, 6);
 	F_dTQ_d << G(0, 6) << G(0, 7) << G(0, 8) << G(0, 9) << G(0, 10) << G(0, 11) << endr
@@ -151,12 +156,12 @@ void EstimatorKF::KF_PredictEstimate() { // predicts position and velocity from 
 	Q_d = F_dT.t() * F_dTQ_d;
 
 	mat Q_additional(6, 6);
-	Q_additional << pow(dt,4) / 4. * q << pow(dt, 3) / 2. * q << 0 << 0 << 0 << 0 << endr
-			<< pow(dt, 3) / 2. * q << pow(dt, 2) * q << 0 << 0 << 0 << 0 << endr
-			<< 0 << 0 << pow(dt, 4) / 4. * q << pow(dt , 3) / 2. * q << 0 << 0 << endr
-			<< 0 << 0 << pow(dt, 3) / 2. * q << pow(dt, 2) * q << 0 << 0 << endr
-			<< 0 << 0 << 0 << 0 << pow(dt, 3) / 2. * q << pow(dt, 2) * q << endr
-			<< 0 << 0 << 0 << 0 << pow(dt, 2) * q << dt * q << endr;
+	Q_additional << pow(dt,4.0) / 4.0 *pow(q,4.0) << pow(dt, 3.0) / 2.0 * q << 0 << 0 << 0 << 0 << endr
+			<< pow(dt, 3.0) / 2.0 * q << pow(dt, 2.0) * pow(q,4.0) << 0 << 0 << 0 << 0 << endr
+			<< 0 << 0 << pow(dt, 4.0) / 4.0 *pow(q,4.0) << pow(dt , 3.0) / 2.0 * q << 0 << 0 << endr
+			<< 0 << 0 << pow(dt, 3.0) / 2.0 * q << pow(dt, 2.0) *pow(q,4.0) << 0 << 0 << endr
+			<< 0 << 0 << 0 << 0 << pow(dt, 4.0) / 4.0 * pow(q_z,4.0)<< pow(dt, 4.0)/2.0 * pow(q_z,4.0)<< endr
+			<< 0 << 0 << 0 << 0 << pow(dt, 4.0)/2.0 * pow(q_z,4.0)<< pow(dt, 4.0) * pow(q_z,4.0)<< endr;
 
 	mat Q = Q_d + Q_additional;
 
@@ -181,12 +186,12 @@ void EstimatorKF::KF_UpdateEstimate() { // updates latest position estimate by n
 
 // 1. Calculate R and H -----------------------------------------------------------
 	mat R(6, 6);
-	R 	<< pow(r_a, 2) << 0 << 0 << 0 << 0 << 0 << endr
-		<< 0 << pow(r_b, 2) << 0 << 0 << 0 << 0 << endr
-		<< 0 << 0 << pow(r_a, 2) << 0 << 0 << 0 << endr
-		<< 0 << 0 << 0 << pow(r_b, 2) << 0 << 0 << endr
-		<< 0 << 0 << 0 << 0 << pow(r_a, 2) << 0 << endr
-		<< 0 << 0 << 0 << 0 << 0 << pow(r_b, 2) << endr;
+	R 	<< pow(1.2*r_a, 2.0) << 0 << 0 << 0 << 0 << 0 << endr
+		<< 0 << pow(r_b, 2.0) << 0 << 0 << 0 << 0 << endr
+		<< 0 << 0 << pow(1.2*r_a, 2.0) << 0 << 0 << 0 << endr
+		<< 0 << 0 << 0 << pow(r_b, 2.0) << 0 << 0 << endr
+		<< 0 << 0 << 0 << 0 << pow(0.95*r_a, 2.0) << 0 << endr
+		<< 0 << 0 << 0 << 0 << 0 << pow(0.95*r_b, 2.0) << endr;
 
 	mat H(6, 6);
 	H.eye();
@@ -226,8 +231,8 @@ void EstimatorKF::KF_Pos_Attitude() {// case new position & attitude available
 			<< targetGlobalPos_.velocity.lat << endr
 			<< targetPosLocal_.x << endr
 			<< targetGlobalPos_.velocity.lon << endr
-			<< -targetPosLocal_.z << endr
-			<< -targetGlobalPos_.velocity.alt << endr;
+			<< targetPosLocal_.z << endr
+			<< targetGlobalPos_.velocity.alt << endr;
 
 	phi_current = targetAttitude_.roll;
 
@@ -303,7 +308,7 @@ void EstimatorKF::KF_Pos_Attitude() {// case new position & attitude available
 	phi_old = phi_current;
 	//v_air_old = v_air_current;
 	KFlastTimestamp = KFcurrentTimestamp;
-	dt = 0;
+	dt = 0.0;
 
 // velocity estimate is previous groundspeed measurement
 //transform from NED to ENU
@@ -334,8 +339,8 @@ void EstimatorKF::KF_Pos() {	// case ONLY new position available
 			<< targetGlobalPos_.velocity.lat << endr
 			<< targetPosLocal_.x << endr
 			<< targetGlobalPos_.velocity.lon << endr
-			<< -targetPosLocal_.z << endr
-			<< -targetGlobalPos_.velocity.alt << endr;
+			<< targetPosLocal_.z << endr
+			<< targetGlobalPos_.velocity.alt << endr;
 
 	dt = (targetGlobalPos_.localTimestamp - KFlastTimestamp)/1000000.0; // calculate dt
 
@@ -352,7 +357,7 @@ void EstimatorKF::KF_Pos() {	// case ONLY new position available
 	KF_PredictEstimate();
 
 	KFlastTimestamp = KFcurrentTimestamp;
-	dt = 0;
+	dt = 0.0;
 
 // velocity estimate is previous groundspeed measurement
 //transform from NED to ENU
@@ -396,7 +401,7 @@ void EstimatorKF::KF_Attitude() {	// case ONLY new attitude available
 	phi_old = phi_current;
 	//v_air_old = v_air_current;
 	KFlastTimestamp = KFcurrentTimestamp;
-	dt = 0;
+	dt = 0.0;
 
 // velocity estimate is previous groundspeed measurement
 //transform from NED to ENU
@@ -430,7 +435,7 @@ void EstimatorKF::KF_NoNewInformation() {	// case NO new information available
 	KF_PredictEstimate();
 
 	KFlastTimestamp = KFcurrentTimestamp;
-	dt = 0;
+	dt = 0.0;
 
 // velocity estimate is previous groundspeed measurement
 //transform from NED to ENU
@@ -451,54 +456,64 @@ void EstimatorKF::KF_NoNewInformation() {	// case NO new information available
 
 }
 
-void EstimatorKF::getEstimate(GlobalPos remoteGlobalPosition,
-		Attitude remoteAtt) {
+void EstimatorKF::getEstimate(GlobalPos remoteGlobalPosition,Attitude remoteAtt, VfrHud remoteVHud) {
+
+	if(newVfrHud){
+		setNewVfrHud(remoteVHud);
+		KFvair = targetVfrHud_.airspeed;
+	}else {
+		KFvair = vair_old;
+	}
+
 
 	if (newPosition) {
 		setNewRemoteGPos(remoteGlobalPosition); // new position available
 		if (newAttitude) {
-			std::cout<< "--------------------------------------- POSITION and ATTITUDE"<< std::endl;
+			//std::cout<< "--------------------------------------- POSITION and ATTITUDE"<< std::endl;
 			setNewAttitude(remoteAtt); // AND new attitude available
 			// UPDATE AND PREDICT
-
+			/*
 			std::cout << "Measurement:---------------------" << std::endl;
 			std::cout << "East: " << targetPosLocal_.y << std::endl;
 			std::cout << "North: " << targetPosLocal_.x << std::endl;
 			std::cout << "Up: " << targetPosLocal_.z << std::endl;
-
+*/
 			KF_Pos_Attitude();		// case new position & attitude available
 
 		} else {							// ONLY new position available
+			/*
 			std::cout<< "--------------------------------------- only POSITION"<< std::endl;
 
 			std::cout << "Measurement:---------------------" << std::endl;
 			std::cout << "East: " << targetPosLocal_.y << std::endl;
 			std::cout << "North: " << targetPosLocal_.x << std::endl;
 			std::cout << "Up: " << targetPosLocal_.z << std::endl;
-
+*/
 			// UPDATE AND PREDICT
 			KF_Pos();
 
 		}
 	} else if (newAttitude) {				// ONLY new attitude available
-		std::cout<< "--------------------------------------- only ATTITUDE"<< std::endl;
+		//std::cout<< "--------------------------------------- only ATTITUDE"<< std::endl;
 
 		setNewAttitude(remoteAtt);
 		// ONLY PREDICT
 		KF_Attitude();
 
 	} else {										// NO new information
-		std::cout<< "--------------------------------------- no INFORMATION"<< std::endl;
+		//std::cout<< "--------------------------------------- no INFORMATION"<< std::endl;
 
 		// ONLY PREDICT
 		KF_NoNewInformation();
 
 	}
-
+	/*
 	std::cout << "Estimation:---------------------" << std::endl;
 	std::cout << "East Estimated:" << targetEstimatedPosLocal_.y << std::endl;
 	std::cout << "North Estimated:" << targetEstimatedPosLocal_.x << std::endl;
 	std::cout << "Up Estimated:" << targetEstimatedPosLocal_.z << std::endl;
+*/
+	vair_old = KFvair;
 
 }
 
