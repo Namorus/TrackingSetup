@@ -167,6 +167,9 @@ int main(int argc, char** argv) {
 	trackingLog.add(remotePosEstimator.getLog());
 	trackingLog.registerInstance(&remotePosEstimator);
 
+	// read Config files for Estimator
+	remotePosEstimator.KF_readConfig(trackingConfig);
+
 //	LocalPos estimatedRemotePosition;
 //	LocalPos estimatedRemoteVelocity;
 

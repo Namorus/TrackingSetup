@@ -102,6 +102,23 @@ int Config::handler(void* user, const char* section, const char* name,
         pconfig->findNorth.tiltAngle = atoi(value);
     }
 
+	// Estimator
+	else if (MATCH("Estimator", "var_roll")) {
+		pconfig->Estimator.var_roll = atof(value);
+	} else if (MATCH("Estimator", "r_a")) {
+		pconfig->Estimator.r_a = atof(value);
+	} else if (MATCH("Estimator", "r_b")) {
+		pconfig->Estimator.r_b = atof(value);
+	} else if (MATCH("Estimator", "q")) {
+		pconfig->Estimator.q = atof(value);
+	} else if (MATCH("Estimator", "a_LS")) {
+		pconfig->Estimator.a_LS = atof(value);
+	} else if (MATCH("Estimator", "b_LS")) {
+		pconfig->Estimator.b_LS = atof(value);
+	}
+
+
+
 	else {
 		return 0; /* unknown section/name, error */
 	}

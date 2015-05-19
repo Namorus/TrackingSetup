@@ -14,8 +14,6 @@
 #include <vector>
 
 #include <common/mavlink.h>
-#include <matrixpilot/mavlink.h>  // ROMAN
-
 
 #ifndef TRACKINGANTENNA_H_
 #define TRACKINGANTENNA_H_
@@ -456,5 +454,30 @@ struct VfrHud {
 	uint64_t localTimestamp;	// time message is received and saved at antenna
 
 	};
+
+
+struct EstimatorConf{
+
+	EstimatorConf() :
+			var_roll(0),
+			r_a(0),
+			r_b(0),
+			q(0),
+			a_LS(0),
+			b_LS(0){}
+
+	friend bool operator==(const EstimatorConf& a, const EstimatorConf&b);
+	friend bool operator!=(const EstimatorConf& a, const EstimatorConf&b);
+
+		float var_roll; /// roll variance parameter
+		float r_a; /// R matrix position parameter
+		float r_b; ///R matrix velocity parameter
+		float q; /// additional covariance parameter
+		float a_LS; /// LS fit for additional covariance (windspeed)
+		float b_LS; /// LS fit for additional covariance (roll angle)
+
+};
+
+
 }
 #endif /* TRACKINGANTENNA_H_ */

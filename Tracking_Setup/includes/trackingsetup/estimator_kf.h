@@ -10,6 +10,8 @@
 #define ESTIMATOR_KF_H_
 
 #include <trackingsetup/trackingEstimator.h>
+#include <trackingsetup/config.h>
+
 #include <armadillo> 	// matrix calculation library
 
 using namespace arma;
@@ -24,6 +26,7 @@ private:
 	//constant values
 	double gravity; 				// gravity constant
 	double var_phi;					// variance of roll angle phi
+	double var_roll;
 	double r_a;				// measurement covariance parameter (position)
 	double r_b;				// measurement covariance parameter (velocity)
 	double q;					// initial auxiliary process covariance parameter
@@ -60,6 +63,7 @@ public:
 	EstimatorKF();
 	virtual ~EstimatorKF();
 
+	void KF_readConfig(Config trackingConfig);	//initialize with config file
 	void updateEstimate();
 	void KF_PredictEstimate();		// KF predict
 	void KF_UpdateEstimate();		// KF update

@@ -125,7 +125,6 @@ trackingsetup.d: ../trackingsetup.cpp \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_named_value_int.h \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_statustext.h \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_debug.h \
-  /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/matrixpilot/mavlink.h \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/find_north.h \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/tracking_mode.h \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/config.h \
@@ -403,8 +402,6 @@ trackingsetup.d: ../trackingsetup.cpp \
 /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_statustext.h:
 
 /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_debug.h:
-
-/Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/matrixpilot/mavlink.h:
 
 /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/find_north.h:
 

@@ -128,8 +128,7 @@ mavlink_reader.d: ../mavlink_reader.cpp \
   /Users/Maverick/Documents/workspace/Libraries/libftdi1-1.2/src/ftdi.h \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/input.h \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/trackingsetup.h \
-  /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/types.h \
-  /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/matrixpilot/mavlink.h
+  /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/types.h
 
 /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/mavlink_reader.h:
 
@@ -390,5 +389,3 @@ mavlink_reader.d: ../mavlink_reader.cpp \
 /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/trackingsetup.h:
 
 /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/types.h:
-
-/Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/matrixpilot/mavlink.h:

@@ -125,8 +125,7 @@ trackingEstimator.d: ../trackingEstimator.cpp \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_named_value_float.h \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_named_value_int.h \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_statustext.h \
-  /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_debug.h \
-  /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/matrixpilot/mavlink.h
+  /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_debug.h
 
 ../includes/trackingsetup/trackingEstimator.h:
 
@@ -381,5 +380,3 @@ trackingEstimator.d: ../trackingEstimator.cpp \
 /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_statustext.h:
 
 /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_debug.h:
-
-/Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/matrixpilot/mavlink.h:

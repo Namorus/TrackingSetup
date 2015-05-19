@@ -42,7 +42,7 @@ public:
 	MotorControlConf Mot;
 	LocateConf locate;
 	FindNorthConf findNorth;
-
+	EstimatorConf Estimator;
 
 
 private:

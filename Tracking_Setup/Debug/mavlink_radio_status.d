@@ -127,7 +127,6 @@ mavlink_radio_status.d: ../mavlink_radio_status.cpp \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_named_value_int.h \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_statustext.h \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_debug.h \
-  /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/matrixpilot/mavlink.h \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/mavlink_reader.h \
   /Users/Maverick/Documents/workspace/Libraries/libftdi1-1.2/ftdipp/ftdi.hpp \
   /Users/Maverick/Documents/workspace/Libraries/libftdi1-1.2/src/ftdi.h
@@ -387,8 +386,6 @@ mavlink_radio_status.d: ../mavlink_radio_status.cpp \
 /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_statustext.h:
 
 /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_debug.h:
-
-/Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/matrixpilot/mavlink.h:
 
 /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/mavlink_reader.h:
 

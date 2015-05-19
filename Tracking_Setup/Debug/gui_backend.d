@@ -127,7 +127,6 @@ gui_backend.d: ../gui_backend.cpp \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_named_value_int.h \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_statustext.h \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_debug.h \
-  /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/matrixpilot/mavlink.h \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/gps_tracking.h \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/trackingEstimator.h \
   /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/tracking_mode.h \
@@ -399,8 +398,6 @@ gui_backend.d: ../gui_backend.cpp \
 /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_statustext.h:
 
 /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/common/./mavlink_msg_debug.h:
-
-/Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/mavlink/v1.0/matrixpilot/mavlink.h:
 
 /Users/Maverick/Documents/workspace/TS_from_working_attitude/includes/trackingsetup/gps_tracking.h:
 

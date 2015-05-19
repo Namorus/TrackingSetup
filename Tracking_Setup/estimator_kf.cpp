@@ -9,6 +9,7 @@
 #include <sstream>
 
 #include <trackingsetup/estimator_kf.h>
+#include <trackingsetup/config.h>
 
 namespace tracking {
 
@@ -16,12 +17,13 @@ EstimatorKF::EstimatorKF() { 								//constructor: initialize parameters at fir
 
 		//constant values
 		gravity = 9.81;
-		var_phi = pow(0.4*M_PI/ 180.0,2.0); //0.4 //2.0
-		r_a = pow(0.5,2.0);
-		r_b = pow(0.3,2.0);
-		q = 0.0025;
-		a_LS = 0.05;
-		b_LS = 0.01;
+		var_roll = 0;
+		var_phi = pow(var_roll*M_PI/ 180.0,2.0); 		//0.4
+		r_a = 0; 										//pow(0.5,2.0);
+		r_b = 0; 										//pow(0.3,2.0);
+		q = 0; 											//0.0025;
+		a_LS = 0; 										//0.05;
+		b_LS = 0; 										//0.01;
 
 		// variable values
 		xhat 	<< targetPosLocal_.y << endr
@@ -65,6 +67,17 @@ EstimatorKF::EstimatorKF() { 								//constructor: initialize parameters at fir
 
 EstimatorKF::~EstimatorKF() {
 	// TODO Auto-generated destructor stub
+}
+
+void EstimatorKF::KF_readConfig(Config trackingConfig){ // read config files
+	//constant values
+	var_roll = trackingConfig.Estimator.var_roll;
+	var_phi = pow(var_roll*M_PI/ 180.0,2.0); 			//0.4
+	r_a = trackingConfig.Estimator.r_a; 				//pow(0.5,2.0);
+	r_b = trackingConfig.Estimator.r_b; 				//pow(0.3,2.0);
+	q = trackingConfig.Estimator.q; 					//0.0025;
+	a_LS = trackingConfig.Estimator.a_LS; 				//0.05;
+	b_LS = trackingConfig.Estimator.b_LS; 				//0.01;
 }
 
 void EstimatorKF::KF_PredictEstimate() { // predicts position and velocity from given data
@@ -465,7 +478,6 @@ void EstimatorKF::getEstimate(GlobalPos remoteGlobalPosition,Attitude remoteAtt,
 		KFvair = vair_old;
 	}
 
-
 	if (newPosition) {
 		setNewRemoteGPos(remoteGlobalPosition); // new position available
 		if (newAttitude) {
@@ -514,6 +526,8 @@ void EstimatorKF::getEstimate(GlobalPos remoteGlobalPosition,Attitude remoteAtt,
 	std::cout << "Up Estimated:" << targetEstimatedPosLocal_.z << std::endl;
 */
 	vair_old = KFvair;
+
+	std::cout<<"var_roll; "<<var_roll<<"r_a: "<<r_a<<std::endl;
 
 }
 
