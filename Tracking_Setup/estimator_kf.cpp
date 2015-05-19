@@ -16,12 +16,12 @@ EstimatorKF::EstimatorKF() { 								//constructor: initialize parameters at fir
 
 		//constant values
 		gravity = 9.81;
-		var_phi = pow(0.4*M_PI/ 180.0,2); //0.4
-		r_a = pow(0.5,2);
-		r_b = pow(0.3,2);
-		q = 0.2025;
-		a_LS = 0.066;
-		b_LS = 0.07;
+		var_phi = pow(0.4*M_PI/ 180.0,2.0); //0.4 //2.0
+		r_a = pow(0.5,2.0);
+		r_b = pow(0.3,2.0);
+		q = 0.0025;
+		a_LS = 0.05;
+		b_LS = 0.01;
 
 		// variable values
 		xhat 	<< targetPosLocal_.y << endr
@@ -81,9 +81,9 @@ void EstimatorKF::KF_PredictEstimate() { // predicts position and velocity from 
 
 	double v_wind = sqrt(v_total2) - fabs(KFvair);
 
-	double q_add = a_LS * v_wind + b_LS + b_LS * fabs(KFphi);
+	double q_add = pow(a_LS * pow(v_wind,4) + b_LS * fabs(KFphi),(1.0/4.0));
 
-	double q_z=q;
+	double q_z=0.2;
 
 	q = q + q_add;
 
@@ -92,12 +92,12 @@ void EstimatorKF::KF_PredictEstimate() { // predicts position and velocity from 
 // in continuous time
 
 	mat F_c(6, 6);
-	F_c << 0 << 1 << 0 << 0 << 0 << 0 << endr
-		<< 0 << gravity * xhat(1) * xhat(3) * tan(KFphi)/ pow(v_total2,(3.0 / 2.0)) << 0 << gravity * pow(xhat(3),2) * tan(KFphi) / pow(v_total2,(3.0 / 2.0)) - gravity * tan(KFphi) / sqrt(v_total2) << 0 << gravity * xhat(3) * xhat(5) * tan(KFphi)/ pow(v_total2,(3.0 / 2.0)) << endr
-		<< 0 << 0 << 0 << 1 << 0 << 0 << endr
-		<< 0 << gravity * tan(KFphi) / sqrt(v_total2) - gravity * pow(xhat(1),2) * tan(KFphi) / pow(v_total2,(3.0 / 2.0)) << 0<< -gravity * xhat(1) * xhat(3) * tan(KFphi)/ pow(v_total2,(3.0 / 2.0)) << 0 << -gravity * xhat(1) * xhat(5) * tan(KFphi)/ pow(v_total2,(3.0 / 2.0)) << endr
-		<< 0 << 0 << 0 << 0 << 0 << 1 << endr
-		<< 0 << 0 << 0 << 0 << 0 << 0 << endr;
+	F_c << 0.0 << 1.0 << 0.0 << 0.0 << 0.0 << 0.0 << endr
+		<< 0.0 << gravity * xhat(1) * xhat(3) * tan(KFphi)/ pow(v_total2,(3.0 / 2.0)) << 0.0 << gravity * pow(xhat(3),2) * tan(KFphi) / pow(v_total2,(3.0 / 2.0)) - gravity * tan(KFphi) / sqrt(v_total2) << 0.0 << gravity * xhat(3) * xhat(5) * tan(KFphi)/ pow(v_total2,(3.0 / 2.0)) << endr
+		<< 0.0 << 0.0 << 0.0 << 1.0 << 0.0 << 0.0 << endr
+		<< 0.0 << gravity * tan(KFphi) / sqrt(v_total2) - gravity * pow(xhat(1),2) * tan(KFphi) / pow(v_total2,(3.0 / 2.0)) << 0.0<< -gravity * xhat(1) * xhat(3) * tan(KFphi)/ pow(v_total2,(3.0 / 2.0)) << 0.0 << -gravity * xhat(1) * xhat(5) * tan(KFphi)/ pow(v_total2,(3.0 / 2.0)) << endr
+		<< 0.0 << 0.0 << 0.0 << 0.0 << 0.0 << 1.0 << endr
+		<< 0.0 << 0.0 << 0.0 << 0.0 << 0.0 << 0.0 << endr;
 
 // to discrete time
 	mat Id_6(6, 6);
@@ -108,12 +108,12 @@ void EstimatorKF::KF_PredictEstimate() { // predicts position and velocity from 
 // 2. compute measurement covariance matrix Q  -----------------------------------------------------------
 
 	vec b(6);
-	b 	<< 0. << endr
-		<< -4.0 * gravity * xhat(3) * pow(cos(KFphi), 2.0) / (pow((cos(2. * KFphi) + 1), 2.0)* sqrt(v_total2)) << endr
-		<< 0. << endr
-		<< 4.0 * gravity * xhat(1) * pow(cos(KFphi),2.0) / (pow((cos(2. * KFphi) + 1), 2.0) * sqrt(v_total2)) << endr
-		<< 0.<< endr
-		<< 0. << endr;
+	b 	<< 0.0 << endr
+		<< -4.0 * gravity * xhat(3) * pow(cos(KFphi), 2.0) / (pow((cos(2. * KFphi) + 1.0), 2.0)* sqrt(v_total2)) << endr
+		<< 0.0 << endr
+		<< 4.0 * gravity * xhat(1) * pow(cos(KFphi),2.0) / (pow((cos(2. * KFphi) + 1.0), 2.0) * sqrt(v_total2)) << endr
+		<< 0.0<< endr
+		<< 0.0 << endr;
 
 	mat Q_c = b * var_phi * b.t();
 
@@ -160,7 +160,7 @@ void EstimatorKF::KF_PredictEstimate() { // predicts position and velocity from 
 			<< pow(dt, 3.0) / 2.0 * q << pow(dt, 2.0) * pow(q,4.0) << 0 << 0 << 0 << 0 << endr
 			<< 0 << 0 << pow(dt, 4.0) / 4.0 *pow(q,4.0) << pow(dt , 3.0) / 2.0 * q << 0 << 0 << endr
 			<< 0 << 0 << pow(dt, 3.0) / 2.0 * q << pow(dt, 2.0) *pow(q,4.0) << 0 << 0 << endr
-			<< 0 << 0 << 0 << 0 << pow(dt, 4.0) / 4.0 * pow(q_z,4.0)<< pow(dt, 4.0)/2.0 * pow(q_z,4.0)<< endr
+			<< 0 << 0 << 0 << 0 << pow(dt, 2.0) * pow(q_z,4.0)<< pow(dt, 4.0)/2.0 * pow(q_z,4.0)<< endr
 			<< 0 << 0 << 0 << 0 << pow(dt, 4.0)/2.0 * pow(q_z,4.0)<< pow(dt, 4.0) * pow(q_z,4.0)<< endr;
 
 	mat Q = Q_d + Q_additional;
@@ -172,7 +172,7 @@ void EstimatorKF::KF_PredictEstimate() { // predicts position and velocity from 
 			<< xhat(3) * dt << endr
 			<< omega * xhat(1) * dt << endr
 			<< xhat(5) * dt << endr
-			<< 0 << endr;
+			<< 0.0 << endr;
 
 	xhat = xhat + xhat_new;
 
@@ -186,12 +186,12 @@ void EstimatorKF::KF_UpdateEstimate() { // updates latest position estimate by n
 
 // 1. Calculate R and H -----------------------------------------------------------
 	mat R(6, 6);
-	R 	<< pow(1.2*r_a, 2.0) << 0 << 0 << 0 << 0 << 0 << endr
-		<< 0 << pow(r_b, 2.0) << 0 << 0 << 0 << 0 << endr
-		<< 0 << 0 << pow(1.2*r_a, 2.0) << 0 << 0 << 0 << endr
-		<< 0 << 0 << 0 << pow(r_b, 2.0) << 0 << 0 << endr
-		<< 0 << 0 << 0 << 0 << pow(0.95*r_a, 2.0) << 0 << endr
-		<< 0 << 0 << 0 << 0 << 0 << pow(0.95*r_b, 2.0) << endr;
+	R 	<< pow(1.2*r_a, 2.0) << 0.0 << 0.0 << 0.0 << 0.0 << 0.0 << endr
+		<< 0.0<< pow(r_b, 2.0) << 0.0 << 0.0 << 0.0 << 0.0 << endr
+		<< 0.0 << 0.0 << pow(1.2*r_a, 2.0) << 0.0 << 0.0 << 0.0 << endr
+		<< 0.0 << 0.0 << 0.0 << pow(r_b, 2.0) << 0.0 << 0.0 << endr
+		<< 0.0 << 0.0 << 0.0 << 0.0 << pow(1.0*r_a, 3.0) << 0.0 << endr
+		<< 0.0 << 0.0 << 0.0 << 0.0 << 0.0 << pow(2.0*r_b, 3.0) << endr;
 
 	mat H(6, 6);
 	H.eye();
