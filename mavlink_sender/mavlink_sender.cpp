@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
     std::string label = "Port A on FT4232";
     int interface = 2;
     int vid = 0x0403;
-    int pid = 0x6011;
+    int pid = 0x6015; //0x6011;
 
 	int baudrate = 57600;
 
@@ -77,6 +77,13 @@ int main(int argc, char* argv[]) {
     attitudeMsg.yawspeed = 0;
     attitudeMsg.time_boot_ms = 0;
 
+    mavlink_vfr_hud_t vfrhudMsg;
+    vfrhudMsg.airspeed = 0;
+    vfrhudMsg.groundspeed = 0;
+    vfrhudMsg.alt = 0;
+    vfrhudMsg.climb = 0;
+    vfrhudMsg.heading = 0;
+    vfrhudMsg.throttle = 0;
 
     // open file
     std::ifstream trackfs;
@@ -88,12 +95,15 @@ int main(int argc, char* argv[]) {
     double lat, lon;
     float alt, vx, vy, vz;
     float roll, pitch, yaw, rollrate, pitchrate, yawrate;
+    float vair;
 
 
     while (!trackfs.eof()) {
         sendPos = false;
-        sendAtt = false;
+        sendAtt = false; // also send VFR_HUD
 
+        /* READ IN LINE FROM SIMULATED DATA */
+        // GPOS TIME
     	trackfs >> ti;
         trackfs.ignore(1,';');
 
@@ -130,6 +140,9 @@ int main(int argc, char* argv[]) {
         trackfs >> yawrate;
         trackfs.ignore(1,';');
 
+        trackfs >> vair;
+        trackfs.ignore(1,';');
+
 //        float lat, lon;
 //        std::cin >> lat >> lon;
 
@@ -154,12 +167,14 @@ int main(int argc, char* argv[]) {
         attitudeMsg.yawspeed = yawrate;
         attitudeMsg.time_boot_ms = (int) difftime(time(NULL),start);
 
+        vfrhudMsg.airspeed = vair;
+
         while(ti >= difftime(time(NULL),start)) {
         	usleep(10000);//1000
         }
         if (sendPos) {
-			std::cout << std::endl;
-			std::cout << ti << ": (" << lat << "N " << lon << "E @ " << alt << "m ) - " << "(" << vx << "/" << vy << "/" << vz << ")" << std::endl;
+			//std::cout << std::endl;
+			//std::cout << ti << ": (" << lat << "N " << lon << "E @ " << alt << "m ) - " << "(" << vx << "/" << vy << "/" << vz << ")" << std::endl;
 
 			mavlink_msg_global_position_int_encode(1,255,&msg,&gposMsg);
 			if(!writer.sendMessage(msg)) {
@@ -171,15 +186,25 @@ int main(int argc, char* argv[]) {
 			writer.sendMessage(msg);
         }
 
-        if (sendAtt) {
-        	std::cout << ti << ": ( " << roll/M_PI*180.0 << "° / " << pitch/M_PI*180.0 << "° / " << yaw/M_PI*180.0 << "° ) - " << "(" << rollrate/M_PI*180.0 << "°/s / " << pitchrate/M_PI*180.0 << "°/s / " << yawrate/M_PI*180.0 << "°/s)" << std::endl;
-        	mavlink_msg_attitude_encode(1,255,&msg,&attitudeMsg);
-        	if(!writer.sendMessage(msg)) {
-        		std::cout << "error sending attitude" << std::endl;
-        	}
-        }
+		if (sendAtt) {
+			std::cout << ti << ": ( " << roll / M_PI * 180.0 << "° / "
+					<< pitch / M_PI * 180.0 << "° / " << yaw / M_PI * 180.0
+					<< "° ) - " << "(" << rollrate / M_PI * 180.0 << "°/s / "
+					<< pitchrate / M_PI * 180.0 << "°/s / "
+					<< yawrate / M_PI * 180.0 << "°/s)" << std::endl;
+			mavlink_msg_attitude_encode(1, 255, &msg, &attitudeMsg);
+			if (!writer.sendMessage(msg)) {
+				std::cout << "error sending attitude" << std::endl;
+			}
+			std::cout << ti << ": ( " << vair <<")"<< std::endl;
+			mavlink_msg_vfr_hud_encode(1, 255, &msg, &vfrhudMsg);
+			if (!writer.sendMessage(msg)) {
+				std::cout << "error sending vfr_hud (airspeed)" << std::endl;
+			}
 
-    }
+		}
+
+	}
 
     writer.stopSending();
 
