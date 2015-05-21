@@ -96,7 +96,7 @@ void EstimatorKF::KF_PredictEstimate() { // predicts position and velocity from 
 
 	double q_add = pow(a_LS * pow(v_wind,4) + b_LS * fabs(KFphi),(1.0/4.0));
 
-	double q_z=0.2;
+	double q_z=0.07; //0.1
 
 	q = q + q_add;
 
@@ -173,8 +173,8 @@ void EstimatorKF::KF_PredictEstimate() { // predicts position and velocity from 
 			<< pow(dt, 3.0) / 2.0 * q << pow(dt, 2.0) * pow(q,4.0) << 0 << 0 << 0 << 0 << endr
 			<< 0 << 0 << pow(dt, 4.0) / 4.0 *pow(q,4.0) << pow(dt , 3.0) / 2.0 * q << 0 << 0 << endr
 			<< 0 << 0 << pow(dt, 3.0) / 2.0 * q << pow(dt, 2.0) *pow(q,4.0) << 0 << 0 << endr
-			<< 0 << 0 << 0 << 0 << pow(dt, 2.0) * pow(q_z,4.0)<< pow(dt, 4.0)/2.0 * pow(q_z,4.0)<< endr
-			<< 0 << 0 << 0 << 0 << pow(dt, 4.0)/2.0 * pow(q_z,4.0)<< pow(dt, 4.0) * pow(q_z,4.0)<< endr;
+			<< 0 << 0 << 0 << 0 << pow(dt, 4.0)/4 * pow(q_z,2.0)<< pow(dt, 4.0)/2.0 * q_z<< endr
+			<< 0 << 0 << 0 << 0 << pow(dt, 4.0)/2.0 * q_z<< pow(dt, 2.0) * pow(q_z,2.0)<< endr;
 
 	mat Q = Q_d + Q_additional;
 
@@ -199,12 +199,12 @@ void EstimatorKF::KF_UpdateEstimate() { // updates latest position estimate by n
 
 // 1. Calculate R and H -----------------------------------------------------------
 	mat R(6, 6);
-	R 	<< pow(1.2*r_a, 2.0) << 0.0 << 0.0 << 0.0 << 0.0 << 0.0 << endr
-		<< 0.0<< pow(r_b, 2.0) << 0.0 << 0.0 << 0.0 << 0.0 << endr
-		<< 0.0 << 0.0 << pow(1.2*r_a, 2.0) << 0.0 << 0.0 << 0.0 << endr
-		<< 0.0 << 0.0 << 0.0 << pow(r_b, 2.0) << 0.0 << 0.0 << endr
-		<< 0.0 << 0.0 << 0.0 << 0.0 << pow(1.0*r_a, 3.0) << 0.0 << endr
-		<< 0.0 << 0.0 << 0.0 << 0.0 << 0.0 << pow(2.0*r_b, 3.0) << endr;
+	R 	<< pow(r_a, 2.0) << 0.0 << 0.0 << 0.0 << 0.0 << 0.0 << endr
+		<< 0.0<< pow(1.2*r_b, 2.0) << 0.0 << 0.0 << 0.0 << 0.0 << endr
+		<< 0.0 << 0.0 << pow(r_a, 2.0) << 0.0 << 0.0 << 0.0 << endr
+		<< 0.0 << 0.0 << 0.0 << pow(1.2*r_b, 2.0) << 0.0 << 0.0 << endr
+		<< 0.0 << 0.0 << 0.0 << 0.0 << pow(1.4*r_a, 2.0) << 0.0 << endr
+		<< 0.0 << 0.0 << 0.0 << 0.0 << 0.0 << pow(1.9*r_b, 2.0) << endr;
 
 	mat H(6, 6);
 	H.eye();
@@ -526,9 +526,6 @@ void EstimatorKF::getEstimate(GlobalPos remoteGlobalPosition,Attitude remoteAtt,
 	std::cout << "Up Estimated:" << targetEstimatedPosLocal_.z << std::endl;
 */
 	vair_old = KFvair;
-
-	std::cout<<"var_roll; "<<var_roll<<"r_a: "<<r_a<<std::endl;
-
 }
 
 } /* namespace tracking */
